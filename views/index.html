@@ -1,0 +1,47 @@
+<h2>Listado de personas</h2><hr>
+<a href="#agregar">Alta de persona</a> -  <a ng-click="cargar()">Actualizar contenido</a>
+
+<!-- Filtro -->
+	<div style="float: right;"><input ng-model="filtro.nombre" placeholder="Filtro"></input></div><br><br>
+
+<!-- Si hay respuesta del borrado -->
+	<div ng-show="responseDelete.length">{{responseDelete}}</div>
+
+<!-- Si esta borrando -->
+	<div ng-show="loadingDelete">Borrando persona...</div>
+
+<table cellspacing="0">
+	<!-- Cabecera -->
+	<tr class="thead">
+		<td>ID</td>
+		<td>Nombre</td>
+		<td>Sexo</td>
+		<td>Equipo</td>
+		<td></td>
+	</tr>
+
+	<!-- Si esta cargando datos -->
+		<tr ng-show="cargando">
+			<td colspan="5">Cargando...</td>
+		</tr>
+	
+	<!-- Si hay error y no esta cargando -->
+		<tr ng-show="!cargando && error.length">
+			<td colspan="5">{{error}}</td>
+		</tr>
+
+	<!-- Si no esta cargando, hay personas, y no hay personas filtradas -->
+		<tr ng-show="!cargando && !filteredPersonas.length && personas.length">
+			<td colspan="5">No se encontraron resultados de búsqueda.</td>
+		</tr>
+
+	<!-- Repite mientras haya personas -->	
+		<tr ng-repeat="persona in filteredPersonas = (personas | filter:filtro) track by $index" ng-class-even="'row2'">
+			<td>{{persona.id}}</td>
+			<td>{{persona.nombre}}</td>
+			<td>{{persona.sexo}}</td>
+			<td>{{persona.equipo}}</td>
+			<td><a href="#/modificar/{{persona.id}}">Modificar</a> - <a ng-click="eliminar(persona.id)">Eliminar</a></td>
+		</tr>
+	
+</table>

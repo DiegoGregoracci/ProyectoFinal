@@ -1,0 +1,40 @@
+<h2>Modificar persona</h2><hr>
+<a href="#/">Volver al listado</a>
+<br><br>
+
+<!-- FORM - si recibio datos -->
+	<div ng-show="persona.id">
+		<form name="formulario">
+			<b>Nombre (requerido)</b>
+			<input type="text" name="nombre" ng-model="persona.nombre" style="margin-left: 20px;" required ng-minlength="3">
+			</input>
+			<span class="error" ng-show="formulario.persona.nombre.$dirty && formulario.persona.nombre.$error.required">El campo es requerido.</span>
+			<span class="error" ng-show="formulario.persona.nombre.$dirty && formulario.persona.nombre.$error.minlength">Al menos debe tener 3 caracteres.</span>
+			<br>
+
+			<b>Sexo (requerido)</b>
+			<select ng-model="persona.sexo" name="sexo" style="margin-left: 20px;" required>
+		    	<option value="M">Masculino</option>
+		    	<option value="F">Femenino</option>
+			</select>
+			<br>
+
+			<b>Equipo de futbol</b>
+			<input type="text" name="equipo" ng-model="persona.equipo" maxLength="20" style="margin-left: 20px;" ng-disabled='persona.sexo != "M"'>
+			</input>
+			<br>
+			<!-- Desactiva boton si esta enviando o si el formulario no es valido -->
+			<button ng-click="enviar()" ng-disabled="enviando || formulario.$invalid">Guardar cambios</button>
+		</form>
+	</div>
+<!-- Fin FORM -->
+<!-- Si hay respuesta -->
+	<div ng-show="response.length">
+		{{response}}
+	</div>
+<!-- Fin si hay respuesta -->
+<!-- Si esta cargando o enviando -->
+	<div ng-show="cargando || enviando">
+		Cargando...
+	</div>
+<!-- Fin si esta cargando o enviando -->

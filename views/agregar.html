@@ -1,0 +1,24 @@
+<h2>Agregar nuevo nombre</h2><hr>
+<a href="#/">Volver al listado</a>
+<br><br>
+<form name="formulario">
+	<b>Nombre (requerido)</b>
+	<input type="text" name="nombre" ng-model="nombre" style="margin-left: 20px;" required ng-minlength="3">
+	</input>
+	<span class="error" ng-show="formulario.nombre.$dirty && formulario.nombre.$error.required">El campo es requerido.</span>
+	<span class="error" ng-show="formulario.nombre.$dirty && formulario.nombre.$error.minlength">Al menos debe tener 3 caracteres.</span>
+	<br>
+	<b>Sexo (requerido)</b>
+	<select ng-model="sexo" name="sexo" style="margin-left: 20px;" required>
+    	<option value="M">Masculino</option>
+    	<option value="F">Femenino</option>
+	</select>
+	<br>
+	<b>Equipo de futbol</b>
+	<input type="text" name="equipo" ng-model="equipo" maxLength="20" style="margin-left: 20px;" ng-disabled='sexo != "M"'>
+	</input>
+	<br>
+	<button ng-click="enviar()" ng-disabled="enviando || formulario.$invalid">Agregar</button>
+</form>
+<br>
+{{response}}

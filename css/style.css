@@ -1,0 +1,36 @@
+.error {
+	color: red;
+}
+table {
+	border-right: 1px solid black;
+	border-top: 1px solid black;
+	width: 100%;
+}
+td {
+	border-left: 1px solid black;
+	border-bottom: 1px solid black;
+	padding: 15px;
+	text-align: center;
+	width: 20%;
+}
+input, select, button {
+	width: 200px;
+	padding: 10px;
+	font-family: Tahoma;
+	font-size: 14px;
+	margin: 10px;
+}
+a {
+	font-size: 14px;
+	font-family: Tahoma;
+	color: blue;
+	text-decoration: underline;
+	cursor: pointer;
+}
+.thead {
+	background-color: #424242;
+	color: white;
+}
+.row2 {
+	background-color: #efefef;
+}

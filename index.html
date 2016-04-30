@@ -1,0 +1,21 @@
+<!doctype HTML>
+<!-- Indica que esta pagina utiliza la aplicación APP a traves de ng-app -->
+<html ng-app ="app">
+	<head>
+		<link href="./css/style.css" rel="stylesheet" type="text/css" />
+		<meta charset='utf-8'>
+		<!-- Includes APP --> 
+		<script src="./app/angular.min.js"></script>
+		<script src="./app/angular-route.min.js"></script>
+		<script src="./app/app.js"></script>
+		<script src="./app/controllers/ControllerAgregar.js"></script>
+		<script src="./app/controllers/ControllerModificar.js"></script>
+		<script src="./app/controllers/ControllerListar.js"></script>
+		<!-- Fin Includes APP -->
+	</head>
+	<body>
+		<!-- Vistas. ng-view indica que se cargaran las vistas en este DIV	-->
+		<div ng-view></div>
+		<!-- Fin Vistas -->
+	</body>
+</html>

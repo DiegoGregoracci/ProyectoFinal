@@ -3,6 +3,13 @@ var app = angular.module('app', [
     'ngRoute'
 ]);
 
+app.constant("locationPath", {
+    "API_CONTROLLER": "api/controller/",
+    "CONTROLLER_PERSONA": "controller_persona.php",
+    "CONTROLLER_CLIENTE": "ClienteController.php",
+    "CONTROLLER_VEHICULO": "VehiculoController.php"
+});
+
 // Configuracion de Route Provider para manejar las rutas.
 app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/', {

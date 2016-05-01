@@ -1,4 +1,4 @@
-app.controller("ControllerListar", ["$scope", "$http", function($scope, $http) {
+app.controller("ControllerListar", ["$scope", "$http", "locationPath", function($scope, $http, locationPath) {
     $scope.responseDelete = "";
     $scope.loadingDelete = false;
     // Carga el contenido
@@ -9,7 +9,7 @@ app.controller("ControllerListar", ["$scope", "$http", function($scope, $http) {
         $scope.result = "Cargando...";
         // Realizo la peticion POST
         $scope.action = "list";
-        $http.get('api/controller_persona.php?action=list'      
+        $http.get(locationPath.API_CONTROLLER + locationPath.CONTROLLER_PERSONA + '?action=list'      
                 ).success(function(data, status, headers, config) {
                     // Si status = 200
                     if (!data.error)
@@ -28,7 +28,7 @@ app.controller("ControllerListar", ["$scope", "$http", function($scope, $http) {
         if (confirm('¿Estas seguro que deseas borrar la persona')) {
             $scope.loadingDelete = true;
             // Realizo la peticion POST
-            $http.post('api/controller_persona.php'
+            $http.post(locationPath.API_CONTROLLER + locationPath.CONTROLLER_PERSONA
                     , {'action':'eliminar', 'id': id}          
                     ).success(function(data, status, headers, config) {
                         // Si status = 200

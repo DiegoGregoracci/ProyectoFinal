@@ -1,4 +1,4 @@
-app.controller("ControllerModificar", ["$scope", "$http", "$routeParams", function($scope, $http, $routeParams) {
+app.controller("ControllerModificar", ["$scope", "$http", "$routeParams", "locationPath", function($scope, $http, $routeParams, locationPath) {
     $scope.id = $routeParams.id;
     // Variables de control
     $scope.cargando = true;
@@ -7,7 +7,7 @@ app.controller("ControllerModificar", ["$scope", "$http", "$routeParams", functi
     $scope.persona = [{id: 0, nombre: "", sexo: "", equipo:""}];
 
     // Obtengo la persona
-    $http.get('api/controller_persona.php?action=getpersona&id=' + $scope.id   
+    $http.get(locationPath.API_CONTROLLER + locationPath.CONTROLLER_PERSONA + '?action=getpersona&id=' + $scope.id   
             ).success(function(data, status, headers, config) {
                 // Si status = 200
                 if (!data.error)
@@ -28,7 +28,7 @@ app.controller("ControllerModificar", ["$scope", "$http", "$routeParams", functi
         if ($scope.sexo == "F")
             $scope.equipo = "";
         // Realizo la peticion POST
-        $http.post('api/controller_persona.php'
+        $http.post(locationPath.API_CONTROLLER + locationPath.CONTROLLER_PERSONA
                 , {'action':'modificar', 'id': $scope.persona.id, 'nombre': $scope.persona.nombre, 'sexo': $scope.persona.sexo, 'equipo': $scope.persona.equipo}          
                 ).success(function(data, status, headers, config) {
                     // Si status = 200

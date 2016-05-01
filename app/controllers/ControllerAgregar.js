@@ -1,4 +1,4 @@
-app.controller("ControllerAgregar", ["$scope", "$http", function($scope, $http) {
+app.controller("ControllerAgregar", ["$scope", "$http", "locationPath", function($scope, $http, locationPath) {
     // Variable para desactivar el boton cuando se está enviando
     $scope.enviando = false;    
     // Funcion POST
@@ -10,7 +10,7 @@ app.controller("ControllerAgregar", ["$scope", "$http", function($scope, $http) 
         if ($scope.sexo == "F")
             $scope.equipo = "";
         // Realizo la peticion POST
-        $http.post('api/controller_persona.php'
+        $http.post(locationPath.API_CONTROLLER + locationPath.CONTROLLER_PERSONA
                 , {'action':'agregar', 'nombre': $scope.nombre, 'sexo': $scope.sexo, 'equipo': $scope.equipo}          
                 ).success(function(data, status, headers, config) {
                     // Si status = 200

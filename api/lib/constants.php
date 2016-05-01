@@ -9,7 +9,7 @@ define("DB_USER","root");
 define("DB_PWD","");
 
 // Rutas
-define("CONTROLLER_PATH", "./api/controllers/");
-define("MODEL_PATH", "./api/models/");
-define("LIB_PATH", "./api/libs/");
+define("CONTROLLER_PATH", "./api/controller/");
+define("MODEL_PATH", "./api/model/");
+define("LIB_PATH", "./api/lib/");
 ?>

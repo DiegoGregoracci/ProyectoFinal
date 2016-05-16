@@ -1,0 +1,79 @@
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            Buscar clientes
+          </h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+          <!-- Default box -->
+          <div class="box box-danger">
+            
+            <div class="box-header with-border">
+              <h3 class="box-title">Búsqueda</h3>
+            </div>
+                  <div class="box-body">            
+                    <form name="form">        
+                      <div class="input-group margin">
+                        <input type="text" class="form-control" id="search" name="search" ng-model="search" placeholder="Buscar por nombre, apellido o número de cliente...">
+                        <div class="input-group-btn">
+                          <button ng-click="searchClient()" class="btn btn-danger">Buscar!</button>
+                        </div><!-- /btn-group -->
+                      </div><!-- /input-group -->
+                    </form>
+                  </div><!-- /.box-body -->
+          </div><!-- /.box -->
+
+
+          <!-- Default box -->
+          <div class="box box-danger" ng-show="searched">
+            <div class="overlay" ng-show="loading">
+              <i class="fa fa-refresh fa-spin"></i>
+            </div>
+
+            <div class="box-header with-border">
+              <h3 class="box-title">Resultados {{searched}}</h3>
+              <div class="box-tools pull-right">
+                <div class="has-feedback">
+                  <input type="text" class="form-control input-sm" ng-model="filtro" placeholder="Filtrar resultados">
+                  <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                </div>
+              </div><!-- /.box-tools -->
+            </div>
+                  <div class="box-body table-responsive no-padding">      
+                    <table class="table table-hover">
+                      
+                      <!-- THEAD -->
+                      <tr>
+                        <th style="width: 5%">#</th>
+                        <th style="width: 50%">Nombre y apellido</th>
+                        <th style="width: 45%"></th>
+                      </tr>
+
+                      <!-- Repeat TR while clients -->
+                      <tr ng-repeat="client in filteredClients = (clients | filter:filtro) track by $index">
+                        <td>{{client.id}}</td>
+                        <td>{{client.name}} {{client.lastname}}</td>
+                        <td style="text-align: right;">
+                          <a href="#" class="btn btn-sm btn-info">Ver</a>
+                          <a href="#vehiculo/nuevo/{{client.id}}" class="btn btn-sm btn-success">Agregar vehículo</a>
+                        </td>
+                      </tr>
+
+                      <!-- Show if not loading, and there's no clients or filteredclients -->
+                      <tr>
+                        <td colspan="3" style="text-align: center;">No se han encontrado resultados</td>
+                      </tr>
+
+                      <!-- Show if error searching -->
+                      <tr>
+                        <td colspan="3" style="text-align: center;">Error</td>
+                      </tr>
+
+                    </table>
+                  </div><!-- /.box-body -->
+          </div><!-- /.box -->
+
+
+        </section><!-- /.content -->

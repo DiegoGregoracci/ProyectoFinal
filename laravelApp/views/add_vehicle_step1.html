@@ -1,0 +1,79 @@
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            Agregar vehículo
+          </h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+          <!-- Default box -->
+          <div class="box box-danger">
+            
+            <div class="box-header with-border">
+              <h3 class="box-title">¿Cliente existente?</h3>
+            </div>
+              <form name="form">
+                  <div class="box-body">                    
+                    <div class="input-group margin">
+                      <input type="text" class="form-control" placeholder="Buscar cliente..." ng-model="search" name="search" ng-minlength="3" required>
+                      <div class="input-group-btn">
+                        <button type="button" class="btn btn-danger" ng-click="activar()" ng-disabled="form.$invalid">Buscar!</button>
+                      </div><!-- /btn-group -->
+                    </div><!-- /input-group -->
+                  </div><!-- /.box-body -->
+                </form>
+          </div><!-- /.box -->
+
+
+          <!-- Default box -->
+          <div class="box box-danger" ng-show="show">
+            <!-- Cargando
+            <div class="overlay">
+              <i class="fa fa-refresh fa-spin"></i>
+            </div>
+            -->
+
+            <div class="box-header with-border">
+              <h3 class="box-title">Seleccione el cliente</h3>
+              <div class="box-tools pull-right">
+                <div class="has-feedback">
+                  <input type="text" class="form-control input-sm" ng-model="filtro" placeholder="Filtrar resultados">
+                  <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                </div>
+              </div><!-- /.box-tools -->
+            </div>
+                  <div class="box-body table-responsive no-padding">      
+                      <table class="table table-hover">
+                    <tr>
+                      <th style="width: 5%">#</th>
+                      <th style="width: 65%">Nombre y apellido</th>
+                      <th style="width: 30%"></th>
+                    </tr>
+                    <tr ng-repeat="cliente in filteredClientes = (clientes | filter:filtro) track by $index">
+                      <td>{{cliente.id}}</td>
+                      <td>{{cliente.name}} {{cliente.lastname}}</td>
+                      <td style="text-align: right;"><a href="#vehiculo/nuevo/{{cliente.id}}" class="btn btn-sm btn-success">Seleccionar</a></td>
+                    </tr>
+                  </table>
+                  </div><!-- /.box-body -->
+
+          </div><!-- /.box -->
+
+          <!-- Default box -->
+          <div class="box box-danger">
+            
+            <div class="box-header with-border">
+              <h3 class="box-title">¿Cliente nuevo?</h3>
+            </div>
+                  <div class="box-body">                    
+                    <center>
+                      <a class="btn btn-danger" href="#/cliente/nuevo">
+                          Agregar cliente
+                      </a>
+                    </center>
+
+                  </div><!-- /.box-body -->
+          </div><!-- /.box -->
+
+        </section><!-- /.content -->

@@ -1,0 +1,107 @@
+        <!-- Header de contenido -->
+        <section class="content-header">
+          <h1>
+            Alta de cliente
+          </h1>
+        </section>
+
+        <!-- Contenido -->
+        <section class="content">
+          <!-- Caja -->
+          <div class="box box-danger">
+            <!-- Overlay cargando -->
+            <div class="overlay" ng-show="loading">
+              <i class="fa fa-refresh fa-spin"></i>
+            </div>
+
+            <!-- Titulo -->
+            <div class="box-header with-border">
+              <h3 class="box-title">Datos de cliente</h3>
+            </div>
+
+                <!-- Formulario -->
+                <form name="form">
+                  <div class="box-body">
+                    
+                      <!-- Filas de dos campos -->
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="name">Nombre <small class="small-red">(requerido)</small></label>
+                            <input type="text" class="form-control" id="name" name="name" ng-model="client.name" required>
+                          </div>
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="lastname">Apellido <small class="small-red">(requerido)</small></label>
+                            <input type="text" class="form-control" id="lastname" name="lastname" ng-model="client.lastname" required>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="address">Dirección</label>
+                            <input type="text" class="form-control" id="address" name="address" ng-model="client.address">
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="telephone1">Teléfono 1</label>
+                            <input type="text" class="form-control" id="telephone1" name="telephone1" ng-model="client.telephone1">
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="telephone2">Teléfono 2</label>
+                            <input type="text" class="form-control" id="telephone2" name="telephone2" ng-model="client.telephone2">
+                          </div>
+                        </div>
+
+                        
+                      </div>
+
+                      <div class="row">
+                        <div class="col-lg-7">
+                          <div class="form-group">
+                            <label for="email">Correo electrónico</label>
+                            <input type="text" class="form-control" id="email" name="email" ng-model="client.email">
+                          </div>
+                        </div>
+                        <div class="col-lg-5">
+                          <div class="form-group">
+                            <label for="cuit">CUIT</label>
+                            <input type="text" class="form-control" id="cuit" name="cuit" ng-model="client.cuit" placeholder="XX-XXXXXXXX-X">
+                          </div>
+                        </div>
+                      </div>
+
+                  </div><!-- /.box-body -->
+
+                  <div class="box-footer" style="text-align:center;">
+                    <button ng-click="add(0)" ng-disabled="form.$invalid" class="btn btn-success" style="margin: 2.5px 5px;">
+                      Agregar
+                    </button>
+                    <button ng-click="add(1)" ng-disabled="form.$invalid" class="btn btn-info" style="margin: 2.5px 5px;">
+                      Agregar y asignar vehículo
+                    </button>
+                  </div>
+            </form>
+          </div><!-- /.box -->
+
+  <div class="callout callout-danger lead" ng-show="error">
+    <h4>Error!</h4>
+    <p style="font-size: 16px;">
+      {{status}}
+    </p>
+  </div>
+
+  <div class="callout callout-success lead" ng-show="success">
+    <h4>Éxito!</h4>
+    <p style="font-size: 16px;">
+      Se ha agregado el cliente a la base de datos
+    </p>
+  </div>
+
+        </section><!-- /.content -->

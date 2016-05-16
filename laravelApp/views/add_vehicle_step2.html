@@ -1,0 +1,80 @@
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            Alta de vehículo. Cliente #2
+          </h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+          <!-- Default box -->
+          <div class="box box-danger">
+            <!-- Overlay cargando -->
+            <div class="overlay" ng-show="loading">
+              <i class="fa fa-refresh fa-spin"></i>
+            </div>
+            
+            <div class="box-header with-border">
+              <h3 class="box-title">Datos de vehículo</h3>
+            </div>
+
+        <!-- form start -->
+                <form name="form">
+                  <div class="box-body">
+                    
+                      <div class="row">
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="name">Marca <small class="small-red">(requerido)</small></label>
+                            <input type="text" class="form-control" id="brand" name="brand" ng-model="vehicle.brand" required>
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="lastname">Modelo <small class="small-red">(requerido)</small></label>
+                            <input type="text" class="form-control" id="model" name="model" ng-model="vehicle.model" required>
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="lastname">Patente <small class="small-red">(requerido)</small></label>
+                            <input type="text" class="form-control" id="plate" name="plate" ng-model="vehicle.plate" required>
+                          </div>
+                        </div>
+                      </div>
+                    
+                    <div class="row">
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="name">Año</label>
+                            <input type="text" class="form-control" id="year" name="year" ng-model="vehicle.year">
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="lastname">Motorización</label>
+                            <input type="text" class="form-control" id="engine" name="engine" ng-model="vehicle.engine">
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="lastname">Número de chásis</label>
+                            <input type="text" class="form-control" id="vin" name="vin" ng-model="vehicle.vin">
+                          </div>
+                        </div>
+                      </div>
+
+                  </div><!-- /.box-body -->
+
+                  <div class="box-footer" style="text-align:center;">
+                    <button ng-click="send(0)" ng-disabled="form.$invalid" class="btn btn-success" style="margin: 0 5px;">
+                      Agregar
+                    </button>
+                    <button ng-click="reset()" class="btn btn-danger" style="margin: 0 5px;">Limpiar</button>
+
+                  </div>
+
+          </div><!-- /.box -->
+
+
+        </section><!-- /.content -->

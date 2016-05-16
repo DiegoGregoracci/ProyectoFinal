@@ -1,0 +1,47 @@
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            Alta de personal
+          </h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+          <!-- Default box -->
+          <div class="box box-danger">
+            <div class="box-header with-border">
+              <h3 class="box-title">Datos de personal</h3>
+            </div>
+
+<!-- form start -->
+                <form name="form">
+                  <div class="box-body">
+                    
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="name">Nombre</label>
+                            <input type="text" class="form-control" id="name" name="name" ng-model="staff.name" placeholder="Requerido" required>
+                          </div>
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="lastname">Apellido</label>
+                            <input type="text" class="form-control" id="lastname" name="lastname" ng-model="staff.lastname" placeholder="Requerido" required>
+                          </div>
+                        </div>
+                      </div>
+                  </div><!-- /.box-body -->
+
+                  <div class="box-footer" style="text-align:center;">
+                    <button ng-click="send(1)" ng-disabled="form.$invalid" class="btn btn-info" style="margin: 0 5px;">
+                      Agregar
+                    </button>
+                    <button ng-click="reset()" class="btn btn-danger" style="margin: 0 5px;">Limpiar</button>
+
+                  </div>
+
+          </div><!-- /.box -->
+
+
+        </section><!-- /.content -->

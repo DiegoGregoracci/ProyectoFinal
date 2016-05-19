@@ -17,6 +17,11 @@ use Illuminate\Http\Request;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::resource('client', 'ClientController');
+
+/*
 Route::post('/client/new', function(Request $request) {
 	// Nuevo cliente
 	$user = new User;
@@ -42,15 +47,4 @@ Route::post('/client/new', function(Request $request) {
 		}
 	}
 });
-Route::get('/client/{clientId}', function(Client $client) {
-	// Devuelve cliente especifico
-	echo "lala";
-});
-Route::get('/client/search/{searchMethod}/{searchParam}', function (Client $client) {
-	// Busqueda.
-	// searchMethod -> para manejar distinto tipos de busqueda (por ID, por NOMBRE, por TODO, etc)
-	// searchParam -> el parametro a buscar
-});
-Route::delete('/client/delete/{clientId}', function(Client $client) {
-	// Borrar cliente
-});
+*/

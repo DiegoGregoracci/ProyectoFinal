@@ -1,0 +1,89 @@
+        <!-- Header de contenido -->
+        <section class="content-header">
+          <h1>
+            Alta de Proveedor
+          </h1>
+        </section>
+
+        <!-- Contenido -->
+        <section class="content">
+          <!-- Caja -->
+          <div class="box box-danger">
+            <!-- Overlay cargando -->
+            <div class="overlay" ng-show="loading">
+              <i class="fa fa-refresh fa-spin"></i>
+            </div>          
+            <!-- Titulo -->
+            <div class="box-header with-border">
+              <h3 class="box-title">Datos de proveedor</h3>
+            </div>
+
+                <!-- Formulario -->
+                <form name="form">
+                  <div class="box-body">
+                    
+                      <!-- Filas de dos campos -->
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="name">Razón Social <small class="small-red">(requerido)</small></label>
+                            <input type="text" class="form-control" id="name" name="description" ng-model="supplier.description" required>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="address">Dirección</label>
+                            <input type="text" class="form-control" id="address" name="address" ng-model="supplier.address">
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="telephone">Teléfono</label>
+                            <input type="text" class="form-control" id="telephone" name="telephone1" ng-model="supplier.tel">
+                          </div>
+                        </div>                      
+                      </div>
+
+                      <div class="row">
+                        <div class="col-lg-7">
+                          <div class="form-group">
+                            <label for="email">Correo electrónico</label>
+                            <input type="text" class="form-control" id="email" name="email" ng-model="supplier.email">
+                          </div>
+                        </div>
+                        <div class="col-lg-5">
+                          <div class="form-group">
+                            <label for="cuit">Responsable</label>
+                            <input type="text" class="form-control" id="responsible" name="responsible" ng-model="supplier.responsible">
+                          </div>
+                        </div>
+                      </div>
+
+                  </div><!-- /.box-body -->
+
+                  <div class="box-footer" style="text-align:center;">
+                    <button ng-click="add(0)" ng-disabled="form.$invalid" class="btn btn-success" style="margin: 2.5px 5px;">
+                      Agregar
+                    </button>
+                  </div>
+            </form>
+          </div><!-- /.box -->
+
+  <div class="callout callout-danger lead" ng-show="error">
+    <h4>Error!</h4>
+    <p style="font-size: 16px;">
+      {{status}}
+    </p>
+  </div>
+
+  <div class="callout callout-success lead" ng-show="success">
+    <h4>Éxito!</h4>
+    <p style="font-size: 16px;">
+      Se ha agregado el proveedor a la base de datos
+    </p>
+  </div>
+
+        </section><!-- /.content -->

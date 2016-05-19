@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Client;
 use App\User;
+use Illuminate\Support\Facades\Validator;
+use DB;
+use Illuminate\Database\DatabaseManager;
+
 
 class ClientController extends Controller
 {
@@ -38,11 +42,33 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        // Crear nuevo cliente
+        // Validar
+        $validator = Validator::make($request->all(), [
+            'user' => 'required|max:20',
+        ]);
+
+        if ($validator->fails()) {
+            return "datos incompletos";
+        }
+        // Inicio transacción
+        DB::beginTransaction();
+
+        // Crear nuevo usuario
         $user = new User;
         $user->user = $request->user;
         $user->password = "test";
 
+        try {
+            $user->save();
+            DB::commit();
+            return "agregado";
+        }
+        catch (\Exception $e) {
+            DB::rollback();
+            $errorCode = $e->errorInfo[1];
+            if ($errorCode == 1062)
+                return "entrada duplicada";
+        }
 
     }
 

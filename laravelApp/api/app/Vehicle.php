@@ -2,17 +2,18 @@
 
 namespace App;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class Vehicle extends Model
 {
-    /**
+      /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'user', 'id', 'active', 'id_profile', 
+        'id', 'active', 'id_client', 'brand', 'model', 'plate', 'vin',
+        'year', 'engine'
     ];
 
     /**
@@ -21,11 +22,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        
     ];
 
     public function client()
     {
-        return $this->hasOne('App\Client');
+        return $this->belongsTo('App\Client');
     }
 }

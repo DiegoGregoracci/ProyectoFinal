@@ -61,7 +61,30 @@ class ClientController extends Controller
         try {
             $user->save();
             DB::commit();
-            return "agregado";
+            
+        }
+        catch (\Exception $e) {
+            DB::rollback();
+            $errorCode = $e->errorInfo[1];
+            if ($errorCode == 1062)
+                return "entrada duplicada";
+        }
+
+        $client = new Client();
+        $client->id_user = $newuser->id;
+        $client->lastname = $request->lastname;
+        $client->name = $request->name;
+        $client->adress = $request->adress;
+        $client->tel1 = $request->tel1;
+        $client->tel2 = $request->tel2;
+        $client->email = $request->email;
+        $client->cuit = $request->cuit;
+        $client->comments = $request->comments;
+        
+        try{
+            $client->save();
+            DB::commit();
+            return "cliente agregado";
         }
         catch (\Exception $e) {
             DB::rollback();
@@ -80,7 +103,13 @@ class ClientController extends Controller
      */
     public function show($id)
     {
-        return "prueba";
+        try{
+            $user = Client::where('id', $id)->get();
+            return $user;
+        }
+        catch (\Exception $e) {
+            return "error al buscar cliente";
+        }
     }
 
     /**
@@ -103,7 +132,24 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = Client::where('id', $id)->get();
+
+        $client = new Client();
+        $client->lastname = $request->lastname;
+        $client->name = $request->name;
+        $client->adress = $request->adress;
+        $client->tel1 = $request->tel1;
+        $client->tel2 = $request->tel2;
+        $client->email = $request->email;
+        $client->cuit = $request->cuit;
+        $client->comments = $request->comments;
+        try{
+            $client->save();
+        }
+        catch (\Exception $e) {
+            return "error al actualizar cliente";
+        }
+        
     }
 
     /**
@@ -114,6 +160,14 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $client = Client::where('id', $id)->get();
+        $user = User::where('id', $client->id_user)->get();
+        try{
+            $user->delete();
+            $client->delete(); 
+        }
+        catch (\Exception $e) {
+            return "error al eliminar cliente";
+        }
     }
 }

@@ -13,6 +13,13 @@ app.controller("AddSupplierController", ["$scope", "supplierFactory", "$location
         };
     };
 
+    $scope.add = function () {
+    /*
+        Add new provider
+    */
+        $scope.success=true;
+    }
+
     // Control var. True when sending data. Displays loading overlay.
     $scope.loading = false;
     // Control var. True if error adding a client. Shows error box

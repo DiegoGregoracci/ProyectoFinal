@@ -1,26 +1,26 @@
-// Client Factory.
-// Handles all Client's API requests.
-app.factory('clientFactory', ['$http', 'locationPath', function($http, locationPath) {
-    var clientFactory = {};
+// Supplier Factory.
+// Handles all Supplier's API requests.
+app.factory('supplierFactory', ['$http', 'locationPath', function($http, locationPath) {
+    var supplierFactory = {};
 
-    // Get all clients
+    // Get all suppliers
     supplierFactory.getSuppliers = function () {
-        return $http.get(locationPath.BASE_URL + locationPath.CLIENT_URL);
+        return $http.get(locationPath.BASE_URL + locationPath.SUPPLIER_URL);
     };
 
-    // Get client by ID
+    // Get supplier by ID
     supplierFactory.getSupplier = function (id) {
-        return $http.get(locationPath.BASE_URL + locationPath.CLIENT_URL + '/' + id);
+        return $http.get(locationPath.BASE_URL + locationPath.SUPPLIER_URL + '/' + id);
     };
 
-    // Add new client
-    supplierFactory.addSupplier = function (client) {
-        return $http.post(locationPath.BASE_URL + locationPath.CLIENT_URL + locationPath.ADD_URL, client);
+    // Add new supplier
+    supplierFactory.addSupplier = function (suplier) {
+        return $http.post(locationPath.BASE_URL + locationPath.SUPPLIER_URL + locationPath.ADD_URL, suplier);
     };
 
-    // Search client list
+    // Search supplier list
     supplierFactory.searchSuppliers = function(param) {
-        return $http.get(locationPath.BASE_URL + locationPath.CLIENT_URL + locationPath.SEARCH_URL + '?param=' + param);
+        return $http.get(locationPath.BASE_URL + locationPath.SUPPLIER_URL + locationPath.SEARCH_URL + '?param=' + param);
     }
 
     return supplierFactory;

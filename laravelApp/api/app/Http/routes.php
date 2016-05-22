@@ -20,6 +20,8 @@ Route::get('/', function () {
 
 
 Route::resource('client', 'ClientController');
+Route::resource('vehicle', 'VehicleController');
+Route::resource('supplier', 'SupplierController');
 
 /*
 Route::post('/client/new', function(Request $request) {

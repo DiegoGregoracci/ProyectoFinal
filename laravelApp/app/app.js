@@ -5,6 +5,12 @@ var app = angular.module('app', [
 
 // Configuracion de Route Provider para manejar las rutas.
 app.config(['$routeProvider', function ($routeProvider) {
+    
+    $routeProvider.when('/proveedores/nuevo', {
+        templateUrl: 'views/add_supplier.html',
+        controller: 'AddSupplierController'
+    });
+
     $routeProvider.when('/cliente/nuevo', {
         templateUrl: 'views/add_client.html',
         controller: 'AddClientController'

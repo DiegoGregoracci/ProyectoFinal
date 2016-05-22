@@ -22,6 +22,7 @@ class CreateClientsTable extends Migration
             $table->string('telephone2', 15)->nullable();
             $table->string('email', 30)->nullable();
             $table->string('cuit',12)->nullable();
+            $table->string('comments')->nullable();
             $table->timestamps();
 
             // Foreign Key      clients.id_user -> users.id

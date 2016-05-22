@@ -69,6 +69,30 @@ class ClientController extends Controller
             // Inicio transaccion e intento guardar el usuario
             DB::beginTransaction();
             $user->save();
+            
+        }
+        catch (\Exception $e) {
+            DB::rollback();
+            $errorCode = $e->errorInfo[1];
+            if ($errorCode == 1062)
+                return "entrada duplicada";
+        }
+
+        $client = new Client();
+        $client->id_user = $newuser->id;
+        $client->lastname = $request->lastname;
+        $client->name = $request->name;
+        $client->adress = $request->adress;
+        $client->tel1 = $request->tel1;
+        $client->tel2 = $request->tel2;
+        $client->email = $request->email;
+        $client->cuit = $request->cuit;
+        $client->comments = $request->comments;
+        
+        try{
+            $client->save();
+            DB::commit();
+            return "cliente agregado";
         }
         catch (\Exception $e) {
             // Hubo error agregando
@@ -91,48 +115,6 @@ class ClientController extends Controller
                     return "error ".$errorCode." ".$e->getMessage();;
                 }
         }
-
-        // Completo los datos del cliente
-        // Si llego a este punto, es porque ya se agrego el usuario
-        $client = new Client;
-        $client->lastname   = $request->lastname;
-        $client->name       = $request->name;
-        $client->address    = $request->address;
-        $client->telephone1 = $request->telephone1;
-        $client->telephone2 = $request->telephone2;
-        $client->email      = $request->email;
-        $client->cuit       = $request->cuit;
-
-        // Pregunto si se le asigno ID a user. No se si es necesario, es una validacion extra para saber si se agrego el usuario
-        if ($user->id) {
-            // Le asigno el ID del usuario creado para usarlo de FK
-            $client->id_user = $user->id;
-            try {
-                // Intento guardar el cliente
-                $client->save();
-                DB::commit();
-                return "agregado!";
-            }
-            catch (\Exception $e) {
-                // Hubo error guardando al cliente
-                $errorCode = $e->getCode();
-                if ($errorCode == 2002 || $errorCode == 1044 || $errorCode== 1049)
-                    // Si es 2002, es porque no se pudo conectar. No tiro rollback() porque lanza otra vez excepcion porque no esta conectado
-                    // Si es 1044, usuario incorrecto
-                    // Si es 1049, no existe la tabla
-                    return "error de conexion";
-                else {
-                    // Si ocurrio un error, hago rollback y salgo.
-                    // No se que error puede llegar a haber. Los campos NOTNULL ya se comprueban en el validator.
-                    DB::rollback();
-                    return "error ".$errorCode." ".$e->getMessage();;
-                }
-            }
-        }
-        else {
-            DB::rollback();
-            return "error creando al cliente";
-        }
     }
 
     /**
@@ -143,7 +125,13 @@ class ClientController extends Controller
      */
     public function show($id)
     {
-        return "prueba";
+        try{
+            $user = Client::where('id', $id)->get();
+            return $user;
+        }
+        catch (\Exception $e) {
+            return "error al buscar cliente";
+        }
     }
 
     /**
@@ -166,7 +154,24 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = Client::where('id', $id)->get();
+
+        $client = new Client();
+        $client->lastname = $request->lastname;
+        $client->name = $request->name;
+        $client->adress = $request->adress;
+        $client->tel1 = $request->tel1;
+        $client->tel2 = $request->tel2;
+        $client->email = $request->email;
+        $client->cuit = $request->cuit;
+        $client->comments = $request->comments;
+        try{
+            $client->save();
+        }
+        catch (\Exception $e) {
+            return "error al actualizar cliente";
+        }
+        
     }
 
     /**
@@ -177,6 +182,14 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $client = Client::where('id', $id)->get();
+        $user = User::where('id', $client->id_user)->get();
+        try{
+            $user->delete();
+            $client->delete(); 
+        }
+        catch (\Exception $e) {
+            return "error al eliminar cliente";
+        }
     }
 }

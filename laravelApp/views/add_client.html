@@ -63,13 +63,19 @@
                       </div>
 
                       <div class="row">
-                        <div class="col-lg-7">
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="user">Nombre de usuario <small class="small-red">(requerido)</small></label>
+                            <input type="text" class="form-control" id="user" name="user" ng-model="client.user" max-length="20" ng-maxlength="20" required>
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
                           <div class="form-group">
                             <label for="email">Correo electrónico</label>
                             <input type="text" class="form-control" id="email" name="email" ng-model="client.email">
                           </div>
                         </div>
-                        <div class="col-lg-5">
+                        <div class="col-lg-4">
                           <div class="form-group">
                             <label for="cuit">CUIT</label>
                             <input type="text" class="form-control" id="cuit" name="cuit" ng-model="client.cuit" placeholder="XX-XXXXXXXX-X">
@@ -92,8 +98,8 @@
 
   <div class="callout callout-danger lead" ng-show="error">
     <h4>Error!</h4>
-    <p style="font-size: 16px;">
-      {{status}}
+    <p style="font-size: 16px;" ng-repeat="er in errors">
+        - {{er.error}} <br>
     </p>
   </div>
 

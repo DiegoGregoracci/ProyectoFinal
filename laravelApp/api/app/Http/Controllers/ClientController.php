@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Client;
 use App\User;
 use Illuminate\Support\Facades\Validator;
+// Include validators.php to extend Validators
+require app_path().'/validators.php';
 use DB;
 use Illuminate\Database\DatabaseManager;
 
@@ -44,20 +46,24 @@ class ClientController extends Controller
     {
         // Validar
         $validator = Validator::make($request->all(), [
-            'user' => 'required|max:20',
-            'lastname' => 'required|max:30',
-            'name' => 'required|max:30',
-            'address' => 'max:30'
+            'user' => 'required|alpha_num|max:20',
+            'lastname' => 'required|alpha_spaces|max:30',
+            'name' => 'required|alpha_spaces|max:30',
+            'address' => 'max:30|alpha_num_spaces'
         ]);
 
         // Compruebo mensajes. Con $messages->has('field') sabes si el validator fallo para ese field
-        if ($validator->fails()) {
+        if ($validator->fails()) { 
             $messages = $validator->messages();
             if ($messages->has('user'))
-                return "user incorrecto";
+                $response[] = array("error"=>"Usuario incorrecto");
             if ($messages->has('address'))
-                return "direccion incorrecta";   
-            return "datos incorrectos";
+                $response[] = array("error"=>"Dirección incorrecta");   
+            if ($messages->has('name'))
+                $response[] = array("error"=>"Nombre incorrecto");
+            if ($messages->has('lastname'))
+                $response[] = array("error"=>"Apellido incorrecto");    
+            return response()->json($response);
         }
 
         // Crear nuevo usuario
@@ -72,19 +78,31 @@ class ClientController extends Controller
             
         }
         catch (\Exception $e) {
-            DB::rollback();
-            $errorCode = $e->errorInfo[1];
-            if ($errorCode == 1062)
-                return "entrada duplicada";
+            // Hubo error agregando
+            $errorCode = $e->getCode();
+            if ($errorCode == 23000) {
+                // Si es 23000 el codigo, es porque hay violacion de integridad. Habiendo validado los campos requeridos arriba,
+                // Supongo que lo unico que puede pasar es que el username exista, y al ser unique tira error
+                DB::rollback();
+                $response[] = array("error"=>"Nombre de usuario existente.");
+                return response()->json($response);
+            }
+            else
+                if ($errorCode == 2002 || $errorCode == 1044 || $errorCode== 1049)
+                    // Si es 2002, es porque no se pudo conectar. No tiro rollback() porque lanza otra vez excepcion porque no esta conectado
+                    // Si es 1044, usuario incorrecto
+                    // Si es 1049, no existe la tabla
+                    $response[] = array("error"=>"Error de conexión a la base de datos.");
+                    return response()->json($response);
         }
 
         $client = new Client();
-        $client->id_user = $newuser->id;
+        $client->id_user = $user->id;
         $client->lastname = $request->lastname;
         $client->name = $request->name;
-        $client->adress = $request->adress;
-        $client->tel1 = $request->tel1;
-        $client->tel2 = $request->tel2;
+        $client->address = $request->address;
+        $client->telephone1 = $request->telephone1;
+        $client->telephone2 = $request->telephone2;
         $client->email = $request->email;
         $client->cuit = $request->cuit;
         $client->comments = $request->comments;
@@ -92,7 +110,7 @@ class ClientController extends Controller
         try{
             $client->save();
             DB::commit();
-            return "cliente agregado";
+            return response()->json(["id"=>$client->id]);
         }
         catch (\Exception $e) {
             // Hubo error agregando

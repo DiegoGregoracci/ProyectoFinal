@@ -1,5 +1,5 @@
 // Add client controller.
-app.controller("AddClientController", ["$scope", "clientFactory", "$location", function($scope, clientFactory, $location) {
+app.controller("AddClientController", ["$scope", "clientFactory", "$location", "$filter", function($scope, clientFactory, $location, $filter) {
     /*
         Initialize & reset object form.
     */
@@ -11,9 +11,51 @@ app.controller("AddClientController", ["$scope", "clientFactory", "$location", f
             "telephone2": "",
             "address": "",
             "email": "",
-            "cuit": ""
-        };
+            "cuit": "",
+            "user": ""
+            }
     };
+    /* 
+        Watch. Updates user
+        Set $scope.client.user = value of lastname input + name input.
+    */
+    var updateUsername = function(){
+        // Delete any special character.
+        var normalize = (function() {
+          var from = "ãàáäâèéëêìíïîòóöôùúüûÑñÇç", 
+              to   = "aaaaaeeeeiiiioooouuuunncc",
+              mapping = {};
+         
+          for(var i = 0, j = from.length; i < j; i++ )
+              mapping[ from.charAt( i ) ] = to.charAt( i );
+         
+          return function( str ) {
+              var ret = [];
+              for( var i = 0, j = str.length; i < j; i++ ) {
+                  var c = str.charAt( i );
+                  if( mapping.hasOwnProperty( str.charAt( i ) ) )
+                      ret.push( mapping[ c ] );
+                  else
+                      ret.push( c );
+              }      
+              return ret.join( '' ).replace(/[^a-z]/g, '');
+        }
+         
+        })();
+
+        var str = "";
+        // Check if lastname and name are not undefined. Otherwise there will be an error when the input is empty.
+        // If not, then add input value (deleting any blank and lowercase) to the string.
+        if (typeof $scope.client.name != "undefined")
+            str += $filter('lowercase')($scope.client.name).replace(/ /g,'');  
+        if (typeof $scope.client.lastname != "undefined")
+            str += $filter('lowercase')($scope.client.lastname).replace(/ /g,'');
+        
+        if (str.length >= 20)
+            str = str.substring(0,19);
+        // Reset name on change on inputs.
+        $scope.client.user = normalize(str);
+    }
 
     /*
         Add new client
@@ -24,12 +66,13 @@ app.controller("AddClientController", ["$scope", "clientFactory", "$location", f
         $scope.loading = true;
         $scope.error = false;
         $scope.success = false;
+        $scope.errors = [];
         clientFactory.addClient($scope.client).then(function (response) {
-                if (response.msg != "") {
-                    // If status=200 && No error msg.
+                if (response.id) {
+                    // If status=200 && ID.
                     if (addVehicleNext)
                         // If addVehicleNext, redirect to next page.
-                        $location.path("vehiculo/agregar/" + response.msg);
+                        $location.path("vehiculo/nuevo/" + response.id);
                     else {
                         // If !addVehicleNext, show success box and reset form.
                         $scope.initialize();
@@ -38,8 +81,8 @@ app.controller("AddClientController", ["$scope", "clientFactory", "$location", f
                 }
                 else {
                     // Error, show error box.
+                    $scope.errors = response;
                     $scope.error = true;
-                    $scope.status = response.error;
                 }
                 // Disable loading overlay
                 $scope.loading = false;
@@ -50,6 +93,9 @@ app.controller("AddClientController", ["$scope", "clientFactory", "$location", f
                 $scope.error = true;
         });
     }
+    // Addin watch
+    $scope.$watch('client.lastname',updateUsername);
+    $scope.$watch('client.name',updateUsername);
 
     // Control var. True when sending data. Displays loading overlay.
     $scope.loading = false;

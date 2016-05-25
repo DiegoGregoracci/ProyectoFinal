@@ -1,6 +1,6 @@
 // Client Factory.
 // Handles all Client's API requests.
-app.factory('clientFactory', ['$http', 'locationPath', function($http, locationPath) {
+app.factory('clientFactory', ['$http', '$q', 'locationPath', function($http, $q, locationPath) {
     var clientFactory = {};
 
     // Get all clients
@@ -15,7 +15,16 @@ app.factory('clientFactory', ['$http', 'locationPath', function($http, locationP
 
     // Add new client
     clientFactory.addClient = function (client) {
-        return $http.post(locationPath.BASE_URL + locationPath.CLIENT_URL + locationPath.ADD_URL, client);
+        var defered = $q.defer();  
+        var promise = defered.promise;
+        $http.post(locationPath.BASE_URL + locationPath.CLIENT_URL, client)
+            .success(function(data) {
+                defered.resolve(data);
+            })
+            .error(function(err) {
+                defered.reject(err);
+            });
+        return promise;
     };
 
     // Search client list

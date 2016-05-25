@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Client;
 use App\User;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 // Include validators.php to extend Validators
 require app_path().'/validators.php';
@@ -153,8 +154,11 @@ class ClientController extends Controller
      */
     public function show($id)
     {
-        try{
-            $user = Client::where('id', $id)->get();
+        try {
+            $user = Client::select('clients.id', 'lastname', 'name', 'address', 'users.user')
+                            ->join('users', 'id_user', '=', 'users.id')
+                            ->where('clients.id', $id)
+                            ->get();
             return $user;
         }
         catch (\Exception $e) {
@@ -218,6 +222,33 @@ class ClientController extends Controller
         }
         catch (\Exception $e) {
             return "error al eliminar cliente";
+        }
+    }
+
+    /**
+     * Search clients.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search($param = null)
+    {
+        // Validar
+        $validator = Validator::make(
+            array("searchParam"=>$param), [
+            'searchParam' => 'required|alpha_spaces|between:3,20'
+        ]);
+        if ($validator->fails())
+            return "error en el parametro";
+        
+        try {
+            $user = Client::select('id', 'lastname', 'name')
+                            ->where('name', "LIKE", "%".$param."%")
+                            ->orWhere('lastname', "LIKE", "%".$param."%")
+                            ->get();
+            return $user;
+        }
+        catch (\Exception $e) {
+            return "error al buscar cliente";
         }
     }
 }

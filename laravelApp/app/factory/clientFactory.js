@@ -29,7 +29,16 @@ app.factory('clientFactory', ['$http', '$q', 'locationPath', function($http, $q,
 
     // Search client list
     clientFactory.searchClients = function(param) {
-        return $http.get(locationPath.BASE_URL + locationPath.CLIENT_URL + locationPath.SEARCH_URL + '?param=' + param);
+        var defered = $q.defer();  
+        var promise = defered.promise;
+        $http.get(locationPath.BASE_URL + locationPath.CLIENT_URL + locationPath.SEARCH_URL + param)
+            .success(function(data) {
+                defered.resolve(data);
+            })
+            .error(function(err) {
+                defered.reject(err);
+            });
+        return promise;
     }
 
     return clientFactory;

@@ -33,7 +33,7 @@
             </div>
 
             <div class="box-header with-border">
-              <h3 class="box-title">Resultados {{searched}}</h3>
+              <h3 class="box-title">Resultados</h3>
               <div class="box-tools pull-right">
                 <div class="has-feedback">
                   <input type="text" class="form-control input-sm" ng-model="filtro" placeholder="Filtrar resultados">
@@ -63,12 +63,12 @@
 
                       <!-- Show if not loading, and there's no clients or filteredclients -->
                       <tr>
-                        <td colspan="3" style="text-align: center;">No se han encontrado resultados</td>
+                        <td colspan="3" style="text-align: center;" ng-show="!clients.length && !loading">No se han encontrado resultados</td>
                       </tr>
 
                       <!-- Show if error searching -->
                       <tr>
-                        <td colspan="3" style="text-align: center;">Error</td>
+                        <td colspan="3" style="text-align: center;" ng-show="false">Error</td>
                       </tr>
 
                     </table>

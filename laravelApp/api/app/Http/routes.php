@@ -18,7 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
+Route::get('client/search/{param}', 'ClientController@search');
 Route::resource('client', 'ClientController');
 Route::resource('vehicle', 'VehicleController');
 Route::resource('supplier', 'SupplierController');

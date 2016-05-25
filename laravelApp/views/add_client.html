@@ -28,13 +28,15 @@
                         <div class="col-lg-6">
                           <div class="form-group">
                             <label for="name">Nombre <small class="small-red">(requerido)</small></label>
-                            <input type="text" class="form-control" id="name" name="name" ng-model="client.name" required>
+                            <input type="text" class="form-control" id="name" name="name" ng-model="client.name"
+                                      maxlength="20" ng-maxlength="20" ng-minlength="3" required>
                           </div>
                         </div>
                         <div class="col-lg-6">
                           <div class="form-group">
                             <label for="lastname">Apellido <small class="small-red">(requerido)</small></label>
-                            <input type="text" class="form-control" id="lastname" name="lastname" ng-model="client.lastname" required>
+                            <input type="text" class="form-control" id="lastname" name="lastname" ng-model="client.lastname" 
+                                      maxlength="20" ng-maxlength="20" ng-minlength="3"required>
                           </div>
                         </div>
                       </div>
@@ -43,19 +45,22 @@
                         <div class="col-lg-4">
                           <div class="form-group">
                             <label for="address">Dirección</label>
-                            <input type="text" class="form-control" id="address" name="address" ng-model="client.address">
+                            <input type="text" class="form-control" id="address" name="address" 
+                                          maxlength="30" ng-maxlength="30" ng-model="client.address">
                           </div>
                         </div>
                         <div class="col-lg-4">
                           <div class="form-group">
                             <label for="telephone1">Teléfono 1</label>
-                            <input type="text" class="form-control" id="telephone1" name="telephone1" ng-model="client.telephone1">
+                            <input type="text" class="form-control" id="telephone1" name="telephone1"
+                                    ng-model="client.telephone1" maxlength="15" ng-maxlength="15">
                           </div>
                         </div>
                         <div class="col-lg-4">
                           <div class="form-group">
                             <label for="telephone2">Teléfono 2</label>
-                            <input type="text" class="form-control" id="telephone2" name="telephone2" ng-model="client.telephone2">
+                            <input type="text" class="form-control" id="telephone2" name="telephone2"
+                                    ng-model="client.telephone2" maxlength="15" ng-maxlength="15">
                           </div>
                         </div>
 
@@ -66,19 +71,22 @@
                         <div class="col-lg-4">
                           <div class="form-group">
                             <label for="user">Nombre de usuario <small class="small-red">(requerido)</small></label>
-                            <input type="text" class="form-control" id="user" name="user" ng-model="client.user" max-length="20" ng-maxlength="20" required>
+                            <input type="text" class="form-control" id="user" name="user"
+                                    ng-model="client.user" maxlength="20" ng-maxlength="20" ng-minlength="3" required>
                           </div>
                         </div>
                         <div class="col-lg-4">
                           <div class="form-group">
                             <label for="email">Correo electrónico</label>
-                            <input type="text" class="form-control" id="email" name="email" ng-model="client.email">
+                            <input type="text" class="form-control" id="email" name="email" 
+                                    ng-model="client.email" maxlength="30" ng-maxlength="30">
                           </div>
                         </div>
                         <div class="col-lg-4">
                           <div class="form-group">
                             <label for="cuit">CUIT</label>
-                            <input type="text" class="form-control" id="cuit" name="cuit" ng-model="client.cuit" placeholder="XX-XXXXXXXX-X">
+                            <input type="text" class="form-control" id="cuit" name="cuit" ng-model="client.cuit" placeholder="XX-XXXXXXXX-X"
+                                maxlength="13" ng-maxlength="13">
                           </div>
                         </div>
                       </div>

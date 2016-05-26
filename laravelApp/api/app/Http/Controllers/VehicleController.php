@@ -9,6 +9,8 @@ use App\Vehicle;
 use Illuminate\Support\Facades\Validator;
 use DB;
 use Illuminate\Database\DatabaseManager;
+// Include validators.php to extend Validators
+require app_path().'/validators.php';
 
 class Vehiclecontroller extends Controller
 {
@@ -139,6 +141,35 @@ class Vehiclecontroller extends Controller
         }
         catch (\Exception $e) {
             return "error al eliminar vehiculo";
+        }
+    }
+
+    /**
+     * Search vehicles.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search($param = null)
+    {
+        // Validar
+        $validator = Validator::make(
+            array("searchParam"=>$param), [
+            'searchParam' => 'required|alpha_num_spaces|max:20'
+        ]);
+        if ($validator->fails())
+            return response()->json(["error"=>"El parámetro de búsqueda solo puede contener letras, números y espacios."]);
+            
+        
+        try {
+            $vehicle = Vehicle::select('id', 'lastname', 'name')
+                            ->where('name', "LIKE", "%".$param."%")
+                            ->orWhere('lastname', "LIKE", "%".$param."%")
+                            ->orWhere('id', "=", $param)
+                            ->get();
+            return $vehicle;
+        }
+        catch (\Exception $e) {
+            return "error al buscar vehiculo";
         }
     }
 }

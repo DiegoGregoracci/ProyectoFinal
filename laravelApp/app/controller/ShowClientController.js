@@ -26,18 +26,20 @@ app.controller("ShowClientController", ["$scope", "clientFactory", function($sco
             "user": ""
         };
     };
-    $scope.resetForm = function() {
-        $scope.client = $scope.savedClient;
+    $scope.restoreData = function() {
+        $scope.client = angular.copy($scope.savedClient);
     }
     $scope.getClient = function () {
         $scope.initialize();
         $scope.loading = true;
         $scope.error = false;
 
-        clientFactory.getClient(13).then(function (response) {
-                if (!response.error)
+        clientFactory.getClient(3).then(function (response) {
+                if (!response.error) {
                     // If status=200 && No error msg.
-                    $scope.client = $scope.savedClient = response;
+                    $scope.client = response[0];
+                    $scope.savedClient = angular.copy($scope.client);
+                }
                 else {
                     // Error, show error box.
                     $scope.error = true;
@@ -52,8 +54,8 @@ app.controller("ShowClientController", ["$scope", "clientFactory", function($sco
                 $scope.error = true;
         });
     };
-    $scope.getClient();
     $scope.loading = false;
     $scope.error = false;
     $scope.errorResponse = "";
+    $scope.getClient();
 }]);

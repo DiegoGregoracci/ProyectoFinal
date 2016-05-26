@@ -97,7 +97,7 @@
                     <button ng-click="add(0)" ng-disabled="form.$invalid" class="btn btn-success" style="margin: 2.5px 5px;">
                       Guardar cambios
                     </button>
-                    <button ng-click="add(1)" ng-disabled="form.$invalid" class="btn btn-danger" style="margin: 2.5px 5px;">
+                    <button ng-click="restoreData()" class="btn btn-danger" style="margin: 2.5px 5px;">
                       Reestablecer campos
                     </button>
                   </div>
@@ -143,12 +143,12 @@
                 </tr>
 
                 <!-- Repeat TR con clientes -->
-                <tr ng-repeat="client in filteredClients = (clients | filter:filtro) track by $index" ng-show="!loading && !error">
-                  <td>{{client.id}}</td>
-                  <td>{{client.name}} {{client.lastname}}</td>
+                <tr ng-show="!loading && !error">
+                  <td></td>
+                  <td></td>
                   <td style="text-align: right;">
-                    <a href="#vehiculo/ver/{{cliente.id}}" class="btn btn-sm btn-info">Ver</a>
-                    <a href="#orden/nuevo/{{client.id}}" class="btn btn-sm btn-success">Agregar OT</a>
+                    <a href="#vehiculo/ver/" class="btn btn-sm btn-info">Ver</a>
+                    <a href="#orden/nuevo/" class="btn btn-sm btn-success">Agregar OT</a>
                   </td>
                   <td></td>
                   <td></td>
@@ -156,7 +156,7 @@
 
                 <!-- Mensaje de no hay clientes. Mostrar si no hay clients o filteredClients, no está cargando y no hay error  -->
                 <tr>
-                  <td colspan="5" style="text-align: center" ng-show="(!clients.length || !filteredClients.length) && !loading && !error">
+                  <td colspan="5" style="text-align: center" >
                       El cliente no tiene vehículos asignados
                   </td>
                 </tr>

@@ -10,7 +10,16 @@ app.factory('clientFactory', ['$http', '$q', 'locationPath', function($http, $q,
 
     // Get client by ID
     clientFactory.getClient = function (id) {
-        return $http.get(locationPath.BASE_URL + locationPath.CLIENT_URL + '/' + id);
+        var defered = $q.defer();  
+        var promise = defered.promise;
+        $http.get(locationPath.BASE_URL + locationPath.CLIENT_URL + "/" + id)
+            .success(function(data) {
+                defered.resolve(data);
+            })
+            .error(function(err) {
+                defered.reject(err);
+            });
+        return promise;    
     };
 
     // Add new client

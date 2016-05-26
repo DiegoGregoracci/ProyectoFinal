@@ -155,7 +155,7 @@ class ClientController extends Controller
     public function show($id)
     {
         try {
-            $user = Client::select('clients.id', 'lastname', 'name', 'address', 'users.user')
+            $user = Client::select('clients.id', 'name', 'lastname', 'address', 'users.user')
                             ->join('users', 'id_user', '=', 'users.id')
                             ->where('clients.id', $id)
                             ->get();
@@ -235,15 +235,17 @@ class ClientController extends Controller
         // Validar
         $validator = Validator::make(
             array("searchParam"=>$param), [
-            'searchParam' => 'required|alpha_spaces|between:3,20'
+            'searchParam' => 'required|alpha_num_spaces|max:20'
         ]);
         if ($validator->fails())
-            return "error en el parametro";
+            return response()->json(["error"=>"El parámetro de búsqueda solo puede contener letras, números y espacios."]);
+            
         
         try {
             $user = Client::select('id', 'lastname', 'name')
                             ->where('name', "LIKE", "%".$param."%")
                             ->orWhere('lastname', "LIKE", "%".$param."%")
+                            ->orWhere('id', "=", $param)
                             ->get();
             return $user;
         }

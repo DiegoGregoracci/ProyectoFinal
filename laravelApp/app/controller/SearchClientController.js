@@ -5,7 +5,7 @@ app.controller("SearchClientController", ["$scope", "clientFactory", function($s
         $scope.searched = true;
         $scope.error = false;
         clientFactory.searchClients($scope.search).then(function (response) {
-                if (response)
+                if (!response.error)
                     // If status=200 && No error msg.
                     $scope.clients = response;
                 else {

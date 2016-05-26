@@ -1,79 +1,87 @@
-        <!-- Content Header (Page header) -->
+        <!-- Header de contenido -->
         <section class="content-header">
           <h1>
             Buscar clientes
           </h1>
         </section>
 
-        <!-- Main content -->
+        <!-- Contenido -->
         <section class="content">
-          <!-- Default box -->
+          <!-- Caja de búsqueda -->
           <div class="box box-danger">
             
+            <!-- Titulo -->
             <div class="box-header with-border">
               <h3 class="box-title">Búsqueda</h3>
             </div>
+                  <!-- Formulario de búsqueda -->
                   <div class="box-body">            
                     <form name="form">        
                       <div class="input-group margin">
-                        <input type="text" class="form-control" id="search" name="search" ng-model="search" placeholder="Buscar por nombre, apellido o número de cliente...">
+                        <input type="text" class="form-control" id="search" name="search" ng-model="search" placeholder="Buscar por nombre, apellido o número de cliente..." max-length="20" ng-maxLength="20" required>
                         <div class="input-group-btn">
-                          <button ng-click="searchClient()" class="btn btn-danger">Buscar!</button>
-                        </div><!-- /btn-group -->
-                      </div><!-- /input-group -->
+                          <button ng-click="searchClient()" ng-disabled="form.$invalid" class="btn btn-danger">Buscar!</button>
+                        </div>
+                      </div>
                     </form>
-                  </div><!-- /.box-body -->
-          </div><!-- /.box -->
+                  </div>
+          </div>
 
-
-          <!-- Default box -->
+          <!-- Resultados de búsqueda-->
           <div class="box box-danger" ng-show="searched">
+            <!-- Overlay cargando. Sólo mostrar cuando loading = true -->
             <div class="overlay" ng-show="loading">
               <i class="fa fa-refresh fa-spin"></i>
             </div>
 
+            <!-- Titulo -->
             <div class="box-header with-border">
               <h3 class="box-title">Resultados</h3>
+              
+              <!-- Filtro -->
               <div class="box-tools pull-right">
                 <div class="has-feedback">
                   <input type="text" class="form-control input-sm" ng-model="filtro" placeholder="Filtrar resultados">
                   <span class="glyphicon glyphicon-search form-control-feedback"></span>
                 </div>
-              </div><!-- /.box-tools -->
+              </div>
             </div>
-                  <div class="box-body table-responsive no-padding">      
-                    <table class="table table-hover">
-                      
-                      <!-- THEAD -->
-                      <tr>
-                        <th style="width: 5%">#</th>
-                        <th style="width: 50%">Nombre y apellido</th>
-                        <th style="width: 45%"></th>
-                      </tr>
 
-                      <!-- Repeat TR while clients -->
-                      <tr ng-repeat="client in filteredClients = (clients | filter:filtro) track by $index">
-                        <td>{{client.id}}</td>
-                        <td>{{client.name}} {{client.lastname}}</td>
-                        <td style="text-align: right;">
-                          <a href="#" class="btn btn-sm btn-info">Ver</a>
-                          <a href="#vehiculo/nuevo/{{client.id}}" class="btn btn-sm btn-success">Agregar vehículo</a>
-                        </td>
-                      </tr>
+            <!-- Cuerpo de caja. Resultados -->
+            <div class="box-body table-responsive no-padding">      
+              <table class="table table-hover">
+                
+                <!-- THEAD -->
+                <tr>
+                  <th style="width: 5%">#</th>
+                  <th style="width: 50%">Nombre y apellido</th>
+                  <th style="width: 45%"></th>
+                </tr>
 
-                      <!-- Show if not loading, and there's no clients or filteredclients -->
-                      <tr>
-                        <td colspan="3" style="text-align: center;" ng-show="!clients.length && !loading">No se han encontrado resultados</td>
-                      </tr>
+                <!-- Repeat TR con clientes -->
+                <tr ng-repeat="client in filteredClients = (clients | filter:filtro) track by $index" ng-show="!loading && !error">
+                  <td>{{client.id}}</td>
+                  <td>{{client.name}} {{client.lastname}}</td>
+                  <td style="text-align: right;">
+                    <a href="#cliente/ver/{{client.id}}" class="btn btn-sm btn-info">Ver</a>
+                    <a href="#vehiculo/nuevo/{{client.id}}" class="btn btn-sm btn-success">Agregar vehículo</a>
+                  </td>
+                </tr>
 
-                      <!-- Show if error searching -->
-                      <tr>
-                        <td colspan="3" style="text-align: center;" ng-show="false">Error</td>
-                      </tr>
+                <!-- Mensaje de no hay clientes. Mostrar si no hay clients o filteredClients, no está cargando y no hay error  -->
+                <tr>
+                  <td colspan="3" style="text-align: center" ng-show="(!clients.length || !filteredClients.length) && !loading && !error">
+                        No se han encontrado resultados
+                  </td>
+                </tr>
 
-                    </table>
-                  </div><!-- /.box-body -->
-          </div><!-- /.box -->
+                <!-- Mensaje de error. Mostrar si hubo error y no está cargando -->
+                <tr>
+                  <td colspan="3" style="text-align: center;" ng-show="error && !loading">{{errorResponse}}</td>
+                </tr>
 
+              </table>
+            </div>
+          </div>
 
-        </section><!-- /.content -->
+        </section>

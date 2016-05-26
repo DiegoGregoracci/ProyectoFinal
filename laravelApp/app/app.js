@@ -16,6 +16,11 @@ app.config(['$routeProvider', function ($routeProvider) {
         controller: 'AddClientController'
     });
 
+    $routeProvider.when('/cliente/ver/:id', {
+        templateUrl: 'views/client.html',
+        controller: 'ShowClientController'
+    });
+
     $routeProvider.when('/cliente/buscar', {
         templateUrl: 'views/search_client.html',
         controller: 'SearchClientController'

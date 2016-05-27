@@ -3,6 +3,7 @@ app.controller("AddVehicleController", ["$scope", "clientFactory", "$location", 
    
   
 
+
     $scope.searchClient = function() {
         $scope.clients = [];
         $scope.loading = true;

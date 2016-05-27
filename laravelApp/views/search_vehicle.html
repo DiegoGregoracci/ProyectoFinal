@@ -13,34 +13,41 @@
             <div class="box-header with-border">
               <h3 class="box-title">Búsqueda</h3>
             </div>
-                  <div class="box-body">                    
-                    <div class="input-group margin">
-                      <input type="text" class="form-control" placeholder="Buscar por marca, modelo, patente y número de vehículo...">
-                      <div class="input-group-btn">
-                        <button type="button" class="btn btn-danger">Buscar!</button>
-                      </div><!-- /btn-group -->
-                    </div><!-- /input-group -->
-                  </div><!-- /.box-body -->
+
+                 <!-- Formulario de búsqueda -->
+                  <div class="box-body">            
+                    <form name="form">        
+                      <div class="input-group margin">
+                        <input type="text" class="form-control" id="search" name="search" ng-model="search" placeholder="Buscar por marca, modelo, patente y número de vehículo..." max-length="20" ng-maxLength="20" required>
+                        <div class="input-group-btn">
+                          <button ng-click="searchClient()" ng-disabled="form.$invalid" class="btn btn-danger">Buscar!</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
           </div><!-- /.box -->
 
 
-          <!-- Default box -->
-          <div class="box box-danger">
-            <!-- Cargando
-            <div class="overlay">
+          <!-- Resultados de búsqueda-->
+          <div class="box box-danger" ng-show="searched">
+            <!-- Overlay cargando. Sólo mostrar cuando loading = true -->
+            <div class="overlay" ng-show="loading">
               <i class="fa fa-refresh fa-spin"></i>
             </div>
-            -->
 
+            <!-- Titulo -->
             <div class="box-header with-border">
               <h3 class="box-title">Resultados</h3>
+              
+              <!-- Filtro -->
               <div class="box-tools pull-right">
                 <div class="has-feedback">
                   <input type="text" class="form-control input-sm" ng-model="filtro" placeholder="Filtrar resultados">
                   <span class="glyphicon glyphicon-search form-control-feedback"></span>
                 </div>
-              </div><!-- /.box-tools -->
+              </div>
             </div>
+
                   <div class="box-body table-responsive no-padding">      
                       <table class="table table-hover">
                     <tr>
@@ -50,13 +57,30 @@
                       <th style="width: 20%">Patente</th>
                       <th style="width: 40%">Cliente</th>
                     </tr>
-                    <tr ng-repeat="cliente in filteredClientes = (clientes | filter:filtro) track by $index">
-                      <td>{{cliente.id}}</td>
-                      <td>{{cliente.name}}</td>
-                      <td>{{cliente.lastname}}</td>
-                      <td></td>
-                      <td>{{cliente.name}} {{cliente.lastname}}</td>
+                    <tr ng-repeat="vehicle in filteredVehicles = (vehiculos | filter:filtro) track by $index" ng-show="!loading && !error">
+                      <td>{{vehiculo.id}}</td>
+                      <td>{{vehiculo.brand}}</td>
+                      <td>{{vehiculo.model}}</td>
+                      <td>{{vehiculo.plate}}</td>
+                      <td>{{vehiculo.id_client}}</td>
+                      <td style="text-align: right;">
+                      <a href="#cliente/ver/{{vehiculo.id_client}}" class="btn btn-sm btn-info">Ver cliente</a>
+                    </td>
                     </tr>
+
+                    <!-- Mensaje de no hay vehiculos. Mostrar si no hay vehicles o filteredVehicles, no está cargando y no hay error  -->
+                <tr>
+                  <td colspan="3" style="text-align: center" ng-show="(!vehicles.length || !filteredVehicles.length) && !loading && !error">
+                        No se han encontrado resultados
+                  </td>
+                </tr>
+
+                <!-- Mensaje de error. Mostrar si hubo error y no está cargando -->
+                <tr>
+                  <td colspan="3" style="text-align: center;" ng-show="error && !loading">{{errorResponse}}</td>
+                </tr>
+
+
                   </table>
                   </div><!-- /.box-body -->
           </div><!-- /.box -->

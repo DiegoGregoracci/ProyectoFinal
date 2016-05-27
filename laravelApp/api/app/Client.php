@@ -25,7 +25,7 @@ class Client extends Model
         return $this->belongsTo('App\User');
     }
 
-    public function vehicle()
+    public function vehicles()
     {
         return $this->hasMany('App\Vehicle');
     }

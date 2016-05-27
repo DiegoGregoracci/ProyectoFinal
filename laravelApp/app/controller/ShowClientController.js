@@ -1,4 +1,4 @@
-app.controller("ShowClientController", ["$scope", "clientFactory", function($scope, clientFactory) {
+app.controller("ShowClientController", ["$scope", "clientFactory", "$routeParams", function($scope, clientFactory, $routeParams) {
     /*
         Initialize object form.
     */
@@ -25,6 +25,7 @@ app.controller("ShowClientController", ["$scope", "clientFactory", function($sco
             "cuit": "",
             "user": ""
         };
+        $scope.vehicles = [];
     };
     $scope.restoreData = function() {
         $scope.client = angular.copy($scope.savedClient);
@@ -34,11 +35,12 @@ app.controller("ShowClientController", ["$scope", "clientFactory", function($sco
         $scope.loading = true;
         $scope.error = false;
 
-        clientFactory.getClient(3).then(function (response) {
+        clientFactory.getClient($routeParams.id).then(function (response) {
                 if (!response.error) {
                     // If status=200 && No error msg.
-                    $scope.client = response[0];
+                    $scope.client = response.client;
                     $scope.savedClient = angular.copy($scope.client);
+                    $scope.vehicles = response.vehicles;
                 }
                 else {
                     // Error, show error box.

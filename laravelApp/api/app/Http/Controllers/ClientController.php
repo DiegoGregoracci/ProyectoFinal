@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Client;
 use App\User;
+use App\Vehicle;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 // Include validators.php to extend Validators
@@ -155,14 +156,22 @@ class ClientController extends Controller
     public function show($id)
     {
         try {
-            $user = Client::select('clients.id', 'name', 'lastname', 'address', 'users.user')
+            // Busca cliente. El ->first() es necesario ya que el select devuelve una colección de resultados.
+            // Con ->first() obtiene el primer (y unico en este caso) elemento, y a partir de ahi podemos llamar a funciones del modelo
+            $client = Client::select('clients.id', 'name', 'lastname', 'address', 'users.user')
                             ->join('users', 'id_user', '=', 'users.id')
                             ->where('clients.id', $id)
+                            ->get()
+                            ->first();
+            // Buscar vehículos relacionados
+            $vehicles = Vehicle::select('id', 'brand', 'model')
+                            ->where('client_id', $id)
                             ->get();
-            return $user;
+            $response = array("client"=>$client, "vehicles"=>$vehicles);
+            return response()->json($response);
         }
         catch (\Exception $e) {
-            return "error al buscar cliente";
+            return $e;
         }
     }
 

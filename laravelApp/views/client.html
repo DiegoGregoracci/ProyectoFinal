@@ -1,7 +1,7 @@
         <!-- Header de contenido -->
         <section class="content-header">
           <h1>
-            Alta de cliente
+            Ver cliente
           </h1>
         </section>
 
@@ -128,6 +128,7 @@
             <!-- Titulo -->
             <div class="box-header with-border">
               <h3 class="box-title">Vehículos</h3>
+            </div>
 
             <!-- Cuerpo de caja. Vehículos -->
             <div class="box-body table-responsive no-padding">      
@@ -136,27 +137,27 @@
                 <!-- THEAD -->
                 <tr>
                       <th style="width: 5%">#</th>
-                      <th style="width: 20%">Marca</th>
-                      <th style="width: 20%">Modelo</th>
+                      <th style="width: 25%">Marca</th>
+                      <th style="width: 25%">Modelo</th>
                       <th style="width: 20%">Patente</th>
-                      <th style="width: 35%">Acción</th>
+                      <th style="width: 25%"></th>
                 </tr>
 
                 <!-- Repeat TR con clientes -->
-                <tr ng-show="!loading && !error">
-                  <td></td>
+                <tr ng-show="!loading && !error" ng-repeat="vehicle in vehicles">
+                  <td>{{vehicle.id}}</td>
+                  <td>{{vehicle.brand}}</td>
+                  <td>{{vehicle.model}}</td>
                   <td></td>
                   <td style="text-align: right;">
                     <a href="#vehiculo/ver/" class="btn btn-sm btn-info">Ver</a>
                     <a href="#orden/nuevo/" class="btn btn-sm btn-success">Agregar OT</a>
                   </td>
-                  <td></td>
-                  <td></td>
                 </tr>
 
                 <!-- Mensaje de no hay clientes. Mostrar si no hay clients o filteredClients, no está cargando y no hay error  -->
                 <tr>
-                  <td colspan="5" style="text-align: center" >
+                  <td colspan="5" ng-show="!loading && !error && !vehicles.length" style="text-align: center" >
                       El cliente no tiene vehículos asignados
                   </td>
                 </tr>

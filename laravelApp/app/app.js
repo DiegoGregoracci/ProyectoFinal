@@ -33,7 +33,7 @@ app.config(['$routeProvider', function ($routeProvider) {
 
     $routeProvider.when('/vehiculo/nuevo', {
         templateUrl: 'views/add_vehicle_step1.html',
-        controller: 'AddVehicleController'
+        controller: 'SearchClientController'
     });
 
     $routeProvider.when('/vehiculo/nuevo/:id', {

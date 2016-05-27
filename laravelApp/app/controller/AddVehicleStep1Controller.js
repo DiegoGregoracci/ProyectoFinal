@@ -1,5 +1,4 @@
-// Add vehicle controller.
-app.controller("AddVehicleController", ["$scope", "clientFactory", function($scope, clientFactory) {
+app.controller("AddVehicleStep1Controller", ["$scope", "clientFactory", function($scope, clientFactory) {
     $scope.searchClient = function() {
         $scope.clients = [];
         $scope.loading = true;
@@ -24,13 +23,8 @@ app.controller("AddVehicleController", ["$scope", "clientFactory", function($sco
         });
     };
 
-    
-
     $scope.searched = false;
     $scope.loading = false;
     $scope.error = false;
     $scope.errorResponse = "";
-       
-
-
 }]);

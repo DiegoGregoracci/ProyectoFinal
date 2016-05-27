@@ -14,6 +14,14 @@ app.controller("AddVehicleController", ["$scope", "vehicleFactory", "$location",
             }
     };
 
+    $scope.send = function(addVehicleNext) {
+        $scope.add();
+    };
+
+    $scope.reset = function() {
+        $scope.initialize();
+    };
+
     /*
         Add new vehicle
     */

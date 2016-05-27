@@ -31,7 +31,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return "index";
+        //
     }
 
     /**
@@ -86,7 +86,8 @@ class ClientController extends Controller
         // Crear nuevo usuario
         $user = new User;
         $user->user = $request->user;
-        $user->password = "test";
+        // Contraseña aleatoria de 8 caracteres
+        $user->password = substr(str_shuffle("abcdefghijklmnopqrstuvwxyz0123456789"),0,8);
 
         try {
             // Inicio transaccion e intento guardar el usuario
@@ -102,7 +103,6 @@ class ClientController extends Controller
                 // Supongo que lo unico que puede pasar es que el username exista, y al ser unique tira error
                 DB::rollback();
                 $response[] = array("error"=>"El nombre de usuario elegido ya existe en la base de datos.");
-                return response()->json($response);
             }
             else
                 if ($errorCode == 2002 || $errorCode == 1044 || $errorCode== 1049)
@@ -110,9 +110,13 @@ class ClientController extends Controller
                     // Si es 1044, usuario incorrecto
                     // Si es 1049, no existe la tabla
                     $response[] = array("error"=>"Error de conexión a la base de datos.");
-                    return response()->json($response);
+                else
+                    // Agarro cualquier otro error por si hay alguno que se haya pasado por alto.
+                    $response[] = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
+            return response()->json($response);
         }
 
+        // Asigno los parametros
         $client = new Client();
         $client->lastname = $request->lastname;
         $client->name = $request->name;
@@ -169,10 +173,7 @@ class ClientController extends Controller
                 $vehicles = $client->vehicles()->select('id', 'brand', 'model', 'plate')->get();
             else
                 // Si el cliente es nulo, es porque no existe.
-                return response()->json(array(
-                                                "error" =>  "Cliente inexistente"
-                                             )
-                                       );
+                return response()->json(array("error" =>  "Cliente inexistente"));
 
             $response = array(
                                 "client"    =>  $client,
@@ -187,9 +188,8 @@ class ClientController extends Controller
                 // Si es 1044, usuario incorrecto
                 // Si es 1049, no existe la tabla
                 $response[] = array("error"=>"Error de conexión a la base de datos.");
-                else {
-                    $response[] = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
-            }
+            else
+                $response[] = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
             return response()->json($response);
         }
     }
@@ -202,7 +202,7 @@ class ClientController extends Controller
      */
     public function edit($id)
     {
-        return "";
+        //
     }
 
     /**
@@ -250,16 +250,16 @@ class ClientController extends Controller
             $client = Client::find($id);
         }
         catch (\Exception $e) {
-                    // Hubo error buscando
-                    $errorCode = $e->getCode();
-                    if ($errorCode == 2002 || $errorCode == 1044 || $errorCode== 1049)
-                        // Si es 2002, es porque no se pudo conectar. No tiro rollback() porque lanza otra vez excepcion porque no esta conectado
-                        // Si es 1044, usuario incorrecto
-                        // Si es 1049, no existe la tabla
-                        $response[] = array("error"=>"Error de conexión a la base de datos.");
-                    else
-                        $response[] = array("error"=>"Ha ocurrido un error guardando el cliente");
-                        return response()->json($response);
+            // Hubo error buscando
+            $errorCode = $e->getCode();
+            if ($errorCode == 2002 || $errorCode == 1044 || $errorCode== 1049)
+                // Si es 2002, es porque no se pudo conectar
+                // Si es 1044, usuario incorrecto
+                // Si es 1049, no existe la tabla
+                $response[] = array("error"=>"Error de conexión a la base de datos.");
+            else
+                $response[] = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
+            return response()->json($response);
         }
 
         if (is_null($client))
@@ -271,37 +271,38 @@ class ClientController extends Controller
                 $user = $client->user()->get()->first();
             }
             catch (\Exception $e) {
-                        // Hubo error buscando
-                        $errorCode = $e->getCode();
-                        if ($errorCode == 2002 || $errorCode == 1044 || $errorCode== 1049)
-                            // Si es 2002, es porque no se pudo conectar. No tiro rollback() porque lanza otra vez excepcion porque no esta conectado
-                            // Si es 1044, usuario incorrecto
-                            // Si es 1049, no existe la tabla
-                            $response[] = array("error"=>"Error de conexión a la base de datos.");
-                        else
-                            $response[] = array("error"=>"Ha ocurrido un error guardando el cliente");
-                            return response()->json($response);
+                // Hubo error buscando
+                $errorCode = $e->getCode();
+                if ($errorCode == 2002 || $errorCode == 1044 || $errorCode== 1049)
+                    // Si es 2002, es porque no se pudo conectar. No tiro rollback() porque lanza otra vez excepcion porque no esta conectado
+                    // Si es 1044, usuario incorrecto
+                    // Si es 1049, no existe la tabla
+                    $response[] = array("error"=>"Error de conexión a la base de datos.");
+                else
+                    $response[] = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
+                return response()->json($response);
             }
 
+            // Si llegó aca, ya buscó el cliente y el usuario.
             if (is_null($user))
+                // No existe el usuario (esto no debería pasar nunca).
                 return response()->json(["error"=>"El usuario no existe."]);
             else {
+                // Encontro el usuario y el cliente.
+                // Primero se actualiza el username, y despues el cliente.       
                 $user->user = $request->user;
                 try {
                     // Inicio transaccion e intento guardar el usuario
                     DB::beginTransaction();
                     $user->save();
-                    
                 }
                 catch (\Exception $e) {
                     // Hubo error guardando
                     $errorCode = $e->getCode();
                     if ($errorCode == 23000) {
-                        // Si es 23000 el codigo, es porque hay violacion de integridad. Habiendo validado los campos requeridos arriba,
-                        // Supongo que lo unico que puede pasar es que el username exista, y al ser unique tira error
+                        // Username duplicado
                         DB::rollback();
                         $response[] = array("error"=>"El nombre de usuario elegido ya existe en la base de datos.");
-                        return response()->json($response);
                     }
                     else
                         if ($errorCode == 2002 || $errorCode == 1044 || $errorCode== 1049)
@@ -309,9 +310,10 @@ class ClientController extends Controller
                             // Si es 1044, usuario incorrecto
                             // Si es 1049, no existe la tabla
                             $response[] = array("error"=>"Error de conexión a la base de datos.");
-                            return response()->json($response);
+                    return response()->json($response);
                 }
 
+                // Se actualizó el usuario. Paso a actualizar el cliente.
                 // Asigno nuevos parametros.
                 $client->lastname = $request->lastname;
                 $client->name = $request->name;
@@ -323,7 +325,7 @@ class ClientController extends Controller
                 $client->comments = $request->comments;
                 
                 try{
-                    // Creo el cliente utilizando la relación 
+                    // Guardo cambios en el cliente
                     $client->save();
                     DB::commit();
                     return response()->json(["id"=>$client->id]);
@@ -337,10 +339,9 @@ class ClientController extends Controller
                         // Si es 1044, usuario incorrecto
                         // Si es 1049, no existe la tabla
                         $response[] = array("error"=>"Error de conexión a la base de datos.");
-                        else {
-                        // Agarro cualquier otro error por las dudas
+                    else {
+                        // Agarro cualquier otro error por las dudas y hago rollback para no guardar ningún cambio.
                         DB::rollback();
-                        return $e;
                         $response[] = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
                     }
                     return response()->json($response);
@@ -357,6 +358,7 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
+        // No está listo porque falta definir cómo hacemos los DELETE (soft delete)
         $client = Client::where('id', $id)->get();
         $user = User::where('id', $client->id_user)->get();
         try{
@@ -383,7 +385,6 @@ class ClientController extends Controller
         if ($validator->fails())
             return response()->json(["error"=>"El parámetro de búsqueda solo puede contener letras, números y espacios."]);
             
-        
         try {
             $user = Client::select('id', 'lastname', 'name')
                             ->where('name', "LIKE", "%".$param."%")
@@ -393,7 +394,18 @@ class ClientController extends Controller
             return $user;
         }
         catch (\Exception $e) {
-            return "error al buscar cliente";
+            // Hubo error buscando.
+            // Solo puede error de conexión en este punto.
+            $errorCode = $e->getCode();
+            if ($errorCode == 2002 || $errorCode == 1044 || $errorCode== 1049)
+                // Si es 2002, es porque no se pudo conectar. 
+                // Si es 1044, usuario incorrecto
+                // Si es 1049, no existe la tabla
+                $response[] = array("error"=>"Error de conexión a la base de datos.");
+            else
+                // Agarro cualquier otro error por las dudas
+                $response[] = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
+            return response()->json($response);
         }
     }
 }

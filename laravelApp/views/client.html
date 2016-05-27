@@ -94,7 +94,7 @@
                   </div>
 
                   <div class="box-footer" style="text-align:center;">
-                    <button ng-click="add(0)" ng-disabled="form.$invalid" class="btn btn-success" style="margin: 2.5px 5px;">
+                    <button ng-click="updateClient()" ng-disabled="form.$invalid" class="btn btn-success" style="margin: 2.5px 5px;">
                       Guardar cambios
                     </button>
                     <button ng-click="restoreData()" class="btn btn-danger" style="margin: 2.5px 5px;">
@@ -104,17 +104,17 @@
             </form>
           </div>
 
-  <div class="callout callout-danger lead" ng-show="error">
+  <div class="callout callout-danger lead" ng-show="errorUpdate">
     <h4>Error!</h4>
     <p style="font-size: 16px;" ng-repeat="er in errors">
         - {{er.error}} <br>
     </p>
   </div>
 
-  <div class="callout callout-success lead" ng-show="success">
+  <div class="callout callout-success lead" ng-show="successUpdate">
     <h4>Éxito!</h4>
     <p style="font-size: 16px;">
-      Se ha agregado el cliente a la base de datos
+      Se ha modificado el cliente.
     </p>
   </div>
 
@@ -148,7 +148,7 @@
                   <td>{{vehicle.id}}</td>
                   <td>{{vehicle.brand}}</td>
                   <td>{{vehicle.model}}</td>
-                  <td></td>
+                  <td>{{vehicle.plate}}</td>
                   <td style="text-align: right;">
                     <a href="#vehiculo/ver/" class="btn btn-sm btn-info">Ver</a>
                     <a href="#orden/nuevo/" class="btn btn-sm btn-success">Agregar OT</a>

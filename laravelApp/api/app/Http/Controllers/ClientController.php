@@ -54,13 +54,13 @@ class ClientController extends Controller
     {
         // Validar
         $validator = Validator::make($request->all(), [
-            'user' => 'required|alpha_num|between:3,20',
-            'lastname' => 'required|alpha_spaces|between:3,20',
-            'name' => 'required|alpha_spaces|between:3,20',
-            'address' => 'max:30|alpha_num_spaces',
-            'telephone1' => 'max:15|alpha_num_spaces',
-            'telephone2' => 'max:15|alpha_num_spaces',
-            'email' => 'email|max:30'
+            'user'          => 'required|alpha_num|between:3,20',
+            'lastname'      => 'required|alpha_spaces|between:3,20',
+            'name'          => 'required|alpha_spaces|between:3,20',
+            'address'       => 'max:30|alpha_num_spaces',
+            'telephone1'    => 'max:15|alpha_num_spaces',
+            'telephone2'    => 'max:15|alpha_num_spaces',
+            'email'         => 'email|max:30'
         ]);
 
         // Compruebo mensajes. Con $messages->has('field') sabes si el validator fallo para ese field
@@ -76,7 +76,7 @@ class ClientController extends Controller
                 $response[] = array("error"=>"La dirección puede tener un máximo de 20 caractéres alfanuméricos.");
             if ($messages->has('telephone1'))
                 $response[] = array("error"=>"El teléfono 1 puede tener un máximo de 15 caractéres alfanuméricos.");
-            if ($messages->has('telephone'))
+            if ($messages->has('telephone2'))
                 $response[] = array("error"=>"El teléfono 2 puede tener un máximo de 15 caractéres alfanuméricos.");  
             if ($messages->has('email'))
                 $response[] = array("error"=>"El correo electrónico debe tener formato de e-mail. y hasta 30 caractéres."); 
@@ -114,7 +114,6 @@ class ClientController extends Controller
         }
 
         $client = new Client();
-        $client->id_user = $user->id;
         $client->lastname = $request->lastname;
         $client->name = $request->name;
         $client->address = $request->address;
@@ -125,7 +124,8 @@ class ClientController extends Controller
         $client->comments = $request->comments;
         
         try{
-            $client->save();
+            // Creo el cliente utilizando la relación 
+            $user->client()->save($client);
             DB::commit();
             return response()->json(["id"=>$client->id]);
         }
@@ -141,6 +141,7 @@ class ClientController extends Controller
                 else {
                 // Agarro cualquier otro error por las dudas
                 DB::rollback();
+                return $e;
                 $response[] = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
             }
             return response()->json($response);
@@ -163,11 +164,21 @@ class ClientController extends Controller
                             ->where('clients.id', $id)
                             ->get()
                             ->first();
-            // Buscar vehículos relacionados
-            $vehicles = Vehicle::select('id', 'brand', 'model')
-                            ->where('client_id', $id)
-                            ->get();
-            $response = array("client"=>$client, "vehicles"=>$vehicles);
+            
+            if (!is_null($client))
+                // Buscar vehículos relacionados si el cliente no es nulo.
+                $vehicles = $client->vehicles()->select('id', 'brand', 'model', 'plate')->get();
+            else
+                // Si el cliente es nulo, es porque no existe.
+                return response()->json(array(
+                                                "error" =>  "Cliente inexistente"
+                                             )
+                                       );
+
+            $response = array(
+                                "client"    =>  $client,
+                                "vehicles"  =>  $vehicles
+                             );
             return response()->json($response);
         }
         catch (\Exception $e) {
@@ -183,7 +194,7 @@ class ClientController extends Controller
      */
     public function edit($id)
     {
-        return "lalalal";
+        return "";
     }
 
     /**
@@ -195,24 +206,139 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = Client::where('id', $id)->get();
+        // Validar
+        $validator = Validator::make($request->all(), [
+            'user'          => 'required|alpha_num|between:3,20',
+            'lastname'      => 'required|alpha_spaces|between:3,20',
+            'name'          => 'required|alpha_spaces|between:3,20',
+            'address'       => 'max:30|alpha_num_spaces',
+            'telephone1'    => 'max:15|alpha_num_spaces',
+            'telephone2'    => 'max:15|alpha_num_spaces',
+            'email'         => 'email|max:30'
+        ]);
 
-        $client = new Client();
-        $client->lastname = $request->lastname;
-        $client->name = $request->name;
-        $client->adress = $request->adress;
-        $client->tel1 = $request->tel1;
-        $client->tel2 = $request->tel2;
-        $client->email = $request->email;
-        $client->cuit = $request->cuit;
-        $client->comments = $request->comments;
-        try{
-            $client->save();
+        // Compruebo mensajes. Con $messages->has('field') sabes si el validator fallo para ese field
+        if ($validator->fails()) { 
+            $messages = $validator->messages();
+            if ($messages->has('user'))
+                $response[] = array("error"=>"El nombre de usuario debe tener entre 3 y 20 caractéres alfanuméricos sin espacios.");
+            if ($messages->has('name'))
+                $response[] = array("error"=>"El nombre debe tener entre 3 y 20 caractéres alfanuméricos.");
+            if ($messages->has('lastname'))
+                $response[] = array("error"=>"El apellido debe tener entre 3 y 20 caractéres alfanuméricos.");
+            if ($messages->has('address'))
+                $response[] = array("error"=>"La dirección puede tener un máximo de 20 caractéres alfanuméricos.");
+            if ($messages->has('telephone1'))
+                $response[] = array("error"=>"El teléfono 1 puede tener un máximo de 15 caractéres alfanuméricos.");
+            if ($messages->has('telephone2'))
+                $response[] = array("error"=>"El teléfono 2 puede tener un máximo de 15 caractéres alfanuméricos.");  
+            if ($messages->has('email'))
+                $response[] = array("error"=>"El correo electrónico debe tener formato de e-mail. y hasta 30 caractéres."); 
+            return response()->json($response);
+        }
+
+        try {
+            // Buscar cliente
+            $client = Client::find($id);
         }
         catch (\Exception $e) {
-            return "error al actualizar cliente";
+                    // Hubo error buscando
+                    $errorCode = $e->getCode();
+                    if ($errorCode == 2002 || $errorCode == 1044 || $errorCode== 1049)
+                        // Si es 2002, es porque no se pudo conectar. No tiro rollback() porque lanza otra vez excepcion porque no esta conectado
+                        // Si es 1044, usuario incorrecto
+                        // Si es 1049, no existe la tabla
+                        $response[] = array("error"=>"Error de conexión a la base de datos.");
+                    else
+                        $response[] = array("error"=>"Ha ocurrido un error guardando el cliente");
+                        return response()->json($response);
         }
-        
+
+        if (is_null($client))
+            // Si no se pudo obtener el cliente
+            return response()->json(["error"=>"El cliente no existe."]);
+        else {
+            try {
+                // Buscar el usuario
+                $user = $client->user()->get()->first();
+            }
+            catch (\Exception $e) {
+                        // Hubo error buscando
+                        $errorCode = $e->getCode();
+                        if ($errorCode == 2002 || $errorCode == 1044 || $errorCode== 1049)
+                            // Si es 2002, es porque no se pudo conectar. No tiro rollback() porque lanza otra vez excepcion porque no esta conectado
+                            // Si es 1044, usuario incorrecto
+                            // Si es 1049, no existe la tabla
+                            $response[] = array("error"=>"Error de conexión a la base de datos.");
+                        else
+                            $response[] = array("error"=>"Ha ocurrido un error guardando el cliente");
+                            return response()->json($response);
+            }
+
+            if (is_null($user))
+                return response()->json(["error"=>"El usuario no existe."]);
+            else {
+                $user->user = $request->user;
+                try {
+                    // Inicio transaccion e intento guardar el usuario
+                    DB::beginTransaction();
+                    $user->save();
+                    
+                }
+                catch (\Exception $e) {
+                    // Hubo error guardando
+                    $errorCode = $e->getCode();
+                    if ($errorCode == 23000) {
+                        // Si es 23000 el codigo, es porque hay violacion de integridad. Habiendo validado los campos requeridos arriba,
+                        // Supongo que lo unico que puede pasar es que el username exista, y al ser unique tira error
+                        DB::rollback();
+                        $response[] = array("error"=>"El nombre de usuario elegido ya existe en la base de datos.");
+                        return response()->json($response);
+                    }
+                    else
+                        if ($errorCode == 2002 || $errorCode == 1044 || $errorCode== 1049)
+                            // Si es 2002, es porque no se pudo conectar. No tiro rollback() porque lanza otra vez excepcion porque no esta conectado
+                            // Si es 1044, usuario incorrecto
+                            // Si es 1049, no existe la tabla
+                            $response[] = array("error"=>"Error de conexión a la base de datos.");
+                            return response()->json($response);
+                }
+
+                // Asigno nuevos parametros.
+                $client->lastname = $request->lastname;
+                $client->name = $request->name;
+                $client->address = $request->address;
+                $client->telephone1 = $request->telephone1;
+                $client->telephone2 = $request->telephone2;
+                $client->email = $request->email;
+                $client->cuit = $request->cuit;
+                $client->comments = $request->comments;
+                
+                try{
+                    // Creo el cliente utilizando la relación 
+                    $client->save();
+                    DB::commit();
+                    return response()->json(["id"=>$client->id]);
+                }
+                catch (\Exception $e) {
+                    // Hubo error agregando
+                    // Solo puede error de conexión en este punto, ya que los datos ya están validados y no hay ningún campo UNIQUE.
+                    $errorCode = $e->getCode();
+                    if ($errorCode == 2002 || $errorCode == 1044 || $errorCode== 1049)
+                        // Si es 2002, es porque no se pudo conectar. No tiro rollback() porque lanza otra vez excepcion porque no esta conectado
+                        // Si es 1044, usuario incorrecto
+                        // Si es 1049, no existe la tabla
+                        $response[] = array("error"=>"Error de conexión a la base de datos.");
+                        else {
+                        // Agarro cualquier otro error por las dudas
+                        DB::rollback();
+                        return $e;
+                        $response[] = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
+                    }
+                    return response()->json($response);
+                }
+            }
+        }
     }
 
     /**

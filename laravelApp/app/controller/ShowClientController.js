@@ -56,6 +56,32 @@ app.controller("ShowClientController", ["$scope", "clientFactory", "$routeParams
                 $scope.error = true;
         });
     };
+    $scope.updateClient = function () {
+        $scope.loading = true;
+        $scope.errorUpdate = false;
+        $scope.successUpdate = false;
+        $scope.errors = [];
+
+        clientFactory.updateClient($routeParams.id, $scope.client).then(function (response) {
+                if (response.id) {
+                    // If status=200 && No error msg.
+                    $scope.savedClient = angular.copy($scope.client);
+                    $scope.successUpdate = true;
+                }
+                else {
+                    // Error, show error box.
+                    $scope.errors = response;
+                    $scope.errorUpdate = true;
+                }
+                // Disable loading overlay
+                $scope.loading = false;
+            }, function (error) {
+                // HTTP Error. Force status msg, show error box, disable loading overlay.
+                $scope.errorResponse = "Error inesperado. Consulte al administrador";
+                $scope.loading = false;
+                $scope.error = true;
+        });
+    };
     $scope.loading = false;
     $scope.error = false;
     $scope.errorResponse = "";

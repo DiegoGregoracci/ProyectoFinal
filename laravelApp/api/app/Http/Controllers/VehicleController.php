@@ -44,71 +44,26 @@ class Vehiclecontroller extends Controller
     {
          // Validar
         $validator = Validator::make($request->all(), [
-            'plate' => 'required|max:20',
+            'plate' => 'required|alpha_num|max:20|min:6',
+            'brand' => 'required|alpha_spaces|max:20|min:3',
+            'model' => 'required|alpha_spaces|max:20|min:3'
         ]);
 
         if ($validator->fails()) {
             return "datos incompletos";
         }
-        $vehicle = new Vehicle();
-        $vehicle->id_client = $newuser->id;
-        $vehicle->brand = $request->brand;
-        $vehicle->model = $request->model;
-        $vehicle->plate = $request->plate;
-        $vehicle->vin = $request->vin;
-        $vehicle->year = $request->year;
-        $vehicle->engine = $request->engine;
-        
-        try{
-            $vehicle->save();            
+        // Compruebo mensajes. Con $messages->has('field') sabes si el validator fallo para ese field
+        if ($validator->fails()) { 
+            $messages = $validator->messages();
+            if ($messages->has('plate'))
+                $response[] = array("error"=>"La patente debe tener entre 6 y 8 caractéres.");
+            if ($messages->has('brand'))
+                $response[] = array("error"=>"La marca debe tener entre 3 y 20 caractéres alfanuméricos.");
+            if ($messages->has('model'))
+                $response[] = array("error"=>"El modelo debe tener entre 3 y 20 caractéres alfanuméricos.");
+            return response()->json($response);
         }
-        catch(\Exception $e){
-            $errorCode = $e->errorInfo[1];
-            if ($errorCode == 1062)
-                return "entrada duplicada";
-            else
-                return "no se puedo agregar el vehiculo";
-        }
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        try{
-            $vehicle = Vehicle::where('id', $id)->get();
-            return $vehicle;
-        }
-        catch (\Exception $e) {
-            return "error al obtener vehiculo";
-        }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        return "hola";
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $vehicle = Vehicle::where('id', $id)->get();
 
         $vehicle = new Vehicle();
         $vehicle->id_client = $newuser->id;
@@ -121,9 +76,124 @@ class Vehiclecontroller extends Controller
         
         try{
             $vehicle->save();
+            return response()->json(["id"=>$vehicle->id]);            
+        }
+        catch(\Exception $e){
+            $errorCode = $e->getcode();
+            if ($errorCode == 2002 || $errorCode == 1044 || $errorCode== 1049)
+                // Si es 2002, es porque no se pudo conectar. No tiro rollback() porque lanza otra vez excepcion porque no esta conectado
+                // Si es 1044, usuario incorrecto
+                // Si es 1049, no existe la tabla
+                $response[] = array("error"=>"Error de conexión a la base de datos.");
+                else {
+                // Agarro cualquier otro error por las dudas
+                return $e;
+                $response[] = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
+            }
+            return response()->json($response);
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+    //el id es el de un vehiculo
+        try{
+            $vehicle = Vehicle::where('id', $id)
+                            ->get();
+
+            $response = array(
+                                "vehicles"  =>  $vehicles
+                             );
+            return response()->json($response);
         }
         catch (\Exception $e) {
-            return "error al actualizar datos";
+            return $e;
+        }
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        return "";
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+         // Validar
+        $validator = Validator::make($request->all(), [
+            'plate' => 'required|alpha_num|max:20|min:6',
+            'brand' => 'required|alpha_spaces|max:20|min:3',
+            'model' => 'required|alpha_spaces|max:20|min:3'
+        ]);
+
+        if ($validator->fails()) {
+            return "datos incompletos";
+        }
+        // Compruebo mensajes. Con $messages->has('field') sabes si el validator fallo para ese field
+        if ($validator->fails()) { 
+            $messages = $validator->messages();
+            if ($messages->has('plate'))
+                $response[] = array("error"=>"La patente debe tener entre 6 y 8 caractéres.");
+            if ($messages->has('brand'))
+                $response[] = array("error"=>"La marca debe tener entre 3 y 20 caractéres alfanuméricos.");
+            if ($messages->has('model'))
+                $response[] = array("error"=>"El modelo debe tener entre 3 y 20 caractéres alfanuméricos.");
+            return response()->json($response);
+        }
+
+        try{
+            $vehicle = Vehicle::where('id', $id)->get();
+        }
+        catch (\Exception $e) {
+            return response()->json($e);
+        }
+        
+
+        $vehicle = new Vehicle();
+        $vehicle->brand = $request->brand;
+        $vehicle->model = $request->model;
+        $vehicle->plate = $request->plate;
+        $vehicle->vin = $request->vin;
+        $vehicle->year = $request->year;
+        $vehicle->engine = $request->engine;
+        
+        try{
+            $vehicle->save();
+            return response()->json(["id"=>$vehicle->id]);
+        }
+        catch (\Exception $e) {
+            // Hubo error agregando
+                    // Solo puede error de conexión en este punto, ya que los datos ya están validados y no hay ningún campo UNIQUE.
+                    $errorCode = $e->getCode();
+                    if ($errorCode == 2002 || $errorCode == 1044 || $errorCode== 1049)
+                        // Si es 2002, es porque no se pudo conectar. No tiro rollback() porque lanza otra vez excepcion porque no esta conectado
+                        // Si es 1044, usuario incorrecto
+                        // Si es 1049, no existe la tabla
+                        $response[] = array("error"=>"Error de conexión a la base de datos.");
+                        else {
+                        // Agarro cualquier otro error por las dudas
+                        return $e;
+                        $response[] = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
+                    }
+                    return response()->json($response);
         }
     }
 
@@ -161,9 +231,10 @@ class Vehiclecontroller extends Controller
             
         
         try {
-            $vehicle = Vehicle::select('id', 'lastname', 'name')
-                            ->where('name', "LIKE", "%".$param."%")
-                            ->orWhere('lastname', "LIKE", "%".$param."%")
+            $vehicle = Vehicle::select('id', 'brand', 'model', 'plate')
+                            ->where('plate', "LIKE", "%".$param."%")
+                            ->orWhere('model', "LIKE", "%".$param."%")
+                             ->orWhere('brand', "LIKE", "%".$param."%")
                             ->orWhere('id', "=", $param)
                             ->get();
             return $vehicle;

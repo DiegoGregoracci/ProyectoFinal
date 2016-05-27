@@ -33,16 +33,16 @@ app.config(['$routeProvider', function ($routeProvider) {
 
     $routeProvider.when('/vehiculo/nuevo', {
         templateUrl: 'views/add_vehicle_step1.html',
-        controller: 'MainController'
+        controller: 'AddVehicleController'
     });
 
     $routeProvider.when('/vehiculo/nuevo/:id', {
         templateUrl: 'views/add_vehicle_step2.html',
-        controller: 'AddVehicleStep2Controller'
+        controller: 'AddVehicleController'
     });
     $routeProvider.when('/vehiculo/buscar', {
         templateUrl: 'views/search_vehicle.html',
-        controller: 'MainController'
+        controller: 'SearchVehicleController'
     });
 
     $routeProvider.when('/error', {
@@ -98,23 +98,3 @@ app.controller("MainController", ["$scope", "$http", function($scope, $http) {
 
 }]);
 
-// Add vehicle step2 controller.
-app.controller("AddVehicleStep2Controller", ["$scope", function($scope) {
-    $scope.vehicle = {
-            "brand": "",
-            "model": "",
-            "plate": "",
-            "year": "",
-            "engine": "",
-            "vin": ""
-    };
-    // Control var. Loading when sending data, displays loading overlay.
-    $scope.loading = false;
-    $scope.add = function(addOTNext) {
-        /*
-        Add new vehicle
-        @param addOTNext: 1: redirect to new order when done, 0: redirect to vehicle info
-        */
-        // Realizo el POST.
-    }
-}]);

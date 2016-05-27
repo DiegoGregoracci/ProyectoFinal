@@ -23,10 +23,10 @@ app.factory('vehicleFactory', ['$http', '$q', 'locationPath', function($http, $q
     };
 
     // Add new vehicle
-    vehicleFactory.addVehicle = function (client) {
+    vehicleFactory.addVehicle = function (vehicle) {
         var defered = $q.defer();  
         var promise = defered.promise;
-        $http.post(locationPath.BASE_URL + locationPath.VEHICLE_URL, client)
+        $http.post(locationPath.BASE_URL + locationPath.VEHICLE_URL, vehicle)
             .success(function(data) {
                 defered.resolve(data);
             })

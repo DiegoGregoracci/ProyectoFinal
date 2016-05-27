@@ -1,4 +1,4 @@
-app.controller("ShowClientController", ["$scope", "clientFactory", function($scope, clientFactory) {
+app.controller("ShowClientController", ["$scope", "clientFactory", "$routeParams", function($scope, clientFactory, $routeParams) {
     /*
         Initialize object form.
     */
@@ -25,19 +25,23 @@ app.controller("ShowClientController", ["$scope", "clientFactory", function($sco
             "cuit": "",
             "user": ""
         };
+        $scope.vehicles = [];
     };
-    $scope.resetForm = function() {
-        $scope.client = $scope.savedClient;
+    $scope.restoreData = function() {
+        $scope.client = angular.copy($scope.savedClient);
     }
     $scope.getClient = function () {
         $scope.initialize();
         $scope.loading = true;
         $scope.error = false;
 
-        clientFactory.getClient(13).then(function (response) {
-                if (!response.error)
+        clientFactory.getClient($routeParams.id).then(function (response) {
+                if (!response.error) {
                     // If status=200 && No error msg.
-                    $scope.client = $scope.savedClient = response;
+                    $scope.client = response.client;
+                    $scope.savedClient = angular.copy($scope.client);
+                    $scope.vehicles = response.vehicles;
+                }
                 else {
                     // Error, show error box.
                     $scope.error = true;
@@ -52,8 +56,34 @@ app.controller("ShowClientController", ["$scope", "clientFactory", function($sco
                 $scope.error = true;
         });
     };
-    $scope.getClient();
+    $scope.updateClient = function () {
+        $scope.loading = true;
+        $scope.errorUpdate = false;
+        $scope.successUpdate = false;
+        $scope.errors = [];
+
+        clientFactory.updateClient($routeParams.id, $scope.client).then(function (response) {
+                if (response.id) {
+                    // If status=200 && No error msg.
+                    $scope.savedClient = angular.copy($scope.client);
+                    $scope.successUpdate = true;
+                }
+                else {
+                    // Error, show error box.
+                    $scope.errors = response;
+                    $scope.errorUpdate = true;
+                }
+                // Disable loading overlay
+                $scope.loading = false;
+            }, function (error) {
+                // HTTP Error. Force status msg, show error box, disable loading overlay.
+                $scope.errorResponse = "Error inesperado. Consulte al administrador";
+                $scope.loading = false;
+                $scope.error = true;
+        });
+    };
     $scope.loading = false;
     $scope.error = false;
     $scope.errorResponse = "";
+    $scope.getClient();
 }]);

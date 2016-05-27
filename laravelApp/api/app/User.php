@@ -26,6 +26,6 @@ class User extends Authenticatable
 
     public function client()
     {
-        return $this->hasOne('App\Client');
+        return $this->hasOne('App\Client', 'id_user');
     }
 }

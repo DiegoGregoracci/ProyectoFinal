@@ -22,10 +22,10 @@ class Client extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', 'id_user');
     }
 
-    public function vehicle()
+    public function vehicles()
     {
         return $this->hasMany('App\Vehicle');
     }

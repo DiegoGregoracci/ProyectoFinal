@@ -5,7 +5,7 @@ app.factory('vehicleFactory', ['$http', '$q', 'locationPath', function($http, $q
 
     // Get all vehicles
     vehicleFactory.getVehicles = function () {
-        return $http.get(locationPath.BASE_URL + locationPath.VEHICLE_URL );
+        return $http.get(locationPath.BASE_URL + locationPath.VEHICLE_URL);
     };
 
     // Get vehicle by ID

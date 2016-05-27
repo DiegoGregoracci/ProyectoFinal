@@ -37,4 +37,6 @@ class CreateVehicleTable extends Migration
     {
         Schema::drop('vehicles');
     }
+
+    
 }

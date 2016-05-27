@@ -3,11 +3,6 @@
 app.factory('clientFactory', ['$http', '$q', 'locationPath', function($http, $q, locationPath) {
     var clientFactory = {};
 
-    // Get all clients
-    clientFactory.getClients = function () {
-        return $http.get(locationPath.BASE_URL + locationPath.CLIENT_URL);
-    };
-
     // Get client by ID
     clientFactory.getClient = function (id) {
         var defered = $q.defer();  
@@ -48,7 +43,22 @@ app.factory('clientFactory', ['$http', '$q', 'locationPath', function($http, $q,
                 defered.reject(err);
             });
         return promise;
-    }
+    };
+
+    // Update Client
+    clientFactory.updateClient = function (id, client) {
+        var defered = $q.defer();  
+        var promise = defered.promise;
+        $http.put(locationPath.BASE_URL + locationPath.CLIENT_URL + "/" + id, client)
+            .success(function(data) {
+                defered.resolve(data);
+            })
+            .error(function(err) {
+                defered.reject(err);
+            });
+        return promise;
+    };
+
 
     return clientFactory;
 }]);

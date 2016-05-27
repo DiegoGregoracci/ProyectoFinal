@@ -21,6 +21,7 @@ app.controller("AddClientController", ["$scope", "clientFactory", "$location", "
     */
     var updateUsername = function(){
         // Delete any special character.
+        // TO DO: Hacerlo servicio
         var normalize = (function() {
           var from = "ãàáäâèéëêìíïîòóöôùúüûÑñÇç", 
               to   = "aaaaaeeeeiiiioooouuuunncc",

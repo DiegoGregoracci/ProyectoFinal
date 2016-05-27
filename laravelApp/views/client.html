@@ -4,13 +4,23 @@
             Ver cliente
           </h1>
         </section>
-
         <!-- Contenido -->
         <section class="content">
+          
+          <!-- Error cargando cliente -->
+          <div class="callout callout-danger lead" ng-show="errorLoading">
+            <h4>Error cargando el cliente!</h4>
+            <p style="font-size: 16px;">
+                - {{errorResponse}} <br>
+            </p>
+          </div>
+
+
+          <!-- Cliente. Mostrar si no hubo error cargando -->
           <!-- Caja -->
-          <div class="box box-danger">
+          <div class="box box-danger" ng-show="!errorLoading">
             <!-- Overlay cargando -->
-            <div class="overlay" ng-show="loading">
+            <div class="overlay" ng-show="loading || updating">
               <i class="fa fa-refresh fa-spin"></i>
             </div>
 
@@ -104,22 +114,26 @@
             </form>
           </div>
 
-  <div class="callout callout-danger lead" ng-show="errorUpdate">
-    <h4>Error!</h4>
-    <p style="font-size: 16px;" ng-repeat="er in errors">
-        - {{er.error}} <br>
-    </p>
-  </div>
+          <!-- Mensajes al guardar cliente -->
+            <!-- Mostrar cuando hay error guardando -->
+            <div class="callout callout-danger lead" ng-show="errorUpdate">
+              <h4>Error!</h4>
+              <p style="font-size: 16px;" ng-repeat="er in errors">
+                  - {{er.error}} <br>
+              </p>
+            </div>
 
-  <div class="callout callout-success lead" ng-show="successUpdate">
-    <h4>Éxito!</h4>
-    <p style="font-size: 16px;">
-      Se ha modificado el cliente.
-    </p>
-  </div>
+            <!-- Mostrar cuando se guardo correctamente -->
+            <div class="callout callout-success lead" ng-show="successUpdate">
+              <h4>Éxito!</h4>
+              <p style="font-size: 16px;">
+                Se ha modificado el cliente.
+              </p>
+            </div>
+          <!-- / Mensajes -->
 
-          <!-- Vehiculos-->
-          <div class="box box-danger">
+          <!-- Vehiculos. Mostrar si no hubo error cargando -->
+          <div class="box box-danger" ng-show="!errorResponse">
             <!-- Overlay cargando. Sólo mostrar cuando loading = true -->
             <div class="overlay" ng-show="loading">
               <i class="fa fa-refresh fa-spin"></i>

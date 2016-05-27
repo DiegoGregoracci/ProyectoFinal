@@ -33,7 +33,7 @@ app.controller("ShowClientController", ["$scope", "clientFactory", "$routeParams
     $scope.getClient = function () {
         $scope.initialize();
         $scope.loading = true;
-        $scope.error = false;
+        $scope.errorLoading = false;
 
         clientFactory.getClient($routeParams.id).then(function (response) {
                 if (!response.error) {
@@ -44,7 +44,7 @@ app.controller("ShowClientController", ["$scope", "clientFactory", "$routeParams
                 }
                 else {
                     // Error, show error box.
-                    $scope.error = true;
+                    $scope.errorLoading = true;
                     $scope.errorResponse = response.error;
                 }
                 // Disable loading overlay
@@ -53,11 +53,11 @@ app.controller("ShowClientController", ["$scope", "clientFactory", "$routeParams
                 // HTTP Error. Force status msg, show error box, disable loading overlay.
                 $scope.errorResponse = "Error inesperado. Consulte al administrador";
                 $scope.loading = false;
-                $scope.error = true;
+                $scope.errorLoading = true;
         });
     };
     $scope.updateClient = function () {
-        $scope.loading = true;
+        $scope.updating = true;
         $scope.errorUpdate = false;
         $scope.successUpdate = false;
         $scope.errors = [];
@@ -74,15 +74,15 @@ app.controller("ShowClientController", ["$scope", "clientFactory", "$routeParams
                     $scope.errorUpdate = true;
                 }
                 // Disable loading overlay
-                $scope.loading = false;
+                $scope.updating = false;
             }, function (error) {
                 // HTTP Error. Force status msg, show error box, disable loading overlay.
                 $scope.errorResponse = "Error inesperado. Consulte al administrador";
-                $scope.loading = false;
+                $scope.updating = false;
                 $scope.error = true;
         });
     };
-    $scope.loading = false;
+    $scope.updating = false;
     $scope.error = false;
     $scope.errorResponse = "";
     $scope.getClient();

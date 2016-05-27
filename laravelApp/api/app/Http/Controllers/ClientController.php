@@ -141,7 +141,6 @@ class ClientController extends Controller
                 else {
                 // Agarro cualquier otro error por las dudas
                 DB::rollback();
-                return $e;
                 $response[] = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
             }
             return response()->json($response);
@@ -159,7 +158,7 @@ class ClientController extends Controller
         try {
             // Busca cliente. El ->first() es necesario ya que el select devuelve una colección de resultados.
             // Con ->first() obtiene el primer (y unico en este caso) elemento, y a partir de ahi podemos llamar a funciones del modelo
-            $client = Client::select('clients.id', 'name', 'lastname', 'address', 'users.user')
+            $client = Client::select('clients.id', 'name', 'lastname', 'address', 'telephone1', 'telephone2', 'email', 'cuit', 'users.user')
                             ->join('users', 'id_user', '=', 'users.id')
                             ->where('clients.id', $id)
                             ->get()
@@ -182,7 +181,16 @@ class ClientController extends Controller
             return response()->json($response);
         }
         catch (\Exception $e) {
-            return $e;
+            $errorCode = $e->getCode();
+            if ($errorCode == 2002 || $errorCode == 1044 || $errorCode== 1049)
+                // Si es 2002, es porque no se pudo conectar. 
+                // Si es 1044, usuario incorrecto
+                // Si es 1049, no existe la tabla
+                $response[] = array("error"=>"Error de conexión a la base de datos.");
+                else {
+                    $response[] = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
+            }
+            return response()->json($response);
         }
     }
 

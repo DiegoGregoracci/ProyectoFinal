@@ -38,7 +38,7 @@ app.config(['$routeProvider', function ($routeProvider) {
 
     $routeProvider.when('/vehiculo/nuevo/:id', {
         templateUrl: 'views/add_vehicle_step2.html',
-        controller: 'AddVehicleController'
+        controller: 'AddVehicleStep2Controller'
     });
     $routeProvider.when('/vehiculo/buscar', {
         templateUrl: 'views/search_vehicle.html',

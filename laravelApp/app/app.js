@@ -38,8 +38,14 @@ app.config(['$routeProvider', function ($routeProvider) {
 
     $routeProvider.when('/vehiculo/nuevo/:id', {
         templateUrl: 'views/add_vehicle_step2.html',
-        controller: 'AddVehicleStep2Controller'
+        controller: 'AddVehicleController'
     });
+
+    $routeProvider.when('/vehiculo/ver/:id', {
+        templateUrl: 'views/vehicle.html',
+        controller: 'ShowVehicleController'
+    });
+
     $routeProvider.when('/vehiculo/buscar', {
         templateUrl: 'views/search_vehicle.html',
         controller: 'SearchVehicleController'

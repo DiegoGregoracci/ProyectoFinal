@@ -11,7 +11,7 @@ app.controller("ShowVehicleController", ["$scope", "vehicleFactory", "$routePara
             "plate": "",
             "vin": "",
             "year": "",
-            "engine": "",
+            "engine": ""
         };
         $scope.savedVehicle = {
             "id": "",
@@ -21,7 +21,7 @@ app.controller("ShowVehicleController", ["$scope", "vehicleFactory", "$routePara
             "plate": "",
             "vin": "",
             "year": "",
-            "engine": "",
+            "engine": ""
         };
     };
     $scope.restoreData = function() {
@@ -30,18 +30,17 @@ app.controller("ShowVehicleController", ["$scope", "vehicleFactory", "$routePara
     $scope.getVehicle = function () {
         $scope.initialize();
         $scope.loading = true;
-        $scope.error = false;
 
         vehicleFactory.getVehicle($routeParams.id).then(function (response) {
                 if (!response.error) {
                     // If status=200 && No error msg.
-                    $scope.vehicle = response.vehicle;
+                    $scope.vehicle = response;
                     $scope.savedVehicle = angular.copy($scope.vehicle);
                    
                 }
                 else {
                     // Error, show error box.
-                    $scope.error = true;
+                    $scope.errorLoading = true;
                     $scope.errorResponse = response.error;
                 }
                 // Disable loading overlay
@@ -50,7 +49,7 @@ app.controller("ShowVehicleController", ["$scope", "vehicleFactory", "$routePara
                 // HTTP Error. Force status msg, show error box, disable loading overlay.
                 $scope.errorResponse = "Error inesperado. Consulte al administrador";
                 $scope.loading = false;
-                $scope.error = true;
+                $scope.errorLoading = true;
         });
     };
     $scope.updateVehicle = function () {
@@ -81,6 +80,7 @@ app.controller("ShowVehicleController", ["$scope", "vehicleFactory", "$routePara
     };
     $scope.loading = false;
     $scope.error = false;
+    $scope.errorLoading = false;
     $scope.errorResponse = "";
     $scope.getVehicle();
 }]);

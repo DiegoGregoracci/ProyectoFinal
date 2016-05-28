@@ -14,17 +14,17 @@
             <div class="box-header with-border">
               <h3 class="box-title">Búsqueda</h3>
             </div>
-                  <!-- Formulario de búsqueda -->
-                  <div class="box-body">            
-                    <form name="form">        
-                      <div class="input-group margin">
-                        <input type="text" class="form-control" id="search" name="search" ng-model="search" placeholder="Buscar por nombre, apellido o número de cliente..." max-length="20" ng-maxLength="20" required>
-                        <div class="input-group-btn">
-                          <button ng-click="searchClient()" ng-disabled="form.$invalid" class="btn btn-danger">Buscar!</button>
-                        </div>
-                      </div>
-                    </form>
+            <!-- Formulario de búsqueda -->
+            <div class="box-body">            
+              <form name="form">        
+                <div class="input-group margin">
+                  <input type="text" class="form-control" id="search" name="search" ng-model="search" placeholder="Buscar por nombre, apellido o número de cliente..." max-length="20" ng-maxLength="20" required>
+                  <div class="input-group-btn">
+                    <button ng-click="searchClient()" ng-disabled="form.$invalid" class="btn btn-danger">Buscar!</button>
                   </div>
+                </div>
+              </form>
+            </div>
           </div>
 
           <!-- Resultados de búsqueda-->

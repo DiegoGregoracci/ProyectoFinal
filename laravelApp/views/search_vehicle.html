@@ -1,31 +1,31 @@
-        <!-- Content Header (Page header) -->
+        <!-- Header de contenido -->
         <section class="content-header">
           <h1>
-            Buscar vehículos
+            Buscar clientes
           </h1>
         </section>
 
-        <!-- Main content -->
+        <!-- Contenido -->
         <section class="content">
-          <!-- Default box -->
+          <!-- Caja de búsqueda -->
           <div class="box box-danger">
             
+            <!-- Titulo -->
             <div class="box-header with-border">
               <h3 class="box-title">Búsqueda</h3>
             </div>
-
-                 <!-- Formulario de búsqueda -->
-                  <div class="box-body">            
-                    <form name="form">        
-                      <div class="input-group margin">
-                        <input type="text" class="form-control" id="search" name="search" ng-model="search" placeholder="Buscar por marca, modelo, patente y número de vehículo..." max-length="20" ng-maxLength="20" required>
-                        <div class="input-group-btn">
-                          <button ng-click="searchVehicle()" ng-disabled="form.$invalid" class="btn btn-danger">Buscar!</button>
-                        </div>
-                      </div>
-                    </form>
+            <!-- Formulario de búsqueda -->
+            <div class="box-body">            
+              <form name="form">        
+                <div class="input-group margin">
+                  <input type="text" class="form-control" id="search" name="search" ng-model="search" placeholder="Buscar por marca, modelo, patente y número de vehículo..." max-length="20" ng-maxLength="20" required>
+                  <div class="input-group-btn">
+                    <button ng-click="searchVehicle()" ng-disabled="form.$invalid" class="btn btn-danger">Buscar!</button>
                   </div>
-          </div><!-- /.box -->
+                </div>
+              </form>
+            </div>
+          </div>
 
 
           <!-- Resultados de búsqueda-->
@@ -48,42 +48,42 @@
               </div>
             </div>
 
-                  <div class="box-body table-responsive no-padding">      
-                      <table class="table table-hover">
-                    <tr>
-                      <th style="width: 10%">#</th>
-                      <th style="width: 15%">Marca</th>
-                      <th style="width: 15%">Modelo</th>
-                      <th style="width: 20%">Patente</th>
-                      <th style="width: 40%">Cliente</th>
-                    </tr>
-                    <tr ng-repeat="vehicle in filteredVehicles = (vehiculos | filter:filtro) track by $index" ng-show="!loading && !error">
-                      <td>{{vehiculo.id}}</td>
-                      <td>{{vehiculo.brand}}</td>
-                      <td>{{vehiculo.model}}</td>
-                      <td>{{vehiculo.plate}}</td>
-                      <td>{{vehiculo.id_client}}</td>
-                      <td style="text-align: right;">
-                      <a href="#cliente/ver/{{vehiculo.id_client}}" class="btn btn-sm btn-info">Ver cliente</a>
-                    </td>
-                    </tr>
+            <div class="box-body table-responsive no-padding">      
+              <table class="table table-hover">
+                <tr>
+                  <th style="width: 5%">#</th>
+                  <th style="width: 15%">Marca</th>
+                  <th style="width: 15%">Modelo</th>
+                  <th style="width: 15%">Patente</th>
+                  <th style="width: 30%">Cliente</th>
+                  <th style="width: 30%"></th>
+                </tr>
+
+                <tr ng-repeat="vehicle in filteredVehicles = (vehicles | filter:filtro) track by $index" ng-show="!loading && !error">
+                  <td>{{vehicle.id}}</td>
+                  <td>{{vehicle.brand}}</td>
+                  <td>{{vehicle.model}}</td>
+                  <td>{{vehicle.plate}}</td>
+                  <td>{{vehicle.name}} {{vehicle.lastname}}</td>
+                  <td style="text-align: right;">
+                    <a href="#vehiculo/ver/{{vehicle.id}}" class="btn btn-sm btn-info">Ver</a>
+                    <a href="#orden/nuevo/{{vehicle.id}}" class="btn btn-sm btn-success">Agregar orden</a>
+                  </td>
+                </tr>
 
                     <!-- Mensaje de no hay vehiculos. Mostrar si no hay vehicles o filteredVehicles, no está cargando y no hay error  -->
                 <tr>
-                  <td colspan="3" style="text-align: center" ng-show="(!vehicles.length || !filteredVehicles.length) && !loading && !error">
+                  <td colspan="6" style="text-align: center" ng-show="(!vehicles.length || !filteredVehicles.length) && !loading && !error">
                         No se han encontrado resultados
                   </td>
                 </tr>
 
                 <!-- Mensaje de error. Mostrar si hubo error y no está cargando -->
                 <tr>
-                  <td colspan="3" style="text-align: center;" ng-show="error && !loading">{{errorResponse}}</td>
+                  <td colspan="6" style="text-align: center;" ng-show="error && !loading">{{errorResponse}}</td>
                 </tr>
 
-
-                  </table>
-                  </div><!-- /.box-body -->
-          </div><!-- /.box -->
-
-
+              </table>
+            </div>
+          
         </section><!-- /.content -->

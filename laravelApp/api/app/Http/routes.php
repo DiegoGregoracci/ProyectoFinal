@@ -18,35 +18,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Extender funciones de los resource controller
 Route::get('client/search/{param}', 'ClientController@search');
+Route::get('vehicle/search/{param}', 'VehicleController@search');
+
 Route::resource('client', 'ClientController');
 Route::resource('vehicle', 'VehicleController');
 Route::resource('supplier', 'SupplierController');
-
-/*
-Route::post('/client/new', function(Request $request) {
-	// Nuevo cliente
-	$user = new User;
-	$user->user = $request->usuario;
-	$user->password = "test";
-	try {
-		$user->save();
-	}
-	catch (\Illuminate\Database\QueryException $e) {
-		echo "error creando el usuario";
-	}
-	if ($user->id) {
-		$client = new Client;
-		$client->name = $request->name;
-		$client->id_user = $user->id;
-		echo $user->id;
-		$client->save();
-		if ($client->id) 
-			echo "agregado";
-		else {
-			$user->delete();
-			echo "error: se borra usuario";
-		}
-	}
-});
-*/

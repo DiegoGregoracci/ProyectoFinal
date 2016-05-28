@@ -1,5 +1,5 @@
 app.controller("SearchVehicleController", ["$scope", "vehicleFactory", function($scope, vehicleFactory) {
-    $scope.searchVehicles = function () {
+    $scope.searchVehicle = function () {
         $scope.vehicles = [];
         $scope.loading = true;
         $scope.searched = true;

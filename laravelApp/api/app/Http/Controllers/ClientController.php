@@ -187,9 +187,9 @@ class ClientController extends Controller
                 // Si es 2002, es porque no se pudo conectar. 
                 // Si es 1044, usuario incorrecto
                 // Si es 1049, no existe la tabla
-                $response[] = array("error"=>"Error de conexión a la base de datos.");
+                $response = array("error"=>"Error de conexión a la base de datos.");
             else
-                $response[] = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
+                $response = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
             return response()->json($response);
         }
     }

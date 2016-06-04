@@ -11,48 +11,56 @@ app.config(['$routeProvider', function ($routeProvider) {
         controller: 'AddSupplierController'
     });
 
+
+    /* VISTAS CLIENTE */
     $routeProvider.when('/cliente/nuevo', {
-        templateUrl: 'views/add_client.html',
+        templateUrl: 'views/client/add_client.html',
         controller: 'AddClientController'
     });
 
     $routeProvider.when('/cliente/ver/:id', {
-        templateUrl: 'views/client.html',
+        templateUrl: 'views/client/client.html',
         controller: 'ShowClientController'
     });
 
     $routeProvider.when('/cliente/buscar', {
-        templateUrl: 'views/search_client.html',
+        templateUrl: 'views/client/search_client.html',
         controller: 'SearchClientController'
     });
+    /* FIN VISTAS CLIENTE */
 
+    
     $routeProvider.when('/personal/nuevo', {
         templateUrl: 'views/add_staff.html',
         controller: 'MainController'
     });
 
+    
+    /* VISTAS VEHICULO */
     $routeProvider.when('/vehiculo/nuevo', {
-        templateUrl: 'views/add_vehicle_step1.html',
+        templateUrl: 'views/vehicle/add_vehicle_step1.html',
         controller: 'SearchClientController'
     });
 
     $routeProvider.when('/vehiculo/nuevo/:id', {
-        templateUrl: 'views/add_vehicle_step2.html',
+        templateUrl: 'views/vehicle/add_vehicle_step2.html',
         controller: 'AddVehicleController'
     });
 
     $routeProvider.when('/vehiculo/ver/:id', {
-        templateUrl: 'views/vehicle.html',
+        templateUrl: 'views/vehicle/vehicle.html',
         controller: 'ShowVehicleController'
     });
 
     $routeProvider.when('/vehiculo/buscar', {
-        templateUrl: 'views/search_vehicle.html',
+        templateUrl: 'views/vehicle/search_vehicle.html',
         controller: 'SearchVehicleController'
     });
+    /* FIN VISTAS VEHICULO */
+    
 
     $routeProvider.when('/error', {
-        templateUrl: 'views/error.html'
+        templateUrl: 'views/common/error.html'
     });
     $routeProvider.otherwise({
         redirectTo: '/error',
@@ -65,42 +73,3 @@ app.run(function ($rootScope) {
         $.AdminLTE.layout.fix();
     });
 });
-
-app.controller("MainController", ["$scope", "$http", function($scope, $http) {
-    $scope.show = false;
-    $scope.send = function(addVehicleNext) {
-        $scope.client.name = "asdasd";
-    };
-    $scope.reset = function() {
-        $scope.client = {
-            "name": "",
-            "lastname": "",
-            "telephone1": "",
-            "telephone2": "",
-            "address": "",
-            "email": "",
-            "cuit": ""
-        };
-    };
-    $scope.activar = function() {
-        $scope.show = true;
-    }
-    $scope.reset();
-    $scope.loading = false;
-
-    $scope.clientes = [{}];
-    for (var i = 9; i >= 0; i--) {
-        $scope.clientes[i] =  {
-            "id": i,
-            "name": Math.random().toString(36).substr(2, 5),
-            "lastname": Math.random().toString(36).substr(2, 10),
-            "telephone1": "asdasd",
-            "telephone2": "",
-            "address": "",
-            "email": "",
-            "cuit": "20202020"
-        };
-    };
-
-}]);
-

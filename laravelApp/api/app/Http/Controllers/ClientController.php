@@ -11,7 +11,9 @@ use App\Vehicle;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 // Include validators.php to extend Validators
-require app_path().'/validators.php';
+require app_path().'/Validators.php';
+// Include constantes
+require app_path().'/Constants.php';
 use DB;
 use Illuminate\Database\DatabaseManager;
 
@@ -67,19 +69,19 @@ class ClientController extends Controller
         if ($validator->fails()) { 
             $messages = $validator->messages();
             if ($messages->has('user'))
-                $response[] = array("error"=>"El nombre de usuario debe tener entre 3 y 20 caractéres alfanuméricos sin espacios.");
+                $response[] = array(        "error"  => VALIDATOR_USER      );
             if ($messages->has('name'))
-                $response[] = array("error"=>"El nombre debe tener entre 3 y 20 caractéres alfanuméricos.");
+                $response[] = array(        "error"  => VALIDATOR_NAME      );
             if ($messages->has('lastname'))
-                $response[] = array("error"=>"El apellido debe tener entre 3 y 20 caractéres alfanuméricos.");
+                $response[] = array(        "error"  => VALIDATOR_LASTNAME  );
             if ($messages->has('address'))
-                $response[] = array("error"=>"La dirección puede tener un máximo de 20 caractéres alfanuméricos.");
+                $response[] = array(        "error"  => VALIDATOR_ADDRESS   );
             if ($messages->has('telephone1'))
-                $response[] = array("error"=>"El teléfono 1 puede tener un máximo de 15 caractéres alfanuméricos.");
+                $response[] = array(        "error"  => VALIDATOR_TELEPHONE1);
             if ($messages->has('telephone2'))
-                $response[] = array("error"=>"El teléfono 2 puede tener un máximo de 15 caractéres alfanuméricos.");  
+                $response[] = array(        "error"  => VALIDATOR_TELEPHONE2);  
             if ($messages->has('email'))
-                $response[] = array("error"=>"El correo electrónico debe tener formato de e-mail. y hasta 30 caractéres."); 
+                $response[] = array(        "error"  => VALIDATOR_EMAIL     ); 
             return response()->json($response);
         }
 
@@ -102,17 +104,17 @@ class ClientController extends Controller
                 // Si es 23000 el codigo, es porque hay violacion de integridad. Habiendo validado los campos requeridos arriba,
                 // Supongo que lo unico que puede pasar es que el username exista, y al ser unique tira error
                 DB::rollback();
-                $response[] = array("error"=>"El nombre de usuario elegido ya existe en la base de datos.");
+                $response[] = array("error"=>QUERY_EXISTINGUSER);
             }
             else
                 if ($errorCode == 2002 || $errorCode == 1044 || $errorCode== 1049)
                     // Si es 2002, es porque no se pudo conectar. No tiro rollback() porque lanza otra vez excepcion porque no esta conectado
                     // Si es 1044, usuario incorrecto
                     // Si es 1049, no existe la tabla
-                    $response[] = array("error"=>"Error de conexión a la base de datos.");
+                    $response[] = array("error"=>QUERY_CONN);
                 else
                     // Agarro cualquier otro error por si hay alguno que se haya pasado por alto.
-                    $response[] = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
+                    $response[] = array("error"=>QUERY_UNEXPECTED);
             return response()->json($response);
         }
 
@@ -141,11 +143,11 @@ class ClientController extends Controller
                 // Si es 2002, es porque no se pudo conectar. No tiro rollback() porque lanza otra vez excepcion porque no esta conectado
                 // Si es 1044, usuario incorrecto
                 // Si es 1049, no existe la tabla
-                $response[] = array("error"=>"Error de conexión a la base de datos.");
+                $response[] = array("error"=>QUERY_CONN);
                 else {
                 // Agarro cualquier otro error por las dudas
                 DB::rollback();
-                $response[] = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
+                $response[] = array("error"=>QUERY_UNEXPECTED);
             }
             return response()->json($response);
         }
@@ -163,7 +165,7 @@ class ClientController extends Controller
             // Busca cliente. El ->first() es necesario ya que el select devuelve una colección de resultados.
             // Con ->first() obtiene el primer (y unico en este caso) elemento, y a partir de ahi podemos llamar a funciones del modelo
             $client = Client::select('clients.id', 'name', 'lastname', 'address', 'telephone1', 'telephone2', 'email', 'cuit', 'users.user')
-                            ->join('users', 'id_user', '=', 'users.id')
+                            ->join('users', 'user_id', '=', 'users.id')
                             ->where('clients.id', $id)
                             ->get()
                             ->first();
@@ -187,9 +189,9 @@ class ClientController extends Controller
                 // Si es 2002, es porque no se pudo conectar. 
                 // Si es 1044, usuario incorrecto
                 // Si es 1049, no existe la tabla
-                $response = array("error"=>"Error de conexión a la base de datos.");
+                $response = array("error"=>QUERY_CONN);
             else
-                $response = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
+                $response = array("error"=>QUERY_UNEXPECTED);
             return response()->json($response);
         }
     }
@@ -229,19 +231,19 @@ class ClientController extends Controller
         if ($validator->fails()) { 
             $messages = $validator->messages();
             if ($messages->has('user'))
-                $response[] = array("error"=>"El nombre de usuario debe tener entre 3 y 20 caractéres alfanuméricos sin espacios.");
+                $response[] = array(        "error"  => VALIDATOR_USER      );
             if ($messages->has('name'))
-                $response[] = array("error"=>"El nombre debe tener entre 3 y 20 caractéres alfanuméricos.");
+                $response[] = array(        "error"  => VALIDATOR_NAME      );
             if ($messages->has('lastname'))
-                $response[] = array("error"=>"El apellido debe tener entre 3 y 20 caractéres alfanuméricos.");
+                $response[] = array(        "error"  => VALIDATOR_LASTNAME  );
             if ($messages->has('address'))
-                $response[] = array("error"=>"La dirección puede tener un máximo de 20 caractéres alfanuméricos.");
+                $response[] = array(        "error"  => VALIDATOR_ADDRESS   );
             if ($messages->has('telephone1'))
-                $response[] = array("error"=>"El teléfono 1 puede tener un máximo de 15 caractéres alfanuméricos.");
+                $response[] = array(        "error"  => VALIDATOR_TELEPHONE1);
             if ($messages->has('telephone2'))
-                $response[] = array("error"=>"El teléfono 2 puede tener un máximo de 15 caractéres alfanuméricos.");  
+                $response[] = array(        "error"  => VALIDATOR_TELEPHONE2);  
             if ($messages->has('email'))
-                $response[] = array("error"=>"El correo electrónico debe tener formato de e-mail. y hasta 30 caractéres."); 
+                $response[] = array(        "error"  => VALIDATOR_EMAIL     ); 
             return response()->json($response);
         }
 
@@ -256,15 +258,15 @@ class ClientController extends Controller
                 // Si es 2002, es porque no se pudo conectar
                 // Si es 1044, usuario incorrecto
                 // Si es 1049, no existe la tabla
-                $response[] = array("error"=>"Error de conexión a la base de datos.");
+                $response[] = array("error"=>QUERY_CONN);
             else
-                $response[] = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
+                $response[] = array("error"=>QUERY_UNEXPECTED);
             return response()->json($response);
         }
 
         if (is_null($client))
             // Si no se pudo obtener el cliente
-            return response()->json(["error"=>"El cliente no existe."]);
+            return response()->json(["error"=>QUERY_NOTEXISTINGUSER]);
         else {
             try {
                 // Buscar el usuario
@@ -277,16 +279,16 @@ class ClientController extends Controller
                     // Si es 2002, es porque no se pudo conectar. No tiro rollback() porque lanza otra vez excepcion porque no esta conectado
                     // Si es 1044, usuario incorrecto
                     // Si es 1049, no existe la tabla
-                    $response[] = array("error"=>"Error de conexión a la base de datos.");
+                    $response[] = array("error"=>QUERY_CONN);
                 else
-                    $response[] = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
+                    $response[] = array("error"=>QUERY_UNEXPECTED);
                 return response()->json($response);
             }
 
             // Si llegó aca, ya buscó el cliente y el usuario.
             if (is_null($user))
                 // No existe el usuario (esto no debería pasar nunca).
-                return response()->json(["error"=>"El usuario no existe."]);
+                return response()->json(["error"=>QUERY_NOTEXISTINGUSER]);
             else {
                 // Encontro el usuario y el cliente.
                 // Primero se actualiza el username, y despues el cliente.       
@@ -302,16 +304,16 @@ class ClientController extends Controller
                     if ($errorCode == 23000) {
                         // Username duplicado
                         DB::rollback();
-                        $response[] = array("error"=>"El nombre de usuario elegido ya existe en la base de datos.");
+                        $response[] = array("error"=>QUERY_EXISTINGUSER);
                     }
                     else
                         if ($errorCode == 2002 || $errorCode == 1044 || $errorCode== 1049)
                             // Si es 2002, es porque no se pudo conectar. No tiro rollback() porque lanza otra vez excepcion porque no esta conectado
                             // Si es 1044, usuario incorrecto
                             // Si es 1049, no existe la tabla
-                            $response[] = array("error"=>"Error de conexión a la base de datos.");
+                            $response[] = array("error"=>QUERY_CONN);
                         else
-                            $response[] = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
+                            $response[] = array("error"=>QUERY_UNEXPECTED);
                     return response()->json($response);
                 }
 
@@ -340,11 +342,11 @@ class ClientController extends Controller
                         // Si es 2002, es porque no se pudo conectar. No tiro rollback() porque lanza otra vez excepcion porque no esta conectado
                         // Si es 1044, usuario incorrecto
                         // Si es 1049, no existe la tabla
-                        $response[] = array("error"=>"Error de conexión a la base de datos.");
+                        $response[] = array("error"=>QUERY_CONN);
                     else {
                         // Agarro cualquier otro error por las dudas y hago rollback para no guardar ningún cambio.
                         DB::rollback();
-                        $response[] = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
+                        $response[] = array("error"=>QUERY_UNEXPECTED);
                     }
                     return response()->json($response);
                 }
@@ -362,7 +364,7 @@ class ClientController extends Controller
     {
         // No está listo porque falta definir cómo hacemos los DELETE (soft delete)
         $client = Client::where('id', $id)->get();
-        $user = User::where('id', $client->id_user)->get();
+        $user = User::where('id', $client->user_id)->get();
         try{
             $user->delete();
             $client->delete(); 
@@ -385,7 +387,7 @@ class ClientController extends Controller
             'searchParam' => 'required|alpha_num_spaces|max:20'
         ]);
         if ($validator->fails())
-            return response()->json(["error"=>"El parámetro de búsqueda solo puede contener letras, números y espacios."]);
+            return response()->json([   "error"     =>  VALIDATOR_SEARCH    ]);
             
         try {
             $user = Client::select('id', 'lastname', 'name')
@@ -403,10 +405,10 @@ class ClientController extends Controller
                 // Si es 2002, es porque no se pudo conectar. 
                 // Si es 1044, usuario incorrecto
                 // Si es 1049, no existe la tabla
-                $response = array("error"=>"Error de conexión a la base de datos.");
+                $response = array("error"=>QUERY_CONN);
             else
                 // Agarro cualquier otro error por las dudas
-                $response = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
+                $response = array("error"=>QUERY_UNEXPECTED);
             return response()->json($response);
         }
     }

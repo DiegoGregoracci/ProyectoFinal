@@ -14,7 +14,7 @@ class CreateClientsTable extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_user')->unsigned();
+            $table->integer('user_id')->unsigned();
             $table->string('lastname', 30);
             $table->string('name', 30);
             $table->string('address', 30)->nullable();
@@ -25,8 +25,8 @@ class CreateClientsTable extends Migration
             $table->string('comments')->nullable();
             $table->timestamps();
 
-            // Foreign Key      clients.id_user -> users.id
-            $table->foreign('id_user')->references('id')->on('users');
+            // Foreign Key      clients.user_id -> users.id
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

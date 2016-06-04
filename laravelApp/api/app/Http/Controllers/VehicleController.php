@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\Validator;
 use DB;
 use Illuminate\Database\DatabaseManager;
 // Include validators.php to extend Validators
-require app_path().'/validators.php';
+require app_path().'/Validators.php';
+// Include constantes
+require app_path().'/Constants.php';
 
 class Vehiclecontroller extends Controller
 {
@@ -58,19 +60,19 @@ class Vehiclecontroller extends Controller
         if ($validator->fails()) { 
             $messages = $validator->messages();
             if ($messages->has('id_client'))
-                $response[] = array("error"=>"No se ha definido el número de cliente de manera correcta.");
-            if ($messages->has('plate'))
-                $response[] = array("error"=>"La patente debe tener entre 6 y 8 caractéres alfanuméricos sin espacios.");
+                $response[] = array(        "error" =>  VALIDATOR_IDUSER);
             if ($messages->has('brand'))
-                $response[] = array("error"=>"La marca debe tener entre 2 y 15 caractéres alfanuméricos.");
+                $response[] = array(        "error" =>  VALIDATOR_BRAND);
             if ($messages->has('model'))
-                $response[] = array("error"=>"El modelo debe tener entre 2 y 15 caractéres alfanuméricos.");
-            if ($messages->has('vin'))
-                $response[] = array("error"=>"El VIN debe tener un máximo de 17 caractéres alfanuméricos sin espacios.");
+                $response[] = array(        "error" =>  VALIDATOR_MODEL);
+            if ($messages->has('plate'))
+                $response[] = array(        "error" =>  VALIDATOR_PLATE);
             if ($messages->has('year'))
-                $response[] = array("error"=>"El año sólo puede contener números.");
+                $response[] = array(        "error" =>  VALIDATOR_YEAR);
             if ($messages->has('engine'))
-                $response[] = array("error"=>"El motor puede contener hasta 15 caractéres.");
+                $response[] = array(        "error" =>  VALIDATOR_ENGINE);
+            if ($messages->has('vin'))
+                $response[] = array(        "error" =>  VALIDATOR_VIN);            
             return response()->json($response);
         }
 
@@ -94,15 +96,15 @@ class Vehiclecontroller extends Controller
                 // Si es 2002, es porque no se pudo conectar
                 // Si es 1044, usuario incorrecto
                 // Si es 1049, no existe la tabla
-                $response[] = array("error"=>"Error de conexión a la base de datos.");
+                $response[] = array("error"=>QUERY_CONN);
             else
-                $response[] = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
+                $response[] = array("error"=>QUERY_UNEXPECTED);
             return response()->json($response);
         }
 
         if (is_null($client))
             // Si no se pudo obtener el cliente
-            return response()->json(["error"=>"El cliente no existe."]);
+            return response()->json(["error"=>QUERY_NOTEXISTINGUSER]);
         else {
             try {
                 // Intento guardar el nuevo vehículo.
@@ -114,16 +116,16 @@ class Vehiclecontroller extends Controller
                     $errorCode = $e->getCode();
                     if ($errorCode == 23000)
                         // Patente duplicada
-                        $response[] = array("error"=>"La patente ya existe en la base de datos.");
+                        $response[] = array("error"=>QUERY_EXISTINGPLATE);
                     else
                         if ($errorCode == 2002 || $errorCode == 1044 || $errorCode== 1049)
                             // Si es 2002, es porque no se pudo conectar. No tiro rollback() porque lanza otra vez excepcion porque no esta conectado
                             // Si es 1044, usuario incorrecto
                             // Si es 1049, no existe la tabla
-                            $response[] = array("error"=>"Error de conexión a la base de datos.");
+                            $response[] = array("error"=>QUERY_CONN);
                         else
                             // Por si hay algún otro error
-                            $response[] = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
+                            $response[] = array("error"=>QUERY_UNEXPECTED);
                     
                     return response()->json($response);
             }
@@ -148,7 +150,7 @@ class Vehiclecontroller extends Controller
                 return $vehicle;
             else
                 // Si el cliente es nulo, es porque no existe.
-                return response()->json(array("error" =>  "Vehículo inexistente"));
+                return response()->json(array("error" =>  QUERY_NOTEXISTINGVEHICLE));
         }
         catch (\Exception $e) {
             $errorCode = $e->getCode();
@@ -156,9 +158,9 @@ class Vehiclecontroller extends Controller
                 // Si es 2002, es porque no se pudo conectar. 
                 // Si es 1044, usuario incorrecto
                 // Si es 1049, no existe la tabla
-                $response = array("error"=>"Error de conexión a la base de datos.");
+                $response = array("error"=>QUERY_CONN);
             else
-                $response = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
+                $response = array("error"=>QUERY_UNEXPECTED);
             return response()->json($response);
         }
     }
@@ -273,7 +275,7 @@ class Vehiclecontroller extends Controller
             'searchParam' => 'required|alpha_num_spaces|max:20'
         ]);
         if ($validator->fails())
-            return response()->json(["error"=>"El parámetro de búsqueda solo puede contener letras, números y espacios."]);   
+            return response()->json(["error"=>VALIDATOR_SEARCH]);   
         
         try {
             $vehicle = Vehicle::select('vehicles.id', 'brand', 'model', 'plate', 'clients.name', 'clients.lastname')
@@ -293,10 +295,10 @@ class Vehiclecontroller extends Controller
                 // Si es 2002, es porque no se pudo conectar. 
                 // Si es 1044, usuario incorrecto
                 // Si es 1049, no existe la tabla
-                $response = array("error"=>"Error de conexión a la base de datos.");
+                $response = array("error"=>QUERY_CONN);
             else
                 // Agarro cualquier otro error por las dudas
-                $response = array("error"=>"Ha ocurrido un error inesperado. Contacte al administrador.");
+                $response = array("error"=>QUERY_UNEXPECTED);
             return $e;
             return response()->json($response);
         }

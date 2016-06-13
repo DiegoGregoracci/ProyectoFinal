@@ -196,6 +196,47 @@ class ClientController extends Controller
         }
     }
 
+/**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showVehicleOwner($id)
+    {
+        try {
+            // Busca cliente. El ->first() es necesario ya que el select devuelve una colección de resultados.
+            // Con ->first() obtiene el primer (y unico en este caso) elemento, y a partir de ahi podemos llamar a funciones del modelo
+            $vehicleId = Vehicle::select('client_id')->where('id', $id)->get()->first();
+            if (!is_null($vehicleId)) {
+                $client = Client::select('clients.id', 'name', 'lastname', 'address', 'telephone1', 'telephone2', 'email', 'cuit', 'users.user')
+                            ->join('users', 'user_id', '=', 'users.id')
+                            ->where('clients.id', $vehicleId->client_id)
+                            ->get()
+                            ->first();
+                if (!is_null($client))
+                    return $client;
+                else
+                    return response()->json(array("error" =>  "Cliente inexistente"));    
+
+            }
+            else
+                return response()->json(array("error" =>  "Vehículo inexistente"));                  
+        }
+        catch (\Exception $e) {
+            $errorCode = $e->getCode();
+            if ($errorCode == 2002 || $errorCode == 1044 || $errorCode== 1049)
+                // Si es 2002, es porque no se pudo conectar. 
+                // Si es 1044, usuario incorrecto
+                // Si es 1049, no existe la tabla
+                $response = array("error"=>QUERY_CONN);
+            else
+                $response = array("error"=>QUERY_UNEXPECTED);
+            return response()->json($response);
+        }
+    }
+
+
     /**
      * Show the form for editing the specified resource.
      *

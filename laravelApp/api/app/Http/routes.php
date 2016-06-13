@@ -19,6 +19,7 @@ Route::get('/', function () {
 });
 
 // Extender funciones de los resource controller
+Route::get('client/vehicleowner/{param}', 'ClientController@showvehicleowner');
 Route::get('client/search/{param}', 'ClientController@search');
 Route::get('vehicle/search/{param}', 'VehicleController@search');
 

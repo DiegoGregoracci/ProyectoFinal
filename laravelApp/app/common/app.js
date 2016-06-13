@@ -56,6 +56,11 @@ app.config(['$routeProvider', function ($routeProvider) {
         templateUrl: 'views/vehicle/search_vehicle.html',
         controller: 'SearchVehicleController'
     });
+
+    $routeProvider.when('/vehiculo/cambiarprop/:id', {
+        templateUrl: 'views/vehicle/change_owner.html',
+        controller: 'SearchClientController'
+    });
     /* FIN VISTAS VEHICULO */
     
 

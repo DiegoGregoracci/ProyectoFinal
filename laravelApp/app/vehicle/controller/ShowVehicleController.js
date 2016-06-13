@@ -1,4 +1,4 @@
-app.controller("ShowVehicleController", ["$scope", "vehicleFactory", "$routeParams", function($scope, vehicleFactory, $routeParams) {
+app.controller("ShowVehicleController", ["$scope", "vehicleFactory", "clientFactory", "$routeParams", function($scope, vehicleFactory, clientFactory, $routeParams) {
     /*
         Initialize object form.
     */
@@ -27,6 +27,28 @@ app.controller("ShowVehicleController", ["$scope", "vehicleFactory", "$routePara
     $scope.restoreData = function() {
         $scope.vehicle = angular.copy($scope.savedVehicle);
     }
+    $scope.getClient = function (id) {
+        $scope.initialize();
+        $scope.loadingClient = true;
+        clientFactory.getVehicleOwner($routeParams.id).then(function (response) {
+                if (!response.error) {
+                    // If status=200 && No error msg.
+                    $scope.client = response;
+                }
+                else {
+                    // Error, show error box.
+                    $scope.errorLoading = true;
+                    $scope.errorResponse = response.error;
+                }
+                // Disable loading overlay
+                $scope.loadingClient = false;
+            }, function (error) {
+                // HTTP Error. Force status msg, show error box, disable loading overlay.
+                $scope.errorResponse = "Error inesperado. Consulte al administrador";
+                $scope.loadingClient = false;
+                $scope.errorLoading = true;
+        });
+    };
     $scope.getVehicle = function () {
         $scope.initialize();
         $scope.loading = true;
@@ -36,7 +58,6 @@ app.controller("ShowVehicleController", ["$scope", "vehicleFactory", "$routePara
                     // If status=200 && No error msg.
                     $scope.vehicle = response;
                     $scope.savedVehicle = angular.copy($scope.vehicle);
-                   
                 }
                 else {
                     // Error, show error box.
@@ -44,11 +65,11 @@ app.controller("ShowVehicleController", ["$scope", "vehicleFactory", "$routePara
                     $scope.errorResponse = response.error;
                 }
                 // Disable loading overlay
-                $scope.loading = false;
+                $scope.loadingVehicle = false;
             }, function (error) {
                 // HTTP Error. Force status msg, show error box, disable loading overlay.
                 $scope.errorResponse = "Error inesperado. Consulte al administrador";
-                $scope.loading = false;
+                $scope.loadingVehicle = false;
                 $scope.errorLoading = true;
         });
     };
@@ -78,9 +99,11 @@ app.controller("ShowVehicleController", ["$scope", "vehicleFactory", "$routePara
                 $scope.error = true;
         });
     };
-    $scope.loading = false;
+    $scope.loadingVehicle = false;
+    $scope.loadingClient = false;
     $scope.error = false;
     $scope.errorLoading = false;
     $scope.errorResponse = "";
     $scope.getVehicle();
+    $scope.getClient();
 }]);

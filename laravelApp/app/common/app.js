@@ -6,6 +6,23 @@ var app = angular.module('app', [
 // Configuracion de Route Provider para manejar las rutas.
 app.config(['$routeProvider', function ($routeProvider) {
     
+    /*VISTAS ARTICULOS*/
+    $routeProvider.when('/articulos/nuevo', {
+        templateUrl: 'views/Article/add_article.html',
+        controller: 'AddArticleController'
+    });
+
+    $routeProvider.when('/articulos/ver/:id', {
+        templateUrl: 'views/Article/article.html',
+        controller: 'ShowArticleController'
+    });
+
+    $routeProvider.when('/articulos/buscar', {
+        templateUrl: 'views/Article/search_article.html',
+        controller: 'SearchArticleController'
+    });
+    /*FIN VISTAS ARTICULOS*/
+
     /*VISTAS PROVEEDORES*/
     $routeProvider.when('/proveedores/nuevo', {
         templateUrl: 'views/Supplier/add_supplier.html',

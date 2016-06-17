@@ -1,31 +1,37 @@
-// Add client controller.
-app.controller("AddSupplierController", ["$scope", "supplierFactory", "$location", function($scope, supplierFactory, $location) {
+// Add article controller.
+app.controller("AddArticleController", ["$scope", "articleFactory", "$routeParams", "$location",
+                                         function($scope, articleFactory, $routeParams, $location) {
     /*
         Initialize & reset object form.
     */
     $scope.initialize = function () {
-        $scope.supplier = {
+        $scope.article = {
             "description": "",
-            "tel": "",
-            "address": "",
-            "email": "",
-            "responsible": ""
-        };
+            "price": "",
+            "cost": "",
+            }
     };
 
-    $scope.add = function() {
-        $scope.supplier.id = $routeParams.id;
+    /*
+        Add new article
+    */
+    $scope.add = function(add) {
         // Set control vars
         $scope.loading = true;
         $scope.error = false;
         $scope.success = false;
         $scope.errors = [];
-        supplierFactory.addSupplier($scope.supplier).then(function (response) {
+        articleFactory.addArticle($scope.article).then(function (response) {
                 if (response.id) {
                     // If status=200 && ID.
-                 $scope.initialize();
-                 $scope.success = true;
-                    
+                    if (add)
+                        // If addVehicleNext, redirect to next page.
+                        $location.path("articulo/nuevo/" + response.id);
+                    else {
+                        // If !addVehicleNext, show success box and reset form.
+                        $scope.initialize();
+                        $scope.success = true;
+                    }
                 }
                 else {
                     // Error, show error box.
@@ -36,7 +42,7 @@ app.controller("AddSupplierController", ["$scope", "supplierFactory", "$location
                 $scope.loading = false;
             }, function (error) {
                 // HTTP Error. Force status msg, show error box, disable loading overlay.
-                $scope.status = "No se ha podido crear el vehículo. Consulte al administrador";
+                $scope.status = "No se ha podido crear el articulo. Consulte al administrador";
                 $scope.loading = false;
                 $scope.error = true;
         });

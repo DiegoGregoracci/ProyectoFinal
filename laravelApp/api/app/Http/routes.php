@@ -22,7 +22,10 @@ Route::get('/', function () {
 Route::get('client/vehicleowner/{param}', 'ClientController@showvehicleowner');
 Route::get('client/search/{param}', 'ClientController@search');
 Route::get('vehicle/search/{param}', 'VehicleController@search');
+Route::get('supplier/search/{param}', 'SupplierController@search');
+Route::get('article/search/{param}', 'ArticleController@search');
 
 Route::resource('client', 'ClientController');
 Route::resource('vehicle', 'VehicleController');
 Route::resource('supplier', 'SupplierController');
+Route::resource('article', 'ArticleController');

@@ -4,5 +4,7 @@ app.constant("locationPath", {
     "CLIENT_URL": "/client",
     "VEHICLE_URL": "/vehicle",
     "SUPPLIER_URL": "/supplier",
-    "SEARCH_URL": "/search/"
+    "SEARCH_URL": "/search/",
+    "ARTICLE_URL": "/article"
+
 });

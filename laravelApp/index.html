@@ -39,6 +39,11 @@
     <script src="./app/client/controller/AddClientController.js"></script>
     <script src="./app/client/controller/ShowClientController.js"></script>
     <script src="./app/client/controller/SearchClientController.js"></script>
+
+    <script src="./app/staff/factory/staffFactory.js"></script>
+    <script src="./app/staff/controller/AddStaffController.js"></script>
+    <script src="./app/staff/controller/ShowStaffController.js"></script>
+    <script src="./app/staff/controller/SearchStaffController.js"></script>
     
     <script src="./app/vehicle/factory/vehicleFactory.js"></script>
     <script src="./app/vehicle/controller/AddVehicleController.js"></script>
@@ -82,14 +87,14 @@
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                  <span class="hidden-xs">Alexander Pierce</span>
+                  <span class="hidden-xs">Proyecto Final</span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
                   <li class="user-header">
                     <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                     <p>
-                      Alexander Pierce - Web Developer
+                      Gregoracci, Scenna, Subiros - Web Developers
                       <small>Member since Nov. 2012</small>
                     </p>
                   </li>
@@ -195,12 +200,16 @@
                 <li><a href="#proveedores/procesar"><i class="fa fa-dollar"></i> Procesar pago</a></li>
               </ul>
             </li>
-            <li>
-              <a href="#personal/nuevo">
-                <i class="fa fa-user-secret"></i>
-                <span>Personal</span>
+            <li class="treeview">
+              <a>
+                <i class="fa fa-user"></i> 
+                <span>Staff</span> 
+                <i class="fa fa-angle-left pull-right"></i>
               </a>
-            </li>
+              <ul class="treeview-menu">
+                <li><a href="#staff/nuevo"><i class="fa fa-user-plus"></i>  Alta</a></li>
+                <li><a href="#staff/buscar"><i class="fa fa-search"></i>  Búsqueda</a></li>
+              </ul>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-pie-chart"></i>

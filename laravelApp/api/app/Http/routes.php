@@ -11,6 +11,8 @@
 |
 */
 use App\Client;
+use App\Vehicle;
+use App\Staff;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -20,8 +22,10 @@ Route::get('/', function () {
 
 // Extender funciones de los resource controller
 Route::get('client/search/{param}', 'ClientController@search');
+Route::get('staff/search/{param}', 'StaffController@search');
 Route::get('vehicle/search/{param}', 'VehicleController@search');
 
 Route::resource('client', 'ClientController');
 Route::resource('vehicle', 'VehicleController');
 Route::resource('supplier', 'SupplierController');
+Route::resource('staff', 'StaffController');

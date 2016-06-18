@@ -1,0 +1,86 @@
+        <!-- Header de contenido -->
+        <section class="content-header">
+          <h1>
+            Buscar staff
+          </h1>
+        </section>
+
+        <!-- Contenido -->
+        <section class="content">
+          <!-- Caja de búsqueda -->
+          <div class="box box-danger">
+            
+            <!-- Titulo -->
+            <div class="box-header with-border">
+              <h3 class="box-title">Búsqueda</h3>
+            </div>
+            <!-- Formulario de búsqueda -->
+            <div class="box-body">            
+              <form name="form">        
+                <div class="input-group margin">
+                  <input type="text" class="form-control" id="search" name="search" ng-model="search" placeholder="Buscar por nombre o apellido..." max-length="20" ng-maxLength="20" required>
+                  <div class="input-group-btn">
+                    <button ng-click="searchStaff()" ng-disabled="form.$invalid" class="btn btn-danger">Buscar!</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Resultados de búsqueda-->
+          <div class="box box-danger" ng-show="searched">
+            <!-- Overlay cargando. Sólo mostrar cuando loading = true -->
+            <div class="overlay" ng-show="loading">
+              <i class="fa fa-refresh fa-spin"></i>
+            </div>
+
+            <!-- Titulo -->
+            <div class="box-header with-border">
+              <h3 class="box-title">Resultados</h3>
+              
+              <!-- Filtro -->
+              <div class="box-tools pull-right">
+                <div class="has-feedback">
+                  <input type="text" class="form-control input-sm" ng-model="filtro" placeholder="Filtrar resultados">
+                  <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cuerpo de caja. Resultados -->
+            <div class="box-body table-responsive no-padding">      
+              <table class="table table-hover">
+                
+                <!-- THEAD -->
+                <tr>
+                  <th style="width: 5%">#</th>
+                  <th style="width: 50%">Nombre y apellido</th>
+                  <th style="width: 45%"></th>
+                </tr>
+
+                <!-- Repeat TR con staff -->
+                <tr ng-repeat="staff in filteredStaff = (staff | filter:filtro) track by $index" ng-show="!loading && !error">
+                  <td>{{staff.id}}</td>
+                  <td>{{staff.name}} {{staff.lastname}}</td>
+                  <td style="text-align: right;">
+                    <a href="#staff/ver/{{staff.id}}" class="btn btn-sm btn-info">Ver</a>
+                  </td>
+                </tr>
+
+                <!-- Mensaje de no hay staff. Mostrar si no hay staff o filteredStaff, no está cargando y no hay error  -->
+                <tr>
+                  <td colspan="3" style="text-align: center" ng-show="(!staff.length || !filteredStaff.length) && !loading && !error">
+                        No se han encontrado resultados
+                  </td>
+                </tr>
+
+                <!-- Mensaje de error. Mostrar si hubo error y no está cargando -->
+                <tr>
+                  <td colspan="3" style="text-align: center;" ng-show="error && !loading">{{errorResponse}}</td>
+                </tr>
+
+              </table>
+            </div>
+          </div>
+
+        </section>

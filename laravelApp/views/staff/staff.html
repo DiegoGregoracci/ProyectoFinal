@@ -1,0 +1,114 @@
+        <!-- Header de contenido -->
+        <section class="content-header">
+          <h1>
+            Ver staff
+          </h1>
+        </section>
+        <!-- Contenido -->
+        <section class="content">
+          
+          <!-- Error cargando cliente -->
+          <div class="callout callout-danger lead" ng-show="errorLoading">
+            <h4>Error cargando el staff!</h4>
+            <p style="font-size: 16px;">
+                - {{errorResponse}} <br>
+            </p>
+          </div>
+
+
+          <!-- Staff. Mostrar si no hubo error cargando -->
+          <!-- Caja -->
+          <div class="box box-danger" ng-show="!errorLoading">
+            <!-- Overlay cargando -->
+            <div class="overlay" ng-show="loading || updating">
+              <i class="fa fa-refresh fa-spin"></i>
+            </div>
+
+            <!-- Titulo -->
+            <div class="box-header with-border">
+              <h3 class="box-title">Datos de staff</h3>
+            </div>
+
+                <!-- Formulario -->
+                <form name="form">
+                  <div class="box-body">
+                    
+                      <!-- Filas de dos campos -->
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="name">Nombre <small class="small-red">(requerido)</small></label>
+                            <input type="text" class="form-control" id="name" name="name" ng-model="staff.name"
+                                      maxlength="20" ng-maxlength="20" ng-minlength="3" required>
+                          </div>
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="lastname">Apellido <small class="small-red">(requerido)</small></label>
+                            <input type="text" class="form-control" id="lastname" name="lastname" ng-model="staff.lastname" 
+                                      maxlength="20" ng-maxlength="20" ng-minlength="3"required>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="address">Dirección</label>
+                            <input type="text" class="form-control" id="address" name="address" 
+                                          maxlength="30" ng-maxlength="30" ng-model="staff.address">
+                          </div>
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="telephone1">Teléfono</label>
+                            <input type="text" class="form-control" id="telephone" name="telephone"
+                                    ng-model="staff.telephone" maxlength="15" ng-maxlength="15">
+                          </div>
+                        </div>
+                           
+                      </div>
+
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <div class="form-group">
+                            <label for="email">Correo electrónico</label>
+                            <input type="text" class="form-control" id="email" name="email" placeholder="ejemplo@dominio.com" 
+                                    ng-model="staff.email" maxlength="30" ng-maxlength="30">
+                          </div>
+                        </div>
+                      </div>
+
+
+                  </div>
+
+                  <div class="box-footer" style="text-align:center;">
+                    <button ng-click="updateStaff()" ng-disabled="form.$invalid" class="btn btn-success" style="margin: 2.5px 5px;">
+                      Guardar cambios
+                    </button>
+                    <button ng-click="restoreData()" class="btn btn-danger" style="margin: 2.5px 5px;">
+                      Reestablecer campos
+                    </button>
+                  </div>
+            </form>
+          </div>
+
+          <!-- Mensajes al guardar cliente -->
+            <!-- Mostrar cuando hay error guardando -->
+            <div class="callout callout-danger lead" ng-show="errorUpdate">
+              <h4>Error!</h4>
+              <p style="font-size: 16px;" ng-repeat="er in errors">
+                  - {{er.error}} <br>
+              </p>
+            </div>
+
+            <!-- Mostrar cuando se guardo correctamente -->
+            <div class="callout callout-success lead" ng-show="successUpdate">
+              <h4>Éxito!</h4>
+              <p style="font-size: 16px;">
+                Se ha modificado el integrante del staff.
+              </p>
+            </div>
+          </div>
+
+        </section><!-- /.content -->

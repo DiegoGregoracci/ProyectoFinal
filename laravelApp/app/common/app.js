@@ -57,7 +57,25 @@ app.config(['$routeProvider', function ($routeProvider) {
         controller: 'SearchVehicleController'
     });
     /* FIN VISTAS VEHICULO */
+
+    /* VISTAS STAFF */
+
+    $routeProvider.when('/staff/nuevo', {
+        templateUrl: 'views/staff/add_staff.html',
+        controller: 'AddStaffController'
+    });
+
+    $routeProvider.when('/staff/ver/:id', {
+        templateUrl: 'views/staff/staff.html',
+        controller: 'ShowStaffController'
+    });
+
+    $routeProvider.when('/staff/buscar', {
+        templateUrl: 'views/staff/search_staff.html',
+        controller: 'SearchStaffController'
+    });
     
+    /* FIN VISTAS STAFF*/
 
     $routeProvider.when('/error', {
         templateUrl: 'views/common/error.html'

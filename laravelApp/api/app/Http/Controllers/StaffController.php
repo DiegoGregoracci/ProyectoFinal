@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Staff;
+use App\Client;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 // Include validators.php to extend Validators
@@ -272,7 +273,7 @@ class StaffController extends Controller
             return response()->json([   "error"     =>  VALIDATOR_SEARCH    ]);
             
         try {
-            $staff = Client::select('id', 'lastname', 'name')
+            $staff = Staff::select('id', 'lastname', 'name')
                             ->where('name', "LIKE", "%".$param."%")
                             ->orWhere('lastname', "LIKE", "%".$param."%")
                             ->orWhere('id', "=", $param)

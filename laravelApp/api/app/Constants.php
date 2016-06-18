@@ -9,7 +9,9 @@
 	// CLIENTES
 	define("VALIDATOR_USER", "El nombre de usuario debe tener entre 3 y 20 caractéres alfanuméricos sin espacios.");
 	define("VALIDATOR_NAME", "El nombre debe tener entre 3 y 20 caractéres alfanuméricos.");
+	define("VALIDATOR_NAME_ALPHA", "El nombre debe tener entre 3 y 20 letras y espacios.");
 	define("VALIDATOR_LASTNAME", "El apellido debe tener entre 3 y 20 caractéres alfanuméricos.");
+	define("VALIDATOR_LASTNAME_ALPHA", "El apellido debe tener entre 3 y 20 letras y espacios.");
 	define("VALIDATOR_ADDRESS", "La dirección puede tener un máximo de 20 caractéres alfanuméricos.");
 	define("VALIDATOR_TELEPHONE1", "El teléfono 1 puede tener un máximo de 15 caractéres alfanuméricos.");
 	define("VALIDATOR_TELEPHONE2", "El teléfono 1 puede tener un máximo de 15 caractéres alfanuméricos.");
@@ -40,4 +42,7 @@
 	// VEHICULOS
 	define("QUERY_EXISTINGPLATE", "La patente ya existe en la base de datos.");
 	define("QUERY_NOTEXISTINGVEHICLE", "Vehículo inexistente");
+
+	// STAFF
+	define("QUERY_NOTEXISTINGSTAFF", "Personal inexistente");
 

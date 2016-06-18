@@ -66,9 +66,9 @@ class StaffController extends Controller
         if ($validator->fails()) { 
             $messages = $validator->messages();
             if ($messages->has('name'))
-                $response[] = array(        "error"  => VALIDATOR_NAME      );
+                $response[] = array(        "error"  => VALIDATOR_NAME_ALPHA      );
             if ($messages->has('lastname'))
-                $response[] = array(        "error"  => VALIDATOR_LASTNAME  );
+                $response[] = array(        "error"  => VALIDATOR_LASTNAME_ALPHA  );
             if ($messages->has('address'))
                 $response[] = array(        "error"  => VALIDATOR_ADDRESS   );
             if ($messages->has('telephone'))
@@ -127,12 +127,9 @@ class StaffController extends Controller
             
             if (is_null($staff))
                 // Si el cliente es nulo, es porque no existe.
-                return response()->json(array("error" =>  "Staff inexistente"));
+                return response()->json(array("error" =>  QUERY_NOTEXISTINGSTAFF));
 
-            $response = array(
-                                "staff"    =>  $staff
-                             );
-            return response()->json($response);
+            return response()->json($staff);
         }
         catch (\Exception $e) {
             $errorCode = $e->getCode();
@@ -180,9 +177,9 @@ class StaffController extends Controller
         if ($validator->fails()) { 
             $messages = $validator->messages();
             if ($messages->has('name'))
-                $response[] = array(        "error"  => VALIDATOR_NAME      );
+                $response[] = array(        "error"  => VALIDATOR_NAME_ALPHA      );
             if ($messages->has('lastname'))
-                $response[] = array(        "error"  => VALIDATOR_LASTNAME  );
+                $response[] = array(        "error"  => VALIDATOR_LASTNAME_ALPHA  );
             if ($messages->has('address'))
                 $response[] = array(        "error"  => VALIDATOR_ADDRESS   );
             if ($messages->has('telephone'))
@@ -211,13 +208,12 @@ class StaffController extends Controller
 
         if (is_null($staff))
             // Si no se pudo obtener el cliente
-            return response()->json(["error"=>QUERY_NOTEXISTINGSTAFFrn]);
+            return response()->json(["error"=>QUERY_NOTEXISTINGSTAFF]);
         else{
 
             try{
                 DB::beginTransaction();
                 // Asigno los parametros
-                $staff = new Staff();
                 $staff->lastname = $request->lastname;
                 $staff->name = $request->name;
                 $staff->address = $request->address;

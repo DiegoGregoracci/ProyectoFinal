@@ -19,7 +19,6 @@ app.controller("ShowStaffController", ["$scope", "staffFactory", "$routeParams",
             "address": "",
             "email": ""
         };
-        $scope.vehicles = [];
     };
     $scope.restoreData = function() {
         $scope.staff = angular.copy($scope.savedstaff);
@@ -32,7 +31,7 @@ app.controller("ShowStaffController", ["$scope", "staffFactory", "$routeParams",
         staffFactory.getStaff($routeParams.id).then(function (response) {
                 if (!response.error) {
                     // If status=200 && No error msg.
-                    $scope.staff = response.staff;
+                    $scope.staff = response;
                     $scope.savedStaff = angular.copy($scope.staff);
                 }
                 else {

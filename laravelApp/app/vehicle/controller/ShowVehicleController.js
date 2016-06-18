@@ -51,7 +51,7 @@ app.controller("ShowVehicleController", ["$scope", "vehicleFactory", "clientFact
     };
     $scope.getVehicle = function () {
         $scope.initialize();
-        $scope.loading = true;
+        $scope.loadingVehicle = true;
 
         vehicleFactory.getVehicle($routeParams.id).then(function (response) {
                 if (!response.error) {

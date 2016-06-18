@@ -7,9 +7,51 @@
 
         <!-- Contenido -->
         <section class="content">
-          <!-- Caja de búsqueda -->
-          <div class="box box-danger">
+
+          <!-- Error cargando vehiculo -->
+          <div class="callout callout-danger lead" ng-show="errorLoading">
+            <h4>Error cargando el vehículo!</h4>
+            <p style="font-size: 16px;">
+                - {{errorResponse}} <br>
+            </p>
+          </div>
+
+          <!-- Default box -->
+          <div class="box box-danger" ng-show="!errorLoading">
+            <!-- Overlay cargando -->
+            <div class="overlay" ng-show="loadingVehicle">
+              <i class="fa fa-refresh fa-spin"></i>
+            </div>
             
+            <div class="box-header with-border">
+              <h3 class="box-title">Datos de vehículo #{{vehicle.id}}</h3>
+            </div>
+                  <div class="box-body">                    
+                      <div class="row">
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="name">Marca</label>
+                            <input type="text" class="form-control" ng-model="vehicle.brand" readonly>
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="lastname">Modelo</label>
+                            <input type="text" class="form-control" ng-model="vehicle.model" readonly>
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="lastname">Patente</label>
+                            <input type="text" class="form-control" ng-model="vehicle.plate" readonly>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+          </div>
+
+          <!-- Caja de búsqueda -->
+          <div class="box box-danger" ng-show="!errorLoading">
             <!-- Titulo -->
             <div class="box-header with-border">
               <h3 class="box-title">Buscar cliente</h3>
@@ -30,7 +72,7 @@
 
 
           <!-- Resultados de búsqueda-->
-          <div class="box box-danger" ng-show="searched">
+          <div class="box box-danger" ng-show="searched && !errorLoading">
             <!-- Overlay cargando. Sólo mostrar cuando loading = true -->
             <div class="overlay" ng-show="loading">
               <i class="fa fa-refresh fa-spin"></i>
@@ -62,7 +104,10 @@
                 <tr ng-repeat="client in filteredClients = (clients | filter:filtro) track by $index" ng-show="!error && !loading">
                   <td>{{client.id}}</td>
                   <td>{{client.name}} {{client.lastname}}</td>
-                  <td style="text-align: right;"><a href="#vehiculo/nuevo/{{client.id}}" class="btn btn-sm btn-success">Asignar vehículo</a></td>
+                  <td style="text-align: right;">
+                      <button ng-show="client.id != vehicle.client_id" class="btn btn-sm btn-success">Asignar propietario</button>
+                      <button ng-show="client.id == vehicle.client_id" class="btn btn-sm btn-success" disabled>Actual propietario</button>
+                  </td>
                 </tr>
 
                 <!-- Mensaje de no hay clientes. Mostrar si no hay clients o filteredClients, no está cargando y no hay error  -->

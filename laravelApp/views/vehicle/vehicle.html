@@ -1,13 +1,13 @@
+        
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
-            Datos de vehículo.
+            Ver vehículo.
           </h1>
         </section>
 
         <!-- Main content -->
         <section class="content">
-
           <!-- Error cargando cliente -->
           <div class="callout callout-danger lead" ng-show="errorLoading">
             <h4>Error cargando el cliente!</h4>
@@ -16,16 +16,104 @@
             </p>
           </div>
 
+          <!-- Cliente. Mostrar si no hubo error cargando -->
+          <!-- Caja -->
+          <div class="box box-danger" ng-show="!errorLoading">
+            <!-- Overlay cargando -->
+            <div class="overlay" ng-show="loadingClient">
+              <i class="fa fa-refresh fa-spin"></i>
+            </div>
+
+            <!-- Titulo -->
+            <div class="box-header with-border">
+              <h3 class="box-title">Datos de cliente #{{client.id}}</h3>
+            </div>
+
+                <!-- Formulario -->
+                  <div class="box-body">
+                    
+                      <!-- Filas de dos campos -->
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="name">Nombre</label>
+                            <input type="text" class="form-control" ng-model="client.name" readonly>
+                          </div>
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="lastname">Apellido</label>
+                            <input type="text" class="form-control" ng-model="client.lastname" readonly>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="address">Dirección</label>
+                            <input type="text" class="form-control" ng-model="client.address" readonly>
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="telephone1">Teléfono 1</label>
+                            <input type="text" class="form-control" ng-model="client.telephone1" readonly>
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="telephone2">Teléfono 2</label>
+                            <input type="text" class="form-control" ng-model="client.telephone2" readonly>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="user">Nombre de usuario</label>
+                            <input type="text" class="form-control" ng-model="client.user" readonly>
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="email">Correo electrónico</label>
+                            <input type="text" class="form-control" ng-model="client.email" readonly>
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="cuit">CUIT</label>
+                            <input type="text" class="form-control" ng-model="client.cuit" readonly>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+
+                  <div class="box-footer" style="text-align:center;">
+                    <a href="#cliente/ver/{{client.id}}" class="btn btn-info" style="margin: 2.5px 5px;">
+                      Modificar datos de cliente
+                    </a>
+                    <button ng-click="restoreData()" class="btn btn-success" style="margin: 2.5px 5px;">
+                      Cambiar dueño de vehículo
+                    </button>
+                  </div>
+          </div>
+
+
           <!-- Default box -->
           <div class="box box-danger" ng-show="!errorLoading">
             <!-- Overlay cargando -->
-            <div class="overlay" ng-show="loading">
+            <div class="overlay" ng-show="loadingVehicle">
               <i class="fa fa-refresh fa-spin"></i>
             </div>
             
             <div class="box-header with-border">
-              <h3 class="box-title">Datos de vehículo</h3>
+              <h3 class="box-title">Datos de vehículo #{{vehicle.id}}</h3>
             </div>
+
+
 
         <!-- form start -->
                 <form name="form">

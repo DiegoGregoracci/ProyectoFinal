@@ -1,0 +1,86 @@
+        <!-- Header de contenido -->
+        <section class="content-header">
+          <h1>
+            Cambiar propietario de vehículo
+          </h1>
+        </section>
+
+        <!-- Contenido -->
+        <section class="content">
+          <!-- Caja de búsqueda -->
+          <div class="box box-danger">
+            
+            <!-- Titulo -->
+            <div class="box-header with-border">
+              <h3 class="box-title">Buscar cliente</h3>
+            </div>
+
+            <!-- Formulario de búsqueda -->
+            <div class="box-body">            
+              <form name="form">        
+                <div class="input-group margin">
+                  <input type="text" class="form-control" id="search" name="search" ng-model="search" placeholder="Buscar por nombre, apellido o número de cliente..." max-length="20" ng-maxLength="20" required>
+                  <div class="input-group-btn">
+                    <button ng-click="searchClient()" ng-disabled="form.$invalid" class="btn btn-danger">Buscar!</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+
+          <!-- Resultados de búsqueda-->
+          <div class="box box-danger" ng-show="searched">
+            <!-- Overlay cargando. Sólo mostrar cuando loading = true -->
+            <div class="overlay" ng-show="loading">
+              <i class="fa fa-refresh fa-spin"></i>
+            </div>
+
+            <!-- Título  y filtro-->
+            <div class="box-header with-border">
+              <h3 class="box-title">Seleccione el cliente</h3>
+              <div class="box-tools pull-right">
+                <div class="has-feedback">
+                  <input type="text" class="form-control input-sm" ng-model="filtro" placeholder="Filtrar resultados">
+                  <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cuerpo de caja. Resultados -->
+            <div class="box-body table-responsive no-padding">      
+              <table class="table table-hover">
+
+                <!-- THEAD -->
+                <tr>
+                  <th style="width: 5%">#</th>
+                  <th style="width: 65%">Nombre y apellido</th>
+                  <th style="width: 30%"></th>
+                </tr>
+                
+                <!-- Repeat TR con clientes -->
+                <tr ng-repeat="client in filteredClients = (clients | filter:filtro) track by $index" ng-show="!error && !loading">
+                  <td>{{client.id}}</td>
+                  <td>{{client.name}} {{client.lastname}}</td>
+                  <td style="text-align: right;"><a href="#vehiculo/nuevo/{{client.id}}" class="btn btn-sm btn-success">Asignar vehículo</a></td>
+                </tr>
+
+                <!-- Mensaje de no hay clientes. Mostrar si no hay clients o filteredClients, no está cargando y no hay error  -->
+                <tr>
+                  <td colspan="3" style="text-align: center" ng-show="(!clients.length || !filteredClients.length) && !loading && !error">
+                        No se han encontrado resultados
+                  </td>
+                </tr>
+
+                <!-- Mensaje de error. Mostrar si hubo error y no está cargando -->
+                <tr>
+                  <td colspan="3" style="text-align: center;" ng-show="error && !loading">
+                        {{errorResponse}}
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+          </div>
+
+        </section>

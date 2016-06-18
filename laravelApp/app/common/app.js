@@ -6,11 +6,39 @@ var app = angular.module('app', [
 // Configuracion de Route Provider para manejar las rutas.
 app.config(['$routeProvider', function ($routeProvider) {
     
+    /*VISTAS ARTICULOS*/
+    $routeProvider.when('/articulos/nuevo', {
+        templateUrl: 'views/Article/add_article.html',
+        controller: 'AddArticleController'
+    });
+
+    $routeProvider.when('/articulos/ver/:id', {
+        templateUrl: 'views/Article/article.html',
+        controller: 'ShowArticleController'
+    });
+
+    $routeProvider.when('/articulos/buscar', {
+        templateUrl: 'views/Article/search_article.html',
+        controller: 'SearchArticleController'
+    });
+    /*FIN VISTAS ARTICULOS*/
+
+    /*VISTAS PROVEEDORES*/
     $routeProvider.when('/proveedores/nuevo', {
-        templateUrl: 'views/add_supplier.html',
+        templateUrl: 'views/Supplier/add_supplier.html',
         controller: 'AddSupplierController'
     });
 
+    $routeProvider.when('/proveedores/ver/:id', {
+        templateUrl: 'views/Supplier/supplier.html',
+        controller: 'ShowSupplierController'
+    });
+
+    $routeProvider.when('/proveedores/buscar', {
+        templateUrl: 'views/Supplier/search_supplier.html',
+        controller: 'SearchSupplierController'
+    });
+    /*FIN VISTAS PROVEEDORES*/
 
     /* VISTAS CLIENTE */
     $routeProvider.when('/cliente/nuevo', {
@@ -55,6 +83,11 @@ app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/vehiculo/buscar', {
         templateUrl: 'views/vehicle/search_vehicle.html',
         controller: 'SearchVehicleController'
+    });
+
+    $routeProvider.when('/vehiculo/cambiarprop/:id', {
+        templateUrl: 'views/vehicle/change_owner.html',
+        controller: 'SearchClientController'
     });
     /* FIN VISTAS VEHICULO */
 

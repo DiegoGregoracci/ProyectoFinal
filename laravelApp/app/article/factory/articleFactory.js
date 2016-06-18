@@ -1,18 +1,13 @@
-// Vehicle Factory.
+// Client Factory.
 // Handles all Client's API requests.
-app.factory('vehicleFactory', ['$http', '$q', 'locationPath', function($http, $q, locationPath) {
-    var vehicleFactory = {};
+app.factory('articleFactory', ['$http', '$q', 'locationPath', function($http, $q, locationPath) {
+    var articleFactory = {};
 
-    // Get all vehicles
-    vehicleFactory.getVehicles = function () {
-        return $http.get(locationPath.BASE_URL + locationPath.VEHICLE_URL);
-    };
-
-    // Get vehicle by ID
-    vehicleFactory.getVehicle = function (id) {
+    // Get article by ID
+    articleFactory.getArticle = function (id) {
         var defered = $q.defer();  
         var promise = defered.promise;
-        $http.get(locationPath.BASE_URL + locationPath.VEHICLE_URL + "/" + id)
+        $http.get(locationPath.BASE_URL + locationPath.ARTICLE_URL + "/" + id)
             .success(function(data) {
                 defered.resolve(data);
             })
@@ -22,11 +17,11 @@ app.factory('vehicleFactory', ['$http', '$q', 'locationPath', function($http, $q
         return promise;    
     };
 
-    // Add new vehicle
-    vehicleFactory.addVehicle = function (vehicle) {
+    // Add new article
+    articleFactory.addArticle = function (article) {
         var defered = $q.defer();  
         var promise = defered.promise;
-        $http.post(locationPath.BASE_URL + locationPath.VEHICLE_URL, vehicle)
+        $http.post(locationPath.BASE_URL + locationPath.ARTICLE_URL, article)
             .success(function(data) {
                 defered.resolve(data);
             })
@@ -36,15 +31,11 @@ app.factory('vehicleFactory', ['$http', '$q', 'locationPath', function($http, $q
         return promise;
     };
 
-    // Change vehicle's owner
-    vehicleFactory.changeOwner = function (id_client, id_vehicle) {
+    // Search article list
+    articleFactory.searchArticles = function(param) {
         var defered = $q.defer();  
         var promise = defered.promise;
-        $http.post(locationPath.BASE_URL + locationPath.VEHICLE_URL,
-                {
-                    "id_client" : id_client, 
-                    "id_vehicle": id_vehicle
-                })
+        $http.get(locationPath.BASE_URL + locationPath.ARTICLE_URL + locationPath.SEARCH_URL + param)
             .success(function(data) {
                 defered.resolve(data);
             })
@@ -54,11 +45,11 @@ app.factory('vehicleFactory', ['$http', '$q', 'locationPath', function($http, $q
         return promise;
     };
 
-    // Search vehicle list
-    vehicleFactory.searchVehicles = function(param) {
+    // Update article
+    articleFactory.updateArticle = function (id, article) {
         var defered = $q.defer();  
         var promise = defered.promise;
-        $http.get(locationPath.BASE_URL + locationPath.VEHICLE_URL + locationPath.SEARCH_URL + param)
+        $http.put(locationPath.BASE_URL + locationPath.ARTICLE_URL + "/" + id, article)
             .success(function(data) {
                 defered.resolve(data);
             })
@@ -66,7 +57,8 @@ app.factory('vehicleFactory', ['$http', '$q', 'locationPath', function($http, $q
                 defered.reject(err);
             });
         return promise;
-    }
+    };
 
-    return vehicleFactory;
+
+    return articleFactory;
 }]);

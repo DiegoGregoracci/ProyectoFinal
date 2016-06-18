@@ -17,6 +17,20 @@ app.factory('clientFactory', ['$http', '$q', 'locationPath', function($http, $q,
         return promise;    
     };
 
+    // Get client by ID
+    clientFactory.getVehicleOwner = function (id) {
+        var defered = $q.defer();  
+        var promise = defered.promise;
+        $http.get(locationPath.BASE_URL + locationPath.CLIENT_URL + "/vehicleowner/" + id)
+            .success(function(data) {
+                defered.resolve(data);
+            })
+            .error(function(err) {
+                defered.reject(err);
+            });
+        return promise;    
+    };
+
     // Add new client
     clientFactory.addClient = function (client) {
         var defered = $q.defer();  

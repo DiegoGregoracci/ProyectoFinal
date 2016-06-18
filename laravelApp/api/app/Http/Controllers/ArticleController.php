@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Supplier;
+use App\Article;
 use Illuminate\Support\Facades\Validator;
 use DB;
 use Illuminate\Database\DatabaseManager;
-class SupplierController extends Controller
+
+class ArticleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -42,10 +43,8 @@ class SupplierController extends Controller
           // Validar
         $validator = Validator::make($request->all(), [
             'description' => 'required|max:50',
-            'tel' => 'required|max:15|numeric',
-            'adress' => 'required|max:30|alpha_num_spaces',
-            'email' => 'email|max:30',
-            'responsible' => 'required|max:20|alpha_spaces',
+            'price' => 'required|numeric',
+            'cost' => 'required|numeric',
         ]);
 
         // Compruebo mensajes. Con $messages->has('field') sabes si el validator fallo para ese field
@@ -53,43 +52,33 @@ class SupplierController extends Controller
             $messages = $validator->messages();
             if ($messages->has('description'))
                 $response[] = array(        "error" =>  VALIDATOR_DESCRIPTION);
-            if ($messages->has('tel'))
-                $response[] = array(        "error" =>  VALIDATOR_TEL);
-            if ($messages->has('adress'))
-                $response[] = array(        "error" =>  VALIDATOR_ADRESS);
-            if ($messages->has('email'))
-                $response[] = array(        "error" =>  VALIDATOR_EMAIL);
-            if ($messages->has('responsible'))
-                $response[] = array(        "error" =>  VALIDATOR_RESPONSIBLE);
+            if ($messages->has('price'))
+                $response[] = array(        "error" =>  VALIDATOR_PRICE);
+            if ($messages->has('cost'))
+                $response[] = array(        "error" =>  VALIDATOR_COST);
             return response()->json($response);
         }
 
-        $supplier = new Supplier();
-        $supplier->description = $request->description;
-        $supplier->tel = $request->tel;
-        $supplier->adress = $request->adress;
-        $supplier->email = $request->email;
-        $supplier->responsible = $request->responsible;
+        $article = new Article();
+        $article->description = $request->description;
+        $article->price = $request->price;
+        $article->cost = $request->cost;
 
         try{
-        	$supplier->save();
-        	return response()->json(["id"=>$supplier->id]);
+        	$article->save();
+        	return response()->json(["id"=>$article->id]);
         }
         catch (\Exception $e) {
         	 // Hubo error guardando
                     $errorCode = $e->getCode();
-                    if ($errorCode == 23000)
-                        // Direccion duplicada
-                        $response[] = array("error"=>QUERY_EXISTINGADRESS);
-                    else
-                        if ($errorCode == 2002 || $errorCode == 1044 || $errorCode== 1049)
+                    if ($errorCode == 2002 || $errorCode == 1044 || $errorCode== 1049)
                             // Si es 2002, es porque no se pudo conectar. No tiro rollback() porque lanza otra vez excepcion porque no esta conectado
                             // Si es 1044, usuario incorrecto
                             // Si es 1049, no existe la tabla
-                            $response[] = array("error"=>QUERY_CONN);
-                        else
+                        $response[] = array("error"=>QUERY_CONN);
+                    else
                             // Por si hay algún otro error
-                            $response[] = array("error"=>QUERY_UNEXPECTED);
+                        $response[] = array("error"=>QUERY_UNEXPECTED);
                     
                     return response()->json($response);
         }
@@ -106,13 +95,13 @@ class SupplierController extends Controller
     public function show($id)
     {
         try{
-            $supplier = Supplier::where('id', $id)->get()->first();
+            $article = Article::where('id', $id)->get()->first();
              
-             if (!is_null($supplier))
-                return $supplier;
+             if (!is_null($article))
+                return $article;
             else
                 // Si el cliente es nulo, es porque no existe.
-                return response()->json(array("error" =>  QUERY_NOTEXISTINGSUPPLIER));
+                return response()->json(array("error" =>  QUERY_NOTEXISTINGARTICLE));
         }
         catch (\Exception $e) {
             $errorCode = $e->getCode();
@@ -150,10 +139,8 @@ class SupplierController extends Controller
          // Validar
         $validator = Validator::make($request->all(), [
             'description' => 'required|max:50',
-            'tel' => 'required|max:15|numeric',
-            'adress' => 'required|max:30|alpha_num_spaces',
-            'email' => 'email|max:30',
-            'responsible' => 'required|max:20|alpha_spaces',
+            'price' => 'required|numeric',
+            'cost' => 'required|numeric',
         ]);
 
         // Compruebo mensajes. Con $messages->has('field') sabes si el validator fallo para ese field
@@ -161,33 +148,27 @@ class SupplierController extends Controller
             $messages = $validator->messages();
             if ($messages->has('description'))
                 $response[] = array(        "error" =>  VALIDATOR_DESCRIPTION);
-            if ($messages->has('tel'))
-                $response[] = array(        "error" =>  VALIDATOR_TEL);
-            if ($messages->has('adress'))
-                $response[] = array(        "error" =>  VALIDATOR_ADRESS);
-            if ($messages->has('email'))
-                $response[] = array(        "error" =>  VALIDATOR_EMAIL);
-            if ($messages->has('responsible'))
-                $response[] = array(        "error" =>  VALIDATOR_RESPONSIBLE);
+            if ($messages->has('price'))
+                $response[] = array(        "error" =>  VALIDATOR_PRICE);
+            if ($messages->has('cost'))
+                $response[] = array(        "error" =>  VALIDATOR_COST);
             return response()->json($response);
         }
 
         try{
-            $supplier = Supplier::where('id', $id)->get()->first();
+            $articles = Article::where('id', $id)->get()->first();
         }
         catch (\Exception $e) {
             return response()->json($e);
         }
 
-        $supplier->description = $request->description;
-        $supplier->tel = $request->tel;
-        $supplier->adress = $request->adress;
-        $supplier->email = $request->email;
-        $supplier->responsible = $request->responsible;
+        $articles->description = $request->description;
+        $articles->price = $request->price;
+        $articles->cost = $request->cost;
         
         try{
-            $supplier->save();
-            return "proveedor modificado";
+            $articles->save();
+            return "articulo modificado";
         }
         catch (\Exception $e) {
             // Hubo error agregando
@@ -215,12 +196,12 @@ class SupplierController extends Controller
      */
     public function destroy($id)
     {
-        $supplier = Supplier::where('id', $id)->get();
+        $article = Article::where('id', $id)->get();
         try{
-            $supplier->delete();
+            $article->delete();
         }
         catch (\Exception $e) {
-            return "error al eliminar proveedor";
+            return "error al eliminar articulo";
         }
     }
 
@@ -240,13 +221,13 @@ class SupplierController extends Controller
             return response()->json(["error"=>VALIDATOR_SEARCH]);   
         
         try {
-            $supplier = Supplier::select('suppliers.id', 'tel', 'adress', 'email', 'responsible')
-                            ->where('responsible', "LIKE", "%".$param."%")
-                            ->orWhere('tel', "LIKE", "%".$param."%")
-                            ->orWhere('adress', "LIKE", "%".$param."%")
+            $article = Article::select('articles.id', 'description', 'price', 'cost')
+                            ->where('cost', "LIKE", "%".$param."%")
+                            ->orWhere('price', "LIKE", "%".$param."%")
+                            ->orWhere('description', "LIKE", "%".$param."%")
                             ->orWhere('id', "=", $param)
                             ->get();
-            return $supplier;
+            return $article;
         }
         catch (\Exception $e) {
             // Hubo error buscando.

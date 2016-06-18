@@ -1,0 +1,106 @@
+        <!-- Header de contenido -->
+        <section class="content-header">
+          <h1>
+            Ver proveedor
+          </h1>
+        </section>
+        <!-- Contenido -->
+        <section class="content">
+          
+          <!-- Error cargando proveedor -->
+          <div class="callout callout-danger lead" ng-show="errorLoading">
+            <h4>Error cargando el proveedor!</h4>
+            <p style="font-size: 16px;">
+                - {{errorResponse}} <br>
+            </p>
+          </div>
+
+
+          <!-- Proveedor. Mostrar si no hubo error cargando -->
+          <!-- Caja -->
+          <div class="box box-danger" ng-show="!errorLoading">
+            <!-- Overlay cargando -->
+            <div class="overlay" ng-show="loading || updating">
+              <i class="fa fa-refresh fa-spin"></i>
+            </div>
+
+            <!-- Titulo -->
+            <div class="box-header with-border">
+              <h3 class="box-title">Datos de proveedor #{{supplier.id}}</h3>
+            </div>
+
+                <!-- Formulario -->
+                <form name="form">
+                    <div class="box-body">
+                    
+                      <!-- Filas de dos campos -->
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="name">Razón Social <small class="small-red">(requerido)</small></label>
+                            <input type="text" class="form-control" id="name" name="description" ng-model="supplier.description" required>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="address">Dirección</label>
+                            <input type="text" class="form-control" id="address" name="address" ng-model="supplier.address">
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label for="telephone">Teléfono</label>
+                            <input type="text" class="form-control" id="telephone" name="telephone1" ng-model="supplier.tel">
+                          </div>
+                        </div>                      
+                      </div>
+
+                      <div class="row">
+                        <div class="col-lg-7">
+                          <div class="form-group">
+                            <label for="email">Correo electrónico</label>
+                            <input type="text" class="form-control" id="email" name="email" ng-model="supplier.email">
+                          </div>
+                        </div>
+                        <div class="col-lg-5">
+                          <div class="form-group">
+                            <label for="cuit">Responsable</label>
+                            <input type="text" class="form-control" id="responsible" name="responsible" ng-model="supplier.responsible">
+                          </div>
+                        </div>
+                      </div>
+
+                  </div><!-- /.box-body -->
+
+                  <div class="box-footer" style="text-align:center;">
+                    <button ng-click="updateSupplier()" ng-disabled="form.$invalid" class="btn btn-success" style="margin: 2.5px 5px;">
+                      Guardar cambios
+                    </button>
+                    <button ng-click="restoreData()" class="btn btn-danger" style="margin: 2.5px 5px;">
+                      Reestablecer campos
+                    </button>
+                  </div>
+            </form>
+          </div>
+
+          <!-- Mensajes al guardar proveedor -->
+            <!-- Mostrar cuando hay error guardando -->
+            <div class="callout callout-danger lead" ng-show="errorUpdate">
+              <h4>Error!</h4>
+              <p style="font-size: 16px;" ng-repeat="er in errors">
+                  - {{er.error}} <br>
+              </p>
+            </div>
+
+            <!-- Mostrar cuando se guardo correctamente -->
+            <div class="callout callout-success lead" ng-show="successUpdate">
+              <h4>Éxito!</h4>
+              <p style="font-size: 16px;">
+                Se ha modificado el proveedor.
+              </p>
+            </div>
+          <!-- / Mensajes -->
+        </section><!-- /.content -->

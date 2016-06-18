@@ -8,34 +8,34 @@ app.config(['$routeProvider', function ($routeProvider) {
     
     /*VISTAS ARTICULOS*/
     $routeProvider.when('/articulos/nuevo', {
-        templateUrl: 'views/Article/add_article.html',
+        templateUrl: 'views/article/add_article.html',
         controller: 'AddArticleController'
     });
 
     $routeProvider.when('/articulos/ver/:id', {
-        templateUrl: 'views/Article/article.html',
+        templateUrl: 'views/article/article.html',
         controller: 'ShowArticleController'
     });
 
     $routeProvider.when('/articulos/buscar', {
-        templateUrl: 'views/Article/search_article.html',
+        templateUrl: 'views/article/search_article.html',
         controller: 'SearchArticleController'
     });
     /*FIN VISTAS ARTICULOS*/
 
     /*VISTAS PROVEEDORES*/
     $routeProvider.when('/proveedores/nuevo', {
-        templateUrl: 'views/Supplier/add_supplier.html',
+        templateUrl: 'views/supplier/add_supplier.html',
         controller: 'AddSupplierController'
     });
 
     $routeProvider.when('/proveedores/ver/:id', {
-        templateUrl: 'views/Supplier/supplier.html',
+        templateUrl: 'views/supplier/supplier.html',
         controller: 'ShowSupplierController'
     });
 
     $routeProvider.when('/proveedores/buscar', {
-        templateUrl: 'views/Supplier/search_supplier.html',
+        templateUrl: 'views/supplier/search_supplier.html',
         controller: 'SearchSupplierController'
     });
     /*FIN VISTAS PROVEEDORES*/

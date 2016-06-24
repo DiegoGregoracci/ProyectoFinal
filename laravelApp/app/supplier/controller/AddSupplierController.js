@@ -1,4 +1,6 @@
 // Add client controller.
+
+
 app.controller("AddSupplierController", ["$scope", "supplierFactory","$routeParams", "$location", 
                                     function($scope, supplierFactory, $routeParams, $location) {
     /*

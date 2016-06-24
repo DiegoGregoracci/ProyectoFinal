@@ -1,5 +1,6 @@
 // Add client controller.
-app.controller("AddSupplierController", ["$scope", "supplierFactory", "$location", function($scope, supplierFactory, $location) {
+app.controller("AddSupplierController", ["$scope", "supplierFactory", "$location", 
+                                    function($scope, supplierFactory, $routeParams, $location) {
     /*
         Initialize & reset object form.
     */
@@ -23,12 +24,15 @@ app.controller("AddSupplierController", ["$scope", "supplierFactory", "$location
         supplierFactory.addSupplier($scope.supplier).then(function (response) {
                 if (response.id) {
                     // If status=200 && ID.
-                 $scope.initialize();
-                 $scope.success = true;
-                    
+                 if (add){
+                        // If addVehicleNext, redirect to next page.
+                         $location.path("articulo/nuevo/" + response.id);
+                         $scope.success = true;
+                        }
                 }
                 else {
                     // Error, show error box.
+                    $scope.initialize();
                     $scope.errors = response;
                     $scope.error = true;
                 }

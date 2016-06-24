@@ -24,9 +24,11 @@ app.controller("AddArticleController", ["$scope", "articleFactory", "$routeParam
         articleFactory.addArticle($scope.article).then(function (response) {
                 if (response.id) {
                     // If status=200 && ID.
-                    if (add)
+                    if (add){
                         // If addVehicleNext, redirect to next page.
                         $location.path("articulo/nuevo/" + response.id);
+                        $scope.success = true;
+                    }
                     else {
                         // If !addVehicleNext, show success box and reset form.
                         $scope.initialize();

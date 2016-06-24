@@ -1,6 +1,6 @@
 // Add vehicle controller.
-app.controller("AddVehicleController", ["$scope", "vehicleFactory", "$routeParams", "$location",
-                                         function($scope, vehicleFactory, $routeParams, $location) {
+app.controller("AddVehicleController", ["$scope", "vehicleFactory", "clientFactory", "$routeParams", "$location",
+                                         function($scope, vehicleFactory, clientFactory, $routeParams, $location) {
     /*
         Initialize & reset object form.
     */
@@ -14,6 +14,33 @@ app.controller("AddVehicleController", ["$scope", "vehicleFactory", "$routeParam
             "year": "",
             "engine": "",
             }
+    };
+
+    $scope.getClient = function () {
+        $scope.initialize();
+        $scope.loading = true;
+        $scope.errorLoading = false;
+
+        clientFactory.getClient($routeParams.id).then(function (response) {
+                if (!response.error) {
+                    // If status=200 && No error msg.
+                    $scope.client = response.client;
+                    $scope.savedClient = angular.copy($scope.client);
+                    $scope.vehicles = response.vehicles;
+                }
+                else {
+                    // Error, show error box.
+                    $scope.errorLoading = true;
+                    $scope.errorResponse = response.error;
+                }
+                // Disable loading overlay
+                $scope.loading = false;
+            }, function (error) {
+                // HTTP Error. Force status msg, show error box, disable loading overlay.
+                $scope.errorResponse = "Error inesperado. Consulte al administrador";
+                $scope.loading = false;
+                $scope.errorLoading = true;
+        });
     };
 
     /*
@@ -61,4 +88,6 @@ app.controller("AddVehicleController", ["$scope", "vehicleFactory", "$routeParam
     $scope.success = false; 
     // Initialize form object.
     $scope.initialize();
+    // Get client
+    $scope.getClient();
 }]);

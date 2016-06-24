@@ -7,8 +7,55 @@
 
         <!-- Main content -->
         <section class="content">
-          <!-- Default box -->
-          <div class="box box-danger">
+
+          <!-- Error cargando cliente -->
+          <div class="callout callout-danger lead" ng-show="errorLoading">
+            <h4>Error cargando el cliente!</h4>
+            <p style="font-size: 16px;">
+                - {{errorResponse}} <br>
+            </p>
+          </div>
+
+          <!-- Cliente. Mostrar si no hubo error cargando -->
+          <!-- Caja -->
+          <div class="box box-danger" ng-show="!errorLoading">
+            <!-- Overlay cargando -->
+            <div class="overlay" ng-show="loading">
+              <i class="fa fa-refresh fa-spin"></i>
+            </div>
+
+            <!-- Titulo -->
+            <div class="box-header with-border">
+              <h3 class="box-title">Cliente seleccionado: #{{client.id}}</h3>
+            </div>
+
+                <!-- Formulario -->
+                  <div class="box-body">
+                    
+                      <!-- Filas de dos campos -->
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="name">Nombre</label>
+                            <input type="text" class="form-control" ng-model="client.name" readonly>
+                          </div>
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label for="lastname">Apellido</label>
+                            <input type="text" class="form-control" ng-model="client.lastname" readonly>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+          </div>
+
+
+
+
+
+          <!-- Form Vehiculo -->
+          <div class="box box-danger" ng-show="!errorLoading">
             <!-- Overlay cargando -->
             <div class="overlay" ng-show="loading">
               <i class="fa fa-refresh fa-spin"></i>

@@ -47,10 +47,10 @@ class SupplierController extends Controller
           // Validar
         $validator = Validator::make($request->all(), [
             'razon' => 'required|max:50',
-            'telephone' => 'required|max:15|numeric',
-            'adress' => 'required|max:30|alpha_num_spaces',
+            'telephone' => 'max:15|numeric',
+            'adress' => 'max:30|alpha_num_spaces',
             'email' => 'email|max:30',
-            'responsible' => 'required|max:20|alpha_spaces',
+            'responsible' => 'max:20|alpha_spaces',
         ]);
 
         // Compruebo mensajes. Con $messages->has('field') sabes si el validator fallo para ese field

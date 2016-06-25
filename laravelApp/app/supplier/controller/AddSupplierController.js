@@ -38,7 +38,7 @@ app.controller("AddSupplierController", ["$scope", "supplierFactory","$routePara
                 $scope.loading = false;
             }, function (error) {
                 // HTTP Error. Force status msg, show error box, disable loading overlay.
-                $scope.status = "No se ha podido crear el vehículo. Consulte al administrador";
+                $scope.status = "No se ha podido dar de alta el proveedor. Consulte al administrador";
                 $scope.loading = false;
                 $scope.error = true;
         });

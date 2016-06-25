@@ -14,6 +14,8 @@ use App\Client;
 use App\Vehicle;
 use App\Staff;
 use App\User;
+use App\Article;
+use App\Supplier;
 use Illuminate\Http\Request;
 
 
@@ -29,4 +31,5 @@ Route::get('article/search/{param}', 'ArticleController@search');
 Route::resource('client', 'ClientController');
 Route::resource('vehicle', 'VehicleController');
 Route::resource('supplier', 'SupplierController');
+Route::resource('article', 'ArticleController');
 Route::resource('staff', 'StaffController');

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Supplier;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
 use DB;
 use Illuminate\Database\DatabaseManager;
 // Include validators.php to extend Validators

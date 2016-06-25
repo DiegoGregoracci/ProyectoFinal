@@ -1,5 +1,5 @@
 app.controller("SearchArticleController", ["$scope", "articleFactory", function($scope, articleFactory) {
-    $scope.searchClient = function () {
+    $scope.searchArticle = function () {
         $scope.article = [];
         $scope.loading = true;
         $scope.searched = true;

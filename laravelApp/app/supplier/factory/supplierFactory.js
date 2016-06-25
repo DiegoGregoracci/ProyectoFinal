@@ -37,7 +37,7 @@ app.factory('supplierFactory', ['$http', '$q', 'locationPath', function($http, $
     supplierFactory.addSupplier = function (suplier) {
          var defered = $q.defer();  
         var promise = defered.promise;
-        $http.post(locationPath.BASE_URL + locationPath.SUPPLIER_URL + locationPath.ADD_URL, suplier)
+        $http.post(locationPath.BASE_URL + locationPath.SUPPLIER_URL, suplier)
             .success(function(data) {
                 defered.resolve(data);
             })

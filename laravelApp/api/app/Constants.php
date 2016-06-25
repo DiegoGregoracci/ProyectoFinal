@@ -27,6 +27,10 @@
 	define("VALIDATOR_ENGINE", "El motor puede contener hasta 15 caractéres.");
 	define("VALIDATOR_VIN", "El VIN debe tener un máximo de 17 caractéres alfanuméricos sin espacios.");
 
+	// PROVEEDOR
+
+	define("VALIDATOR_TEL", "El teléfono puede tener un máximo de 15 caractéres alfanuméricos.");
+
 /**
 	ERRORES DE TRANSACCIÓN
 */

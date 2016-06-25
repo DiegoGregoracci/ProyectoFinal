@@ -5,7 +5,7 @@ var app = angular.module('app', [
 
 // Configuracion de Route Provider para manejar las rutas.
 app.config(['$routeProvider', function ($routeProvider) {
-    
+
     /*VISTAS ARTICULOS*/
     $routeProvider.when('/articulos/nuevo', {
         templateUrl: 'views/article/add_article.html',
@@ -57,13 +57,13 @@ app.config(['$routeProvider', function ($routeProvider) {
     });
     /* FIN VISTAS CLIENTE */
 
-    
+
     $routeProvider.when('/personal/nuevo', {
         templateUrl: 'views/add_staff.html',
         controller: 'MainController'
     });
 
-    
+
     /* VISTAS VEHICULO */
     $routeProvider.when('/vehiculo/nuevo', {
         templateUrl: 'views/vehicle/add_vehicle_step1.html',
@@ -107,7 +107,7 @@ app.config(['$routeProvider', function ($routeProvider) {
         templateUrl: 'views/staff/search_staff.html',
         controller: 'SearchStaffController'
     });
-    
+
     /* FIN VISTAS STAFF*/
 
     $routeProvider.when('/error', {
@@ -116,7 +116,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.otherwise({
         redirectTo: '/error',
     });
-}]); 
+}]);
 
 // Fix layout after every route change
 app.run(function ($rootScope) {

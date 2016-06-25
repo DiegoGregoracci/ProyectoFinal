@@ -47,14 +47,14 @@ class SupplierController extends Controller
           // Validar
         $validator = Validator::make($request->all(), [
             'razon' => 'required|max:50',
-            'telephone' => 'max:15|numeric',
+            'telephone' => 'numeric',
             'adress' => 'max:30|alpha_num_spaces',
             'email' => 'email|max:30',
             'responsible' => 'max:20|alpha_spaces',
         ]);
 
         // Compruebo mensajes. Con $messages->has('field') sabes si el validator fallo para ese field
-        if ($validator->fails()) { 
+        if ($validator->fails()) {
             $messages = $validator->messages();
             if ($messages->has('razon'))
                 $response[] = array(        "error" =>  VALIDATOR_DESCRIPTION);
@@ -95,11 +95,11 @@ class SupplierController extends Controller
                         else
                             // Por si hay algún otro error
                             $response[] = array("error"=>QUERY_UNEXPECTED);
-                    
+
                     return response()->json($response);
         }
 
-       
+
     }
 
     /**
@@ -112,7 +112,7 @@ class SupplierController extends Controller
     {
         try{
             $supplier = Supplier::where('id', $id)->get()->first();
-             
+
              if (!is_null($supplier))
                 return $supplier;
             else
@@ -122,7 +122,7 @@ class SupplierController extends Controller
         catch (\Exception $e) {
             $errorCode = $e->getCode();
             if ($errorCode == 2002 || $errorCode == 1044 || $errorCode== 1049)
-                // Si es 2002, es porque no se pudo conectar. 
+                // Si es 2002, es porque no se pudo conectar.
                 // Si es 1044, usuario incorrecto
                 // Si es 1049, no existe la tabla
                 $response = array("error"=>QUERY_CONN);
@@ -162,7 +162,7 @@ class SupplierController extends Controller
         ]);
 
         // Compruebo mensajes. Con $messages->has('field') sabes si el validator fallo para ese field
-        if ($validator->fails()) { 
+        if ($validator->fails()) {
             $messages = $validator->messages();
             if ($messages->has('razon'))
                 $response[] = array(        "error" =>  VALIDATOR_DESCRIPTION);
@@ -189,7 +189,7 @@ class SupplierController extends Controller
         $supplier->adress = $request->adress;
         $supplier->email = $request->email;
         $supplier->responsible = $request->responsible;
-        
+
         try{
             $supplier->save();
             return "proveedor modificado";
@@ -242,8 +242,8 @@ class SupplierController extends Controller
             'searchParam' => 'required|alpha_num_spaces|max:20'
         ]);
         if ($validator->fails())
-            return response()->json(["error"=>VALIDATOR_SEARCH]);   
-        
+            return response()->json(["error"=>VALIDATOR_SEARCH]);
+
         try {
             $supplier = Supplier::select('suppliers.id', 'tel', 'adress', 'email', 'responsible')
                             ->where('responsible', "LIKE", "%".$param."%")
@@ -258,7 +258,7 @@ class SupplierController extends Controller
             // Solo puede error de conexión en este punto.
             $errorCode = $e->getCode();
             if ($errorCode == 2002 || $errorCode == 1044 || $errorCode== 1049)
-                // Si es 2002, es porque no se pudo conectar. 
+                // Si es 2002, es porque no se pudo conectar.
                 // Si es 1044, usuario incorrecto
                 // Si es 1049, no existe la tabla
                 $response = array("error"=>QUERY_CONN);

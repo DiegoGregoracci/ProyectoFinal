@@ -12,7 +12,7 @@
             <!-- Overlay cargando -->
             <div class="overlay" ng-show="loading">
               <i class="fa fa-refresh fa-spin"></i>
-            </div>          
+            </div>
             <!-- Titulo -->
             <div class="box-header with-border">
               <h3 class="box-title">Datos de proveedor</h3>
@@ -44,7 +44,7 @@
                             <label for="telephone">Teléfono</label>
                             <input type="text" class="form-control" id="telephone" name="telephone" ng-model="supplier.telephone">
                           </div>
-                        </div>                      
+                        </div>
                       </div>
 
                       <div class="row">
@@ -74,8 +74,8 @@
 
   <div class="callout callout-danger lead" ng-show="error">
     <h4>Error!</h4>
-    <p style="font-size: 16px;">
-      {{status}}
+    <p style="font-size: 16px;" ng-repeat="err in errors">
+      {{err.error}}
     </p>
   </div>
 

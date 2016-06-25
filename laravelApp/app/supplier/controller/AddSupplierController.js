@@ -1,7 +1,7 @@
 // Add client controller.
 
 
-app.controller("AddSupplierController", ["$scope", "supplierFactory","$routeParams", "$location", 
+app.controller("AddSupplierController", ["$scope", "supplierFactory","$routeParams", "$location",
                                     function($scope, supplierFactory, $routeParams, $location) {
     /*
         Initialize & reset object form.
@@ -49,7 +49,7 @@ app.controller("AddSupplierController", ["$scope", "supplierFactory","$routePara
     // Control var. True if error adding a client. Shows error box
     $scope.error = false;
     // Control var. True after adding a client. Shows success box
-    $scope.success = false; 
+    $scope.success = false;
     // Initialize form object.
     $scope.initialize();
 }]);

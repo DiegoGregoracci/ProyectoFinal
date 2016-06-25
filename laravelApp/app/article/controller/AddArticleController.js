@@ -15,7 +15,7 @@ app.controller("AddArticleController", ["$scope", "articleFactory", "$routeParam
     /*
         Add new article
     */
-    $scope.add = function(add) {
+    $scope.add = function() {
         // Set control vars
         $scope.loading = true;
         $scope.error = false;
@@ -24,16 +24,8 @@ app.controller("AddArticleController", ["$scope", "articleFactory", "$routeParam
         articleFactory.addArticle($scope.article).then(function (response) {
                 if (response.id) {
                     // If status=200 && ID.
-                    if (add){
-                        // If addVehicleNext, redirect to next page.
-                        $location.path("articulo/nuevo/" + response.id);
-                        $scope.success = true;
-                    }
-                    else {
-                        // If !addVehicleNext, show success box and reset form.
                         $scope.initialize();
                         $scope.success = true;
-                    }
                 }
                 else {
                     // Error, show error box.

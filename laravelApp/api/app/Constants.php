@@ -32,7 +32,6 @@
 	define("VALIDATOR_DESCRIPTION", "La descripcion puede tener un maximo de 50 caractéres.");
 	define("VALIDATOR_TEL", "El teléfono puede tener un máximo de 15 caractéres alfanuméricos.");
 	define("VALIDATOR_ADRESS", "La dirección puede tener un máximo de 30 caractéres alfanuméricos.");
-	define("VALIDATOR_EMAIL", "El email puede tener un máximo de 30 caractéres alfanuméricos.");
 	define("VALIDATOR_RESPONSIBLE", "El responsable puede tener un máximo de 20 caractéres alfanuméricos.");
 
 	// ARTICULOS

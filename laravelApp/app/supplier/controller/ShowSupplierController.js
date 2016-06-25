@@ -4,16 +4,16 @@ app.controller("ShowSupplierController", ["$scope", "supplierFactory", "$routePa
     */
     $scope.initialize = function () {
         $scope.supplier = {
-            "description": "",
-            "tel": "",
-            "address": "",
+            "razon": "",
+            "telephone": "",
+            "adress": "",
             "email": "",
             "responsible": ""
         };
         $scope.savedSupplier = {
-            "description": "",
-            "tel": "",
-            "address": "",
+            "razon": "",
+            "telephone": "",
+            "adress": "",
             "email": "",
             "responsible": ""
         };

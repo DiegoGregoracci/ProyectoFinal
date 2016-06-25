@@ -8,9 +8,9 @@ app.controller("AddSupplierController", ["$scope", "supplierFactory","$routePara
     */
     $scope.initialize = function () {
         $scope.supplier = {
-            "description": "",
-            "tel": "",
-            "address": "",
+            "razon": "",
+            "telephone": "",
+            "adress": "",
             "email": "",
             "responsible": ""
         };
@@ -26,15 +26,11 @@ app.controller("AddSupplierController", ["$scope", "supplierFactory","$routePara
         supplierFactory.addSupplier($scope.supplier).then(function (response) {
                 if (response.id) {
                     // If status=200 && ID.
-                 if (add){
-                        // If addVehicleNext, redirect to next page.
-                         $location.path("articulo/nuevo/" + response.id);
-                         $scope.success = true;
-                        }
+                    $scope.initialize();
+                    $scope.success = true;
                 }
                 else {
                     // Error, show error box.
-                    $scope.initialize();
                     $scope.errors = response;
                     $scope.error = true;
                 }

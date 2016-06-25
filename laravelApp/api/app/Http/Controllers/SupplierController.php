@@ -9,6 +9,10 @@ use App\Supplier;
 use Illuminate\Support\Facades\Validator;
 use DB;
 use Illuminate\Database\DatabaseManager;
+// Include validators.php to extend Validators
+require app_path().'/Validators.php';
+// Include constantes
+require app_path().'/Constants.php';
 class SupplierController extends Controller
 {
     /**
@@ -41,8 +45,8 @@ class SupplierController extends Controller
     {
           // Validar
         $validator = Validator::make($request->all(), [
-            'description' => 'required|max:50',
-            'tel' => 'required|max:15|numeric',
+            'razon' => 'required|max:50',
+            'telephone' => 'required|max:15|numeric',
             'adress' => 'required|max:30|alpha_num_spaces',
             'email' => 'email|max:30',
             'responsible' => 'required|max:20|alpha_spaces',
@@ -51,9 +55,9 @@ class SupplierController extends Controller
         // Compruebo mensajes. Con $messages->has('field') sabes si el validator fallo para ese field
         if ($validator->fails()) { 
             $messages = $validator->messages();
-            if ($messages->has('description'))
+            if ($messages->has('razon'))
                 $response[] = array(        "error" =>  VALIDATOR_DESCRIPTION);
-            if ($messages->has('tel'))
+            if ($messages->has('telephone'))
                 $response[] = array(        "error" =>  VALIDATOR_TEL);
             if ($messages->has('adress'))
                 $response[] = array(        "error" =>  VALIDATOR_ADRESS);
@@ -65,8 +69,8 @@ class SupplierController extends Controller
         }
 
         $supplier = new Supplier();
-        $supplier->description = $request->description;
-        $supplier->tel = $request->tel;
+        $supplier->description = $request->razon;
+        $supplier->tel = $request->telephone;
         $supplier->adress = $request->adress;
         $supplier->email = $request->email;
         $supplier->responsible = $request->responsible;
@@ -149,8 +153,8 @@ class SupplierController extends Controller
     {
          // Validar
         $validator = Validator::make($request->all(), [
-            'description' => 'required|max:50',
-            'tel' => 'required|max:15|numeric',
+            'razon' => 'required|max:50',
+            'telephone' => 'required|max:15|numeric',
             'adress' => 'required|max:30|alpha_num_spaces',
             'email' => 'email|max:30',
             'responsible' => 'required|max:20|alpha_spaces',
@@ -159,9 +163,9 @@ class SupplierController extends Controller
         // Compruebo mensajes. Con $messages->has('field') sabes si el validator fallo para ese field
         if ($validator->fails()) { 
             $messages = $validator->messages();
-            if ($messages->has('description'))
+            if ($messages->has('razon'))
                 $response[] = array(        "error" =>  VALIDATOR_DESCRIPTION);
-            if ($messages->has('tel'))
+            if ($messages->has('telephone'))
                 $response[] = array(        "error" =>  VALIDATOR_TEL);
             if ($messages->has('adress'))
                 $response[] = array(        "error" =>  VALIDATOR_ADRESS);
@@ -179,8 +183,8 @@ class SupplierController extends Controller
             return response()->json($e);
         }
 
-        $supplier->description = $request->description;
-        $supplier->tel = $request->tel;
+        $supplier->description = $request->razon;
+        $supplier->tel = $request->telephone;
         $supplier->adress = $request->adress;
         $supplier->email = $request->email;
         $supplier->responsible = $request->responsible;

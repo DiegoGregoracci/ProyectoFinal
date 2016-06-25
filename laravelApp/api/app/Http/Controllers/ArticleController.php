@@ -9,6 +9,10 @@ use App\Article;
 use Illuminate\Support\Facades\Validator;
 use DB;
 use Illuminate\Database\DatabaseManager;
+// Include validators.php to extend Validators
+require app_path().'/Validators.php';
+// Include constantes
+require app_path().'/Constants.php';
 
 class ArticleController extends Controller
 {
@@ -43,8 +47,8 @@ class ArticleController extends Controller
           // Validar
         $validator = Validator::make($request->all(), [
             'description' => 'required|max:50',
-            'price' => 'required|numeric',
-            'cost' => 'required|numeric',
+            'price' => 'numeric',
+            'cost' => 'numeric',
         ]);
 
         // Compruebo mensajes. Con $messages->has('field') sabes si el validator fallo para ese field
@@ -139,8 +143,8 @@ class ArticleController extends Controller
          // Validar
         $validator = Validator::make($request->all(), [
             'description' => 'required|max:50',
-            'price' => 'required|numeric',
-            'cost' => 'required|numeric',
+            'price' => 'numeric',
+            'cost' => 'numeric',
         ]);
 
         // Compruebo mensajes. Con $messages->has('field') sabes si el validator fallo para ese field

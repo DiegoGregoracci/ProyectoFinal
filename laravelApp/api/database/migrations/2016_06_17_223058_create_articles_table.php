@@ -15,9 +15,9 @@ class CreateArticlesTable extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('active')->default(1);
-            $table->string('description', 50);
-            $table->float('cost');
-            $table->float('price');
+            $table->string('description', 50)->unique();
+            $table->float('cost')->nullable();
+            $table->float('price')->nullable();
             $table->timestamps();
         });
     }

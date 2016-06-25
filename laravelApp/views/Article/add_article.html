@@ -34,16 +34,20 @@
                         </div>
                         <div class="col-lg-3">
                           <div class="form-group">
-                            <label for="cost">Costo </label>
-                            <input type="number" class="form-control" id="cost" name="cost" ng-model="article.cost" 
-                                      maxlength="20" ng-maxlength="20" ng-minlength="3">
+                            <label for="cost">Costo</label>
+                            <div class="input-group">
+                              <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                              <input type="number" class="form-control" id="cost" name="cost" ng-model="article.cost">
+                            </div>
                           </div>
                         </div>
                         <div class="col-lg-3">
                           <div class="form-group">
                             <label for="price">Precio</label>
-                            <input type="number" class="form-control" id="price" name="price" 
-                                          maxlength="30" ng-maxlength="30" ng-model="article.price">
+                            <div class="input-group">
+                              <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                              <input type="number" class="form-control" id="price" name="price" ng-model="article.price">
+                            </div>
                           </div>
                         </div>
                       </div>

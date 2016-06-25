@@ -303,4 +303,41 @@ class Vehiclecontroller extends Controller
             return response()->json($response);
         }
     }
+
+    public function changeOwner(Request $request) {
+         // Validar
+        $validator = Validator::make($request->all(), [
+            'client_id' => 'required|numeric',
+            'vehicle_id' => 'required|numeric'
+        ]);
+        if ($validator->fails())
+            return response()->json(["error"=>VALIDATOR_BADREQUEST]);   
+        
+        try {
+            // Buscar cliente
+            $vehicle = Vehicle::find($request->vehicle_id);
+            if (is_null($vehicle))
+                return response()->json(["error"=>QUERY_NOTEXISTINGVEHICLE]);
+            $client = Client::find($request->client_id);
+            if (is_null($client))
+                return response()->json(["error"=>QUERY_NOTEXISTINGUSER]);
+
+            $vehicle->client()->associate($client);
+            $vehicle->save();
+            return response()->json(["id"=>$vehicle->id]);
+        }
+        catch (\Exception $e) {
+            // Hubo error buscando
+            $errorCode = $e->getCode();
+            if ($errorCode == 2002 || $errorCode == 1044 || $errorCode== 1049)
+                // Si es 2002, es porque no se pudo conectar
+                // Si es 1044, usuario incorrecto
+                // Si es 1049, no existe la tabla
+                $response[] = array("error"=>QUERY_CONN);
+            else
+                $response[] = array("error"=>QUERY_UNEXPECTED);
+            return response()->json($response);
+        }        
+    }
+
 }

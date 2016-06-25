@@ -68,5 +68,23 @@ app.factory('vehicleFactory', ['$http', '$q', 'locationPath', function($http, $q
         return promise;
     }
 
+    // Update Client
+    vehicleFactory.changeOwner = function (vehicle_id, client_id) {
+        var defered = $q.defer();  
+        var promise = defered.promise;
+        $http.put(locationPath.BASE_URL + locationPath.VEHICLE_URL + locationPath.CHANGEOWNER_URL,
+            {
+                "vehicle_id": vehicle_id,
+                "client_id": client_id
+            })
+            .success(function(data) {
+                defered.resolve(data);
+            })
+            .error(function(err) {
+                defered.reject(err);
+            });
+        return promise;
+    };
+
     return vehicleFactory;
 }]);

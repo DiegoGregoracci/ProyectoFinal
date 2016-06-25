@@ -1,5 +1,5 @@
-app.controller("ChangeOwnerController", ["$scope", "clientFactory", "vehicleFactory", "$routeParams", 
-                    function($scope, clientFactory, vehicleFactory, $routeParams) {
+app.controller("ChangeOwnerController", ["$scope", "clientFactory", "vehicleFactory", "$routeParams", "$location",
+                    function($scope, clientFactory, vehicleFactory, $routeParams, $location) {
     $scope.searchClient = function () {
         $scope.clients = [];
         $scope.loading = true;
@@ -45,7 +45,26 @@ app.controller("ChangeOwnerController", ["$scope", "clientFactory", "vehicleFact
         });
     };
     $scope.changeOwner = function (client_id) {
-        
+        $scope.changingOwner = true;
+
+        vehicleFactory.changeOwner($routeParams.id, client_id).then(function (response) {
+                if (!response.error)
+                    // If status=200 && No error msg.
+                    //$scope.vehicle = response;
+                    $location.path("vehiculo/ver/" + response.id);
+                else {
+                    // Error, show error box.
+                    $scope.errorLoading = true;
+                    $scope.errorResponse = response.error;
+                }
+                // Disable loading overlay
+                $scope.changingOwner = false;
+            }, function (error) {
+                // HTTP Error. Force status msg, show error box, disable loading overlay.
+                $scope.errorResponse = "Error inesperado. Consulte al administrador";
+                $scope.changingOwner = false;
+                $scope.errorLoading = true;
+        });    
     }
     $scope.searched = false;
     $scope.loading = false;

@@ -6,5 +6,6 @@ app.constant("locationPath", {
     "SUPPLIER_URL": "/supplier",
     "ARTICLE_URL": "/supplier",
     "STAFF_URL":"/staff",
-    "SEARCH_URL": "/search/"
+    "SEARCH_URL": "/search/",
+    "CHANGEOWNER_URL": "/changeowner"
 });

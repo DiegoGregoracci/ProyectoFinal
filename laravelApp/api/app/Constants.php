@@ -5,6 +5,7 @@
 */
 	// COMUNES
 	define("VALIDATOR_SEARCH", "El parámetro de búsqueda solo puede contener letras, números y espacios.");
+	define("VALIDATOR_BADREQUEST", "Solicitud incorrecta");
 
 	// CLIENTES
 	define("VALIDATOR_USER", "El nombre de usuario debe tener entre 3 y 20 caractéres alfanuméricos sin espacios.");
@@ -25,7 +26,6 @@
 	define("VALIDATOR_YEAR", "El año sólo puede contener números.");
 	define("VALIDATOR_ENGINE", "El motor puede contener hasta 15 caractéres.");
 	define("VALIDATOR_VIN", "El VIN debe tener un máximo de 17 caractéres alfanuméricos sin espacios.");
-
 
 /**
 	ERRORES DE TRANSACCIÓN

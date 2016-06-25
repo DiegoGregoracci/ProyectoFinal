@@ -74,7 +74,7 @@
           <!-- Resultados de búsqueda-->
           <div class="box box-danger" ng-show="searched && !errorLoading">
             <!-- Overlay cargando. Sólo mostrar cuando loading = true -->
-            <div class="overlay" ng-show="loading">
+            <div class="overlay" ng-show="loading || changingOwner">
               <i class="fa fa-refresh fa-spin"></i>
             </div>
 
@@ -105,7 +105,7 @@
                   <td>{{client.id}}</td>
                   <td>{{client.name}} {{client.lastname}}</td>
                   <td style="text-align: right;">
-                      <button ng-show="client.id != vehicle.client_id" class="btn btn-sm btn-success">Asignar propietario</button>
+                      <button ng-show="client.id != vehicle.client_id" ng-click="changeOwner(client.id)" class="btn btn-sm btn-success">Asignar propietario</button>
                       <button ng-show="client.id == vehicle.client_id" class="btn btn-sm btn-success" disabled>Actual propietario</button>
                   </td>
                 </tr>

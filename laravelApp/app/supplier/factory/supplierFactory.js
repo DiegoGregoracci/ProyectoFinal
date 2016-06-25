@@ -34,10 +34,10 @@ app.factory('supplierFactory', ['$http', '$q', 'locationPath', function($http, $
     };
 
     // Add new supplier
-    supplierFactory.addSupplier = function (suplier) {
+    supplierFactory.addSupplier = function (supplier) {
          var defered = $q.defer();  
         var promise = defered.promise;
-        $http.post(locationPath.BASE_URL + locationPath.SUPPLIER_URL, suplier)
+        $http.post(locationPath.BASE_URL + locationPath.SUPPLIER_URL, supplier)
             .success(function(data) {
                 defered.resolve(data);
             })
@@ -52,7 +52,7 @@ app.factory('supplierFactory', ['$http', '$q', 'locationPath', function($http, $
     supplierFactory.searchSuppliers = function(param) {
         var defered = $q.defer();  
         var promise = defered.promise;
-        $http.get(locationPath.BASE_URL + locationPath.SUPPLIER_URL + locationPath.SEARCH_URL + '?param=' + param)
+        $http.get(locationPath.BASE_URL + locationPath.SUPPLIER_URL + locationPath.SEARCH_URL + param)
             .success(function(data) {
                 defered.resolve(data);
             })

@@ -4,7 +4,7 @@ app.controller("SearchSupplierController", ["$scope", "supplierFactory", functio
         $scope.loading = true;
         $scope.searched = true;
         $scope.error = false;
-        supplieractory.searchSupplier($scope.search).then(function (response) {
+        supplierFactory.searchSuppliers($scope.search).then(function (response) {
                 if (!response.error)
                     // If status=200 && No error msg.
                     $scope.suppliers = response;

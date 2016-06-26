@@ -58,7 +58,5 @@ app.factory('articleFactory', ['$http', '$q', 'locationPath', function($http, $q
             });
         return promise;
     };
-
-
     return articleFactory;
 }]);

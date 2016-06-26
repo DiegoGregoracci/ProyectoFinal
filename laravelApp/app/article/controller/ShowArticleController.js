@@ -30,7 +30,6 @@ app.controller("ShowArticleController", ["$scope", "articleFactory", "$routePara
                     // If status=200 && No error msg.
                     $scope.article = response.article;
                     $scope.savedArticle = angular.copy($scope.article);
-                    $scope.articles = response.articles;
                 }
                 else {
                     // Error, show error box.

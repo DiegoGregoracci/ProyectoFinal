@@ -54,14 +54,22 @@
                 <!-- THEAD -->
                 <tr>
                   <th style="width: 5%">#</th>
-                  <th style="width: 50%">Detalles</th>
-                  <th style="width: 45%"></th>
+                  <th style="width: 20%">Razon</th>
+                  <th style="width: 20%">Direccion</th>
+                  <th style="width: 15%">Telefono</th>
+                  <th style="width: 15%">Email</th>
+                  <th style="width: 20%">Responsable</th>
+                  <th style="width: 5%"></th>
                 </tr>
 
                 <!-- Repeat TR con proveedores -->
                 <tr ng-repeat="supplier in filteredSuppliers = (suppliers | filter:filtro) track by $index" ng-show="!loading && !error">
                   <td>{{supplier.id}}</td>
-                  <td>{{supplier.tel}} {{supplier.adress}} </td>
+                  <td>{{supplier.description}}</td>
+                  <td>{{supplier.adress}}</td>
+                  <td>{{supplier.tel}}</td> 
+                  <td>{{supplier.email}}</td> 
+                  <td>{{supplier.responsible}}</td>
                   <td style="text-align: right;">
                     <a href="#proveedores/ver/{{supplier.id}}" class="btn btn-sm btn-info">Ver</a>
                   </td>

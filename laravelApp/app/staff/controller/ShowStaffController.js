@@ -1,4 +1,5 @@
-app.controller("ShowStaffController", ["$scope", "staffFactory", "$routeParams", function($scope, staffFactory, $routeParams) {
+app.controller("ShowStaffController", ["$scope", "staffFactory", "$routeParams", 
+                                function($scope, staffFactory, $routeParams) {
     /*
         Initialize object form.
     */

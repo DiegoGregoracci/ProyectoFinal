@@ -46,8 +46,8 @@ class SupplierController extends Controller
     {
           // Validar
         $validator = Validator::make($request->all(), [
-            'razon' => 'required|max:50',
-            'telephone' => 'numeric',
+            'description' => 'required|max:50',
+            'telephone' => 'max:15|alpha_num_spaces',
             'adress' => 'max:30|alpha_num_spaces',
             'email' => 'email|max:30',
             'responsible' => 'max:20|alpha_spaces',
@@ -56,7 +56,7 @@ class SupplierController extends Controller
         // Compruebo mensajes. Con $messages->has('field') sabes si el validator fallo para ese field
         if ($validator->fails()) {
             $messages = $validator->messages();
-            if ($messages->has('razon'))
+            if ($messages->has('description'))
                 $response[] = array(        "error" =>  VALIDATOR_DESCRIPTION);
             if ($messages->has('telephone'))
                 $response[] = array(        "error" =>  VALIDATOR_TEL);
@@ -70,7 +70,7 @@ class SupplierController extends Controller
         }
 
         $supplier = new Supplier();
-        $supplier->description = $request->razon;
+        $supplier->description = $request->description;
         $supplier->tel = $request->telephone;
         $supplier->adress = $request->adress;
         $supplier->email = $request->email;
@@ -154,7 +154,7 @@ class SupplierController extends Controller
     {
          // Validar
         $validator = Validator::make($request->all(), [
-            'razon' => 'required|max:50',
+            'description' => 'required|max:50',
             'telephone' => 'required|max:15|numeric',
             'adress' => 'required|max:30|alpha_num_spaces',
             'email' => 'email|max:30',
@@ -164,7 +164,7 @@ class SupplierController extends Controller
         // Compruebo mensajes. Con $messages->has('field') sabes si el validator fallo para ese field
         if ($validator->fails()) {
             $messages = $validator->messages();
-            if ($messages->has('razon'))
+            if ($messages->has('description'))
                 $response[] = array(        "error" =>  VALIDATOR_DESCRIPTION);
             if ($messages->has('telephone'))
                 $response[] = array(        "error" =>  VALIDATOR_TEL);
@@ -184,7 +184,7 @@ class SupplierController extends Controller
             return response()->json($e);
         }
 
-        $supplier->description = $request->razon;
+        $supplier->description = $request->description;
         $supplier->tel = $request->telephone;
         $supplier->adress = $request->adress;
         $supplier->email = $request->email;
@@ -245,9 +245,10 @@ class SupplierController extends Controller
             return response()->json(["error"=>VALIDATOR_SEARCH]);
 
         try {
-            $supplier = Supplier::select('suppliers.id', 'tel', 'adress', 'email', 'responsible')
+            $supplier = Supplier::select('suppliers.id','description', 'tel', 'adress', 'email', 'responsible')
                             ->where('responsible', "LIKE", "%".$param."%")
                             ->orWhere('tel', "LIKE", "%".$param."%")
+                            ->orWhere('description', "LIKE", "%".$param."%")
                             ->orWhere('adress', "LIKE", "%".$param."%")
                             ->orWhere('id', "=", $param)
                             ->get();

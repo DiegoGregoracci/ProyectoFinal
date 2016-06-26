@@ -8,7 +8,7 @@ app.controller("AddSupplierController", ["$scope", "supplierFactory","$routePara
     */
     $scope.initialize = function () {
         $scope.supplier = {
-            "razon": "",
+            "description": "",
             "telephone": "",
             "adress": "",
             "email": "",

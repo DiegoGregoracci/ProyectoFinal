@@ -58,7 +58,5 @@ app.factory('staffFactory', ['$http', '$q', 'locationPath', function($http, $q, 
             });
         return promise;
     };
-
-
     return staffFactory;
 }]);

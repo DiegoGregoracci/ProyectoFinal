@@ -1,17 +1,20 @@
-app.controller("ShowSupplierController", ["$scope", "supplierFactory", "$routeParams", function($scope, supplierFactory, $routeParams) {
+app.controller("ShowSupplierController", ["$scope", "supplierFactory", "$routeParams", 
+                                    function($scope, supplierFactory, $routeParams) {
     /*
         Initialize object form.
     */
     $scope.initialize = function () {
         $scope.supplier = {
-            "razon": "",
+            "id": "",
+            "description": "",
             "telephone": "",
             "adress": "",
             "email": "",
             "responsible": ""
         };
         $scope.savedSupplier = {
-            "razon": "",
+            "id": "",
+            "description": "",
             "telephone": "",
             "adress": "",
             "email": "",
@@ -27,7 +30,7 @@ app.controller("ShowSupplierController", ["$scope", "supplierFactory", "$routePa
         $scope.loading = true;
         $scope.errorLoading = false;
 
-        supplerFactory.getSupplier($routeParams.id).then(function (response) {
+        supplierFactory.getSupplier($routeParams.id).then(function (response) {
                 if (!response.error) {
                     // If status=200 && No error msg.
                     $scope.supplier = response.supplier;

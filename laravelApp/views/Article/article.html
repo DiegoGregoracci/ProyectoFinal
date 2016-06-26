@@ -26,7 +26,7 @@
 
             <!-- Titulo -->
             <div class="box-header with-border">
-              <h3 class="box-title">Datos del articulo #{{article.id}}</h3>
+              <h3 class="box-title">Datos del articulo</h3>
             </div>
 
                 <!-- Formulario -->
@@ -64,15 +64,18 @@
 
                   </div>
 
-                  <div class="box-footer" style="text-align:center;">
-                    <button ng-click="add()" ng-disabled="form.$invalid" class="btn btn-success" style="margin: 2.5px 5px;">
-                      Agregar
+                 <div class="box-footer" style="text-align:center;">
+                    <button ng-click="updateArticle()" ng-disabled="form.$invalid" class="btn btn-success" style="margin: 2.5px 5px;">
+                      Guardar cambios
+                    </button>
+                    <button ng-click="restoreData()" class="btn btn-danger" style="margin: 2.5px 5px;">
+                      Reestablecer campos
                     </button>
                   </div>
             </form>
           </div>
 
-          <!-- Mensajes al guardar cliente -->
+          <!-- Mensajes al guardar articulo -->
             <!-- Mostrar cuando hay error guardando -->
             <div class="callout callout-danger lead" ng-show="errorUpdate">
               <h4>Error!</h4>
@@ -89,30 +92,4 @@
               </p>
             </div>
           <!-- / Mensajes -->
-
-          <!-- Vehiculos. Mostrar si no hubo error cargando -->
-          <div class="box box-danger" ng-show="!errorResponse">
-            <!-- Overlay cargando. Sólo mostrar cuando loading = true -->
-            <div class="overlay" ng-show="loading">
-              <i class="fa fa-refresh fa-spin"></i>
-            </div>
-
-            <!-- Titulo -->
-            <div class="box-header with-border">
-              <h3 class="box-title">Articulos</h3>
-            </div>
-
-            <!-- Cuerpo de caja. Vehículos -->
-            <div class="box-body table-responsive no-padding">      
-              <table class="table table-hover">
-                
-                <!-- Mensaje de error. Mostrar si hubo error y no está cargando -->
-                <tr>
-                  <td colspan="5" style="text-align: center;" ng-show="error && !loading">{{errorResponse}}</td>
-                </tr>
-
-              </table>
-            </div>
-          </div>
-
         </section><!-- /.content -->
